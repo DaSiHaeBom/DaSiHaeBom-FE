@@ -2,7 +2,7 @@ import { useState } from 'react';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
 
-const Home = () => {
+export default function Home() {
   const [isResumeCreated, setIsResumeCreated] = useState(false);
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-30 mt-16">
@@ -61,6 +61,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}
