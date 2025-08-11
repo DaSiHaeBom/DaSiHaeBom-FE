@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import { Outlet, Navigate } from 'react-router-dom';
 import Layout from '../layout/LayOut';
 import Home from '../pages/Home';
+import Landing from '../pages/Landing';
 
 const routes = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const routes = createBrowserRouter([
       {
         path: 'home',
         element: <Home />,
+      },
+      {
+        path: 'landing',
+        element: <Landing />,
       },
     ],
   },
