@@ -1,7 +1,9 @@
 import landingImage from '../assets/LandingAssets/landingImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
+import { useNavigate } from 'react-router-dom';
 
 export default function Landing() {
+  const navigate = useNavigate();
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-30 mt-16">
       <div className="flex flex-col items-center justify-center mt-30">
@@ -17,10 +19,20 @@ export default function Landing() {
           아직 이력서가 없어요. 먼저 이력서를 작성해 주세요.
         </p>
         <div className="flex gap-9">
-          <button className="w-40 h-14 rounded-lg bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose">
+          <button
+            className="w-40 h-14 rounded-lg bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
+            onClick={() => {
+              navigate('/login');
+            }}
+          >
             로그인
           </button>
-          <button className="w-40 h-14 rounded-lg bg-white text-[#FF6B01] border border-[#FF6B01] text-xl font-semibold px-4 py-2 leading-loose">
+          <button
+            className="w-40 h-14 rounded-lg bg-white text-[#FF6B01] border border-[#FF6B01] text-xl font-semibold px-4 py-2 leading-loose"
+            onClick={() => {
+              navigate('/signup');
+            }}
+          >
             회원가입
           </button>
         </div>
