@@ -3,6 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import Layout from '../layout/LayOut';
 import Home from '../pages/Home';
 import Resume from '../pages/Resume';
+import ResumeStart from '../pages/ResumeStart';
 
 const routes = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const routes = createBrowserRouter([
       {
         path: 'Resume',
         element: <Resume />,
+      },
+      {
+        path: 'ResumeStart',
+        element: <ResumeStart />,
       },
     ],
   },
