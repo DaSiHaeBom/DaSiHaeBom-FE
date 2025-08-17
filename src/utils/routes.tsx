@@ -1,10 +1,11 @@
 // routes.tsx
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../layout/LayOut';
 import Home from '../pages/Home';
-import MyPage from '../pages/MyPage';
-import PersonalInfoPage from '../pages/PersonInfoPage';
+import BusinessMyPage from '../pages/BusinessMyPage';
+import BusinessInfoPage from '../pages/BusinessInfoPage';
+import PersonalMyPage from '../pages/PersonalMyPage';
+import PersonalInfoPage from '../pages/PersonalInfoPage';
 
 const routes = createBrowserRouter([
   {
@@ -17,8 +18,24 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/home" replace /> },
       { path: 'home', element: <Home /> },
-      { path: 'mypage', element: <MyPage /> },
-      { path: 'mypage/profile', element: <PersonalInfoPage /> },
+
+      {
+        path: 'personal/mypage',
+        element: <Outlet />,
+        children: [
+          { index: true, element: <PersonalMyPage /> }, // /personal/mypage
+          { path: 'profile', element: <PersonalInfoPage /> }, // /personal/mypage/profile
+        ],
+      },
+
+      {
+        path: 'business/mypage',
+        element: <Outlet />,
+        children: [
+          { index: true, element: <BusinessMyPage /> }, // /business/mypage
+          { path: 'profile', element: <BusinessInfoPage /> }, // /business/mypage/profile
+        ],
+      },
     ],
   },
 ]);
