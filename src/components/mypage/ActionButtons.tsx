@@ -5,23 +5,21 @@ import Resume from '../../assets/MyPageAssets/Resume.svg';
 import Qualify from '../../assets/MyPageAssets/Qualify.svg';
 import Password from '../../assets/MyPageAssets/Password.svg';
 import Withdraw from '../../assets/MyPageAssets/Withdraw.svg';
-
-type ModalType =
-  | 'PASSWORD'
-  | 'DELETE_CONFIRM'
-  | 'DELETE_DONE'
-  | 'LICENSE_LIST'
-  | 'LICENSE_FORM'
-  | null;
+import { useNavigate } from 'react-router-dom';
+import type { ModalType } from '../../types/ModalType';
 
 type ActionButtonsProps = {
   setModalType: (modal: ModalType) => void;
 };
 
 const ActionButtons = ({ setModalType }: ActionButtonsProps) => {
+  const navigate = useNavigate();
   return (
     <div className="grid grid-cols-2 gap-4 font-[Pretendard]">
-      <button className="flex items-center justify-center col-span-2 border border-[#d9d9d9] bg-[#fffefd] rounded-[10px] text-[#3C3C3C] font-semibold text-[20px] leading-[30px] font-[Pretendard] py-3 px-4 hover:bg-gray-100">
+      <button
+        onClick={() => navigate('/mypage/profile')}
+        className="flex items-center justify-center col-span-2 border border-[#d9d9d9] bg-[#fffefd] rounded-[10px] text-[#3C3C3C] font-semibold text-[20px] leading-[30px] font-[Pretendard] py-3 px-4 hover:bg-gray-100"
+      >
         <img src={Person} alt="개인정보 아이콘" className="mr-2" />
         개인정보
       </button>
