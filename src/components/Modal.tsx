@@ -35,13 +35,11 @@ const Modal = ({
       : 'bg-red-500 hover:bg-red-600 text-white';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-[10px] border border-[#D9D9D9] w-full max-w-md p-6 text-center shadow-md">
-        <div className="flex justify-end mb-2">
-          <button onClick={onClose} className="text-gray-400 text-xl">
-            &times;
-          </button>
-        </div>
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    >
+      <div className="bg-white rounded-[10px] border border-[#D9D9D9] w-full max-w-md p-[30px] text-center shadow-md">
         {/* children 존재하면 우선 렌더링 */}
         {children ? (
           children
