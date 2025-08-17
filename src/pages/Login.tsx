@@ -1,4 +1,16 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function Login() {
+  const navigate = useNavigate();
+
+  const handlePersonalLogin = () => {
+    navigate('/login/personal');
+  };
+
+  const handleBusinessLogin = () => {
+    navigate('/login/business');
+  };
+
   return (
     <div className="flex h-screen bg-white">
       <div className="flex-1 flex items-center justify-center">
@@ -8,7 +20,10 @@ export default function Login() {
 
           <div className="flex gap-16">
             {/* 개인 */}
-            <div className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow">
+            <div
+              className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={handlePersonalLogin}
+            >
               <div className="w-full h-32 bg-amber-50 rounded mb-6 flex items-center justify-center">
                 <img
                   src={'https://picsum.photos/200/300'}
@@ -20,7 +35,10 @@ export default function Login() {
             </div>
 
             {/* 기업 */}
-            <div className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow">
+            <div
+              className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={handleBusinessLogin}
+            >
               <div className="w-full h-32 bg-amber-50 rounded mb-6 flex items-center justify-center">
                 <img
                   src={'https://picsum.photos/200/300'}
