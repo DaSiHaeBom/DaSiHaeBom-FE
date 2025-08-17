@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import UserInfoSection from '../components/mypage/UserInfoSection';
 import ActionButtons from '../components/mypage/ActionButtons';
 import LicenseListModal from '../components/mypage/LicenseListModal';
 import LicenseFormModal from '../components/mypage/LicenseFormModal';
 import ConfirmModals from '../components/mypage/ConfirmModals';
+import type { ModalType } from '../types/ModalType';
 
 const MyPage = () => {
-  // 모달의 종류 타입으로 정의
-  type ModalType =
-    | 'PASSWORD'
-    | 'DELETE_CONFIRM'
-    | 'DELETE_DONE'
-    | 'LICENSE_LIST'
-    | 'LICENSE_FORM'
-    | null;
   // 현재 열려있는 모달 종류 상태로 관리
   const [modalType, setModalType] = useState<ModalType>(null);
   // 자격증 폼 입력 형태
@@ -42,7 +35,7 @@ const MyPage = () => {
   const handleClose = () => setModalType(null);
 
   return (
-    <div className="flex flex-col items-center justify-center py-30 px-4">
+    <div className="flex flex-col items-center justify-center py-30 px-4 mt-16">
       <div className="max-w-[432px] w-full text-center">
         <UserInfoSection
           user={{
@@ -71,6 +64,7 @@ const MyPage = () => {
         modalType={modalType}
         handleClose={handleClose}
         licenseData={licenseData}
+        certList={certList}
         setLicenseData={setLicenseData}
         setCertList={setCertList}
         setModalType={setModalType}
