@@ -36,11 +36,13 @@ const Modal = ({
 
   return (
     <div
-      onClick={onClose}
+      onClick={onClose} // 모달 외부 클릭 시 종료
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
     >
-      <div className="bg-white rounded-[10px] border border-[#D9D9D9] w-full max-w-md p-[30px] text-center shadow-md">
-        {/* children 존재하면 우선 렌더링 */}
+      <div
+        className="bg-white rounded-[10px] border border-[#D9D9D9] w-full max-w-md p-[30px] text-center shadow-md"
+        onClick={e => e.stopPropagation()}
+      >
         {children ? (
           children
         ) : (
@@ -53,14 +55,20 @@ const Modal = ({
             <div className="flex justify-center gap-4">
               {showCancel && (
                 <button
-                  onClick={onClose}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onClose();
+                  }}
                   className="px-6 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
                 >
                   {cancelText}
                 </button>
               )}
               <button
-                onClick={onConfirm}
+                onClick={e => {
+                  e.stopPropagation();
+                  onConfirm?.();
+                }}
                 className={`px-6 py-2 rounded-md ${confirmBtnStyle}`}
               >
                 {confirmText}
