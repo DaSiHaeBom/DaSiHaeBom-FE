@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import Modal from '../components/Modal';
+import CheckIcon from '../assets/MyPageAssets/CheckIcon';
 
 /** ===== Types ===== */
 type BusinessProfile = {
@@ -17,11 +19,11 @@ const labelCls =
 const inputCls =
   'w-full h-[56px] rounded-[10px] border border-[#D9D9D9] focus:border-black px-[20px] py-[12px] text-[16px]';
 const noteRedCls =
-  'ml-[10px] text-[#F00] font-[Pretendard] text-[16px] font-normal leading-[160%]';
+  'ml-[10px] text-[#F00] font-[Pretendard] text-[16px] font-normal leading-[150%]';
 const ctaPrimary =
-  'w-full h-12 rounded-[10px] bg-[#FF9555] text-white font-semibold hover:opacity-90';
+  'w-full h-12 rounded-[10px] bg-[#FF9555] text-[#fffefd] text-[20px] font-semibold leading-[150%] font-semibold hover:opacity-90';
 const ctaGhost =
-  'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100';
+  'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100  text-[#FF9555] text-[20px] font-semibold leading-[150%]';
 
 export default function BusinessInfoPage() {
   /** 초기값 */
@@ -38,9 +40,9 @@ export default function BusinessInfoPage() {
     []
   );
 
-  /** 상태 */
   const [data, setData] = useState<BusinessProfile>(initialData);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
 
   // 자주 반복되는 동작을 위해 뺴놓은 함수
   const updateField =
@@ -55,9 +57,9 @@ export default function BusinessInfoPage() {
     setIsEditing(false);
   };
   const saveEdit = () => {
-    // TODO: API 연동
+    // API 연동
     setIsEditing(false);
-    alert('저장되었습니다.');
+    setIsSavedModalOpen(true);
   };
 
   /** 스타일 */
@@ -71,17 +73,18 @@ export default function BusinessInfoPage() {
         {isEditing ? '기업정보 수정' : '기업정보 조회'}
       </h1>
 
-      {/* 회원 유형 (항상 수정 불가) */}
+      {/* 회원 유형 */}
       <div className="mb-[30px]">
-        <label className={labelCls}>
-          회원 유형 <span className={noteRedCls}>수정 불가능한 항목</span>
-        </label>
-        <input
-          className={`${inputCls} ${readonlyStyle} mt-[10px]`}
-          value={data.memberType}
-          disabled
-          readOnly
-        />
+        <div className="flex items-end gap-2 mb-2">
+          <span className="text-[#3C3C3C] font-[Pretendard] text-[24px] font-semibold leading-[150%]">
+            회원 유형
+          </span>
+          <span className={`${noteRedCls} pb-[2px]`}>수정 불가능한 항목</span>
+        </div>
+
+        <div className="flex max-w-[116px] items-center justify-center rounded-[10px] bg-[#d9d9d9] border border-[#d9d9d9] px-6 py-3 text-[#737373] text-[20px] font-semibold">
+          {data.memberType}
+        </div>
       </div>
 
       {/* 대표번호 */}
@@ -97,7 +100,7 @@ export default function BusinessInfoPage() {
           />
           <button
             type="button"
-            className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-white font-semibold disabled:opacity-50"
+            className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] disabled:opacity-50 cursor-pointer"
             disabled={!isEditing}
           >
             인증번호
@@ -111,7 +114,7 @@ export default function BusinessInfoPage() {
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] font-semibold"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer"
             >
               인증
             </button>
@@ -145,7 +148,7 @@ export default function BusinessInfoPage() {
           {isEditing && (
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FFA66F] text-white hover:opacity-90"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] hover:opacity-90 cursor-pointer"
               // TODO: 사업자번호 유효성/조회 로직 연결 (onClick)
             >
               확인
@@ -180,7 +183,7 @@ export default function BusinessInfoPage() {
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-white font-semibold"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
               // TODO: 주소 검색 모달/다음우편번호 연동
             >
               주소 검색
@@ -208,13 +211,32 @@ export default function BusinessInfoPage() {
             취소
           </button>
           <button
-            className="w-1/2 h-12 rounded-[10px] bg-[#FF9555] text-white font-semibold hover:opacity-90"
+            className="w-1/2 h-12 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] hover:opacity-90 cursor-pointer"
             onClick={saveEdit}
           >
             저장
           </button>
         </div>
       )}
+      <Modal
+        isOpen={isSavedModalOpen}
+        onClose={() => setIsSavedModalOpen(false)}
+      >
+        <div className="rounded-[12px] p-6 text-center font-[Pretendard]">
+          <div className="flex items-center justify-center mb-5">
+            <CheckIcon />
+          </div>
+          <p className="text-[#3c3c3c] text-[24px] font-semibold leading-[150%] mb-5">
+            저장되었습니다.
+          </p>
+          <button
+            className="min-w-[126px] min-h-[56px] px-5 py-2 rounded-[10px] bg-[#FF6B00] text-white font-semibold hover:opacity-90"
+            onClick={() => setIsSavedModalOpen(false)}
+          >
+            확인
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

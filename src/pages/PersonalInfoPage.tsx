@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import Modal from '../components/Modal';
+import CheckIcon from '../assets/MyPageAssets/CheckIcon';
 
 /** ===== Types ===== */
 type PersonalProfile = {
@@ -16,11 +18,11 @@ const labelCls =
 const inputCls =
   'w-full h-[56px] rounded-[10px] border border-[#D9D9D9] focus:border-black px-[20px] py-[12px] text-[16px]';
 const noteRedCls =
-  'ml-[10px] text-[#F00] font-[Pretendard] text-[16px] font-normal leading-[160%]';
+  'ml-[10px] text-[#F00] font-[Pretendard] text-[16px] font-normal leading-[150%]';
 const ctaPrimary =
-  'w-full h-12 rounded-[10px] bg-[#FF9555] text-white font-semibold hover:opacity-90';
+  'w-full h-12 rounded-[10px] bg-[#FF9555] text-[#fffefd] text-[20px] font-semibold leading-[150%] font-semibold hover:opacity-90';
 const ctaGhost =
-  'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100';
+  'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100  text-[#FF9555] text-[20px] font-semibold leading-[150%]';
 
 export default function PersonalInfoPage() {
   /** 초기값 */
@@ -39,6 +41,7 @@ export default function PersonalInfoPage() {
   /** 상태 */
   const [data, setData] = useState<PersonalProfile>(initialData);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
 
   /** change 헬퍼 */
   const updateField =
@@ -54,7 +57,7 @@ export default function PersonalInfoPage() {
   };
   const saveEdit = () => {
     setIsEditing(false);
-    alert('저장되었습니다.');
+    setIsSavedModalOpen(true);
   };
 
   /** 스타일 */
@@ -70,15 +73,16 @@ export default function PersonalInfoPage() {
 
       {/* 회원 유형 */}
       <div className="mb-[30px]">
-        <label className={labelCls}>
-          회원 유형 <span className={noteRedCls}>수정 불가능한 항목</span>
-        </label>
-        <input
-          className={`${inputCls} ${readonlyStyle} mt-[10px]`}
-          value={data.memberType}
-          disabled
-          readOnly
-        />
+        <div className="flex items-end gap-2 mb-2">
+          <span className="text-[#3C3C3C] font-[Pretendard] text-[24px] font-semibold leading-[150%]">
+            회원 유형
+          </span>
+          <span className={`${noteRedCls} pb-[2px]`}>수정 불가능한 항목</span>
+        </div>
+
+        <div className="flex max-w-[116px] items-center justify-center rounded-[10px] bg-[#d9d9d9] border border-[#d9d9d9] px-6 py-3 text-[#737373] text-[20px] font-semibold">
+          {data.memberType}
+        </div>
       </div>
 
       {/* 휴대폰 */}
@@ -94,7 +98,7 @@ export default function PersonalInfoPage() {
           />
           <button
             type="button"
-            className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-white font-semibold disabled:opacity-50"
+            className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] disabled:opacity-50 cursor-pointer"
             disabled={!isEditing}
           >
             인증번호
@@ -108,7 +112,7 @@ export default function PersonalInfoPage() {
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] font-semibold"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer"
             >
               인증
             </button>
@@ -179,13 +183,32 @@ export default function PersonalInfoPage() {
             취소
           </button>
           <button
-            className="w-1/2 h-12 rounded-[10px] bg-[#FF9555] text-white font-semibold hover:opacity-90"
+            className="w-1/2 h-12 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] hover:opacity-90 cursor-pointer"
             onClick={saveEdit}
           >
             저장
           </button>
         </div>
       )}
+      <Modal
+        isOpen={isSavedModalOpen}
+        onClose={() => setIsSavedModalOpen(false)}
+      >
+        <div className="rounded-[12px] p-6 text-center font-[Pretendard]">
+          <div className="flex items-center justify-center mb-5">
+            <CheckIcon />
+          </div>
+          <p className="text-[#3c3c3c] text-[24px] font-semibold leading-[150%] mb-5">
+            저장되었습니다.
+          </p>
+          <button
+            className="min-w-[126px] min-h-[56px] px-5 py-2 rounded-[10px] bg-[#FF6B00] text-white font-semibold hover:opacity-90"
+            onClick={() => setIsSavedModalOpen(false)}
+          >
+            확인
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }
