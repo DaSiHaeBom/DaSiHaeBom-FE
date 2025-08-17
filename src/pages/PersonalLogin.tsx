@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PasswordFindModal from '../components/PasswordFindModal';
 
 interface PersonalLoginForm {
   phoneNumber: string;
@@ -8,6 +10,8 @@ interface PersonalLoginForm {
 
 export default function PersonalLogin() {
   const navigate = useNavigate();
+  const [isPasswordFindModalOpen, setIsPasswordFindModalOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -21,6 +25,10 @@ export default function PersonalLogin() {
 
   const handleBack = () => {
     navigate('/login');
+  };
+
+  const handlePasswordFind = () => {
+    setIsPasswordFindModalOpen(true);
   };
 
   return (
@@ -106,6 +114,7 @@ export default function PersonalLogin() {
               </button>
               <button
                 type="button"
+                onClick={handlePasswordFind}
                 className="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 비밀번호 찾기
@@ -123,6 +132,12 @@ export default function PersonalLogin() {
           </div>
         </div>
       </div>
+
+      {/* 비밀번호 찾기 모달 */}
+      <PasswordFindModal
+        isOpen={isPasswordFindModalOpen}
+        onClose={() => setIsPasswordFindModalOpen(false)}
+      />
     </div>
   );
 }
