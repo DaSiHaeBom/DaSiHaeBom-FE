@@ -10,6 +10,7 @@ type PersonalProfile = {
   birth: string; // yymmdd
   gender: '남성' | '여성' | '';
   address: string;
+  zip: string;
 };
 
 /** ===== UI classes ===== */
@@ -34,6 +35,7 @@ export default function PersonalInfoPage() {
       birth: '600801',
       gender: '남성',
       address: '서울 종로구 ...',
+      zip: '00000',
     }),
     []
   );
@@ -160,9 +162,28 @@ export default function PersonalInfoPage() {
         </div>
       </div>
 
-      {/* 주소 */}
+      {/* 주소(기업: 우편번호 + 검색 버튼 노출) */}
       <div className="mb-[60px]">
         <label className={labelCls}>주소</label>
+
+        {isEditing && (
+          <div className="mt-[10px] flex gap-2">
+            <input
+              className={`${inputCls} w-[180px]`}
+              placeholder="우편번호"
+              value={data.zip ?? ''}
+              onChange={updateField('zip')}
+            />
+            <button
+              type="button"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
+              // TODO: 주소 검색 모달/다음우편번호 연동
+            >
+              주소 검색
+            </button>
+          </div>
+        )}
+
         <input
           className={`${inputCls} ${readonlyStyle} mt-[10px]`}
           placeholder="기본 주소"
