@@ -6,17 +6,14 @@ import LicenseFormModal from '../components/mypage/LicenseFormModal';
 import ConfirmModals from '../components/mypage/ConfirmModals';
 import type { ModalType } from '../types/ModalType';
 
-const MyPage = () => {
-  // 현재 열려있는 모달 종류 상태로 관리
+const PersonalMyPage = () => {
   const [modalType, setModalType] = useState<ModalType>(null);
-  // 자격증 폼 입력 형태
   const [licenseData, setLicenseData] = useState({
     id: Date.now(),
     name: '',
     date: '',
     agency: '',
   });
-  // 더미 데이터
   const [certList, setCertList] = useState([
     {
       id: 1,
@@ -31,23 +28,25 @@ const MyPage = () => {
       date: '2020-06-28',
     },
   ]);
-  // 모달 닫기
+
   const handleClose = () => setModalType(null);
 
   return (
-    <div className="flex flex-col items-center justify-center py-30 px-4 mt-16">
+    <div className="min-h-screen w-full flex items-center justify-center bg-white">
       <div className="max-w-[432px] w-full text-center">
         <UserInfoSection
           user={{
+            memberType: 'personal',
             name: '김상명',
             phone: '010-1234-5678',
             age: 68,
             gender: '남성',
           }}
         />
-        <ActionButtons setModalType={setModalType} />
+        <ActionButtons memberType="personal" setModalType={setModalType} />
       </div>
-      {/* 모달 컴포넌트 영역 */}
+
+      {/* 모달들 */}
       <ConfirmModals
         modalType={modalType}
         handleClose={handleClose}
@@ -73,4 +72,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default PersonalMyPage;
