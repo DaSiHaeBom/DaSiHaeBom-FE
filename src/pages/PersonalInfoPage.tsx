@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Modal from '../components/Modal';
 import CheckIcon from '../assets/MyPageAssets/CheckIcon';
+import GenderSelect from '../components/GenderSelect';
 
 /** ===== Types ===== */
 type PersonalProfile = {
@@ -150,15 +151,12 @@ export default function PersonalInfoPage() {
         <label className={labelCls}>
           성별 <span className={noteRedCls}>수정 불가능한 항목</span>
         </label>
-        <div className="mt-[10px] flex items-center gap-6 text-[14px] text-[#3C3C3C]">
-          <label className="flex items-center gap-2">
-            <input type="radio" checked={data.gender === '남성'} disabled />{' '}
-            남성
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="radio" checked={data.gender === '여성'} disabled />{' '}
-            여성
-          </label>
+        <div className="mt-[10px]">
+          <GenderSelect
+            value={data.gender}
+            onChange={val => setData(prev => ({ ...prev, gender: val }))}
+            disabled={true}
+          />
         </div>
       </div>
 
