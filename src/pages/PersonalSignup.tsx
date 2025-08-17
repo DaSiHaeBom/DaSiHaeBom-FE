@@ -86,77 +86,81 @@ export default function PersonalSignup() {
           {/* 회원가입 폼 */}
           <div className="bg-white">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* 휴대폰 번호 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  휴대폰 번호
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="tel"
-                    {...register('phoneNumber', {
-                      required: '휴대폰 번호를 입력해주세요',
-                      pattern: {
-                        value: /^[0-9]{10,11}$/,
-                        message: '올바른 휴대폰 번호를 입력해주세요',
-                      },
-                    })}
-                    className={`flex-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
-                      errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="휴대폰 번호 '-'제외하고 입력"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleSendVerificationCode}
-                    className="px-4 py-3 bg-[#FF9555] text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
-                  >
-                    인증번호
-                  </button>
-                </div>
-                {errors.phoneNumber && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {errors.phoneNumber.message}
-                  </p>
-                )}
-              </div>
-
-              {/* 인증번호 입력 */}
-              {isVerificationSent && (
+              <div className="flex flex-col gap-2">
+                {/* 휴대폰 번호 */}
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    휴대폰 번호
+                  </label>
                   <div className="flex gap-2">
                     <input
-                      type="text"
-                      {...register('verificationCode', {
-                        required: '인증번호를 입력해주세요',
+                      type="tel"
+                      {...register('phoneNumber', {
+                        required: '휴대폰 번호를 입력해주세요',
                         pattern: {
-                          value: /^[0-9]{6}$/,
-                          message: '6자리 인증번호를 입력해주세요',
+                          value: /^[0-9]{10,11}$/,
+                          message: '올바른 휴대폰 번호를 입력해주세요',
                         },
                       })}
-                      className={`flex-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
-                        errors.verificationCode
+                      className={`w-96 h-14 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                        errors.phoneNumber
                           ? 'border-red-500'
                           : 'border-gray-300'
                       }`}
-                      placeholder="인증번호 입력"
+                      placeholder="휴대폰 번호 '-'제외하고 입력"
                     />
                     <button
                       type="button"
-                      onClick={handleVerifyCode}
-                      disabled={isVerificationCompleted}
-                      className="px-4 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium whitespace-nowrap disabled:opacity-50"
+                      onClick={handleSendVerificationCode}
+                      className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
                     >
-                      {isVerificationCompleted ? '인증완료' : '인증'}
+                      인증번호
                     </button>
                   </div>
-                  {errors.verificationCode && (
+                  {errors.phoneNumber && (
                     <p className="mt-1 text-sm text-red-500">
-                      {errors.verificationCode.message}
+                      {errors.phoneNumber.message}
                     </p>
                   )}
                 </div>
-              )}
+
+                {/* 인증번호 입력 */}
+                {isVerificationSent && (
+                  <div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        {...register('verificationCode', {
+                          required: '인증번호를 입력해주세요',
+                          pattern: {
+                            value: /^[0-9]{6}$/,
+                            message: '6자리 인증번호를 입력해주세요',
+                          },
+                        })}
+                        className={`w-96 h-14 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                          errors.verificationCode
+                            ? 'border-red-500'
+                            : 'border-gray-300'
+                        }`}
+                        placeholder="인증번호 입력"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleVerifyCode}
+                        disabled={isVerificationCompleted}
+                        className="w-28 h-14 px-4 py-3 text-xl text-orange-400 border border-zinc-300 rounded-lg hover:bg-gray-400 transition-colors font-medium whitespace-nowrap disabled:opacity-50"
+                      >
+                        {isVerificationCompleted ? '인증완료' : '인증'}
+                      </button>
+                    </div>
+                    {errors.verificationCode && (
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.verificationCode.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
 
               <div>
                 <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
@@ -294,7 +298,7 @@ export default function PersonalSignup() {
                   <button
                     type="button"
                     onClick={handleAddressSearch}
-                    className="px-4 py-3 bg-[#FF9555] text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
+                    className="px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
                   >
                     주소 검색
                   </button>
@@ -322,7 +326,7 @@ export default function PersonalSignup() {
               <button
                 type="submit"
                 disabled={isSubmitting || !isPhoneVerified}
-                className="w-full bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? '가입 중...' : '가입하기'}
               </button>
@@ -331,7 +335,7 @@ export default function PersonalSignup() {
             <div className="mt-6">
               <button
                 type="button"
-                className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="w-full bg-white border border-gray-300 text-orange-400 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 카카오톡 회원가입
               </button>
