@@ -196,16 +196,17 @@ const Resume = () => {
               <img src={leftArrow} alt="이전" />
             </button>
           )}
+
           <div
             className={`flex flex-col items-center justify-center gap-6 w-[681px] ${
               qnaList[currentIndex].isSubmitted ? 'h-96' : 'h-[457px]'
             } bg-stone-100 rounded-[10px]`}
           >
-            <h2 className="text-neutral-700 text-4xl font-bold">
+            <h2 className="text-neutral-700 text-4xl font-bold text-start w-110">
               Q{currentIndex + 1}.<br /> {qnaList[currentIndex].question}
             </h2>
             {qnaList[currentIndex].isAnswered && (
-              <div className="w-96 max-h-28 overflow-y-scroll text-neutral-700 text-lg font-medium whitespace-pre-line">
+              <div className="w-110 max-h-28 overflow-y-scroll text-neutral-700 text-lg font-medium whitespace-pre-line">
                 {qnaList[currentIndex].answer || '아직 없음'}
               </div>
             )}
@@ -214,7 +215,7 @@ const Resume = () => {
               <InputField
                 inputData={qnaList[currentIndex].answer ?? ''}
                 handleChange={handleTextChange}
-                size="w-96 h-36"
+                size="w-110 h-36"
               />
             ) : !qnaList[currentIndex].isAnswered ? (
               <div className="flex justify-center gap-6 w-full">
@@ -228,7 +229,7 @@ const Resume = () => {
             ) : null}
             {qnaList[currentIndex].isAnswered && (
               <button
-                className="w-96 h-14 bg-orange-500 rounded-[10px] border text-white text-3xl font-semibold"
+                className="w-110 h-14 bg-orange-500 rounded-[10px] border text-white text-3xl font-semibold"
                 onClick={goNext}
               >
                 {currentIndex < qnaList.length - 1 ? '다음 질문' : '완료하기'}
@@ -236,7 +237,7 @@ const Resume = () => {
             )}
             {qnaList[currentIndex].isAnswered && (
               <button
-                className="w-96 h-14 bg-white rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold"
+                className="w-110 h-14 bg-white rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold"
                 onClick={handleReAnswer}
               >
                 다시 답변하기
