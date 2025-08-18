@@ -6,7 +6,7 @@ interface Props {
 const ResumeLongBtn = ({ btnName, onClick }: Props) => {
   return (
     <button
-      className="w-[681px] h-14 bg-orange-500 rounded-[10px] text-white text-3xl font-semibold"
+      className="w-[681px] max-w-full h-14 bg-orange-500 rounded-[10px] text-white text-3xl font-semibold"
       onClick={onClick}
     >
       {btnName}

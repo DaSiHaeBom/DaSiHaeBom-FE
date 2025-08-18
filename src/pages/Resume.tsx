@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import VoiceRecordBtn from '../components/MakeResume/VoiceRecordBtn';
 import InputField from '../components/MakeResume/InputField';
 import EditNBtn from '../components/MakeResume/EditBtn';
@@ -13,6 +13,66 @@ import rightArrow from '../assets/ResumeAssets/rightArrow.svg';
 import leftArrow from '../assets/ResumeAssets/leftArrow.svg';
 
 const Resume = () => {
+  //처음 들어올 때 질문에 대한 리스트를 받아온다.
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 임시 API 응답 데이터
+        const mockApiResponse = [
+          {
+            answerId: 1,
+            questionId: 0,
+            questionContent: '당신의 이름은 무엇인가요?',
+            answerContent: '김철수',
+            createdAt: '2025-08-17T14:38:39.398Z',
+            updatedAt: '2025-08-17T14:38:39.398Z',
+          },
+          {
+            answerId: 2,
+            questionId: 2,
+            questionContent: '좋아하는 음식은 무엇인가요?',
+            answerContent: '피자와 치킨',
+            createdAt: '2025-08-17T14:30:15.123Z',
+            updatedAt: '2025-08-17T14:35:22.456Z',
+          },
+          {
+            answerId: 3,
+            questionId: 4,
+            questionContent: '앞으로의 목표는 무엇인가요?',
+            answerContent:
+              '프론트엔드 개발자가 되어서 좋은 서비스를 만들고 싶습니다.',
+            createdAt: '2025-08-17T14:20:10.789Z',
+            updatedAt: '2025-08-17T14:40:30.111Z',
+          },
+        ];
+
+        // 기존 답변이 있는 질문들 업데이트
+        setQnaList(prev => {
+          const updated = [...prev];
+
+          mockApiResponse.forEach(({ questionId, answerContent }) => {
+            if (questionId < updated.length) {
+              updated[questionId] = {
+                ...updated[questionId],
+                answer: answerContent,
+                isAnswered: true,
+                hasEverAnswered: true,
+              };
+            }
+          });
+
+          return updated;
+        });
+
+        console.log('기존 답변 로드 완료:', mockApiResponse);
+      } catch (error) {
+        console.error('데이터 로딩 실패:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   // 임시 질문 리스트
   const questions = [
     '당신의 이름은 무엇인가요?',
@@ -33,6 +93,7 @@ const Resume = () => {
       hasEverAnswered: false,
     }))
   );
+
   //종료 여부 판단
   const [isFinished, setIsFinished] = useState(false);
 
@@ -121,7 +182,7 @@ const Resume = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
+    <>
       {isFinished ? (
         <EndPage />
       ) : (
@@ -153,6 +214,7 @@ const Resume = () => {
               <InputField
                 inputData={qnaList[currentIndex].answer ?? ''}
                 handleChange={handleTextChange}
+                size="w-96 h-36"
               />
             ) : !qnaList[currentIndex].isAnswered ? (
               <div className="flex justify-center gap-6 w-full">
@@ -198,7 +260,7 @@ const Resume = () => {
       {isFinished && (
         <ResumeLongBtn btnName="이력서 확인하기" onClick={handleFinish} />
       )}
-    </div>
+    </>
   );
 };
 

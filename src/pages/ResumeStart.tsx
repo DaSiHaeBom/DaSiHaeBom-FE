@@ -5,11 +5,11 @@ import ResumeLongBtn from '../components/MakeResume/ResumeLongBtn';
 const ResumeStart = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/Resume'); // 이력서 작성 페이지로 이동
+    navigate('/Resume/qna'); // 이력서 작성 페이지로 이동
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
+    <>
       <div className="flex flex-col items-center justify-center gap-6 w-[681px] h-96 bg-stone-100 rounded-[10px]">
         <div className="text-start">
           <h2 className="text-neutral-700 text-4xl font-bold mb-4 leading-[54px]">
@@ -25,7 +25,7 @@ const ResumeStart = () => {
         </div>
       </div>
       <ResumeLongBtn btnName="이력서 작성 시작하기" onClick={handleClick} />
-    </div>
+    </>
   );
 };
 

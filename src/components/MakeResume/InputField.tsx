@@ -1,18 +1,17 @@
 type Props = {
   inputData: string;
   handleChange: (value: string) => void;
+  size: string;
 };
 
-const InputField = ({ inputData, handleChange }: Props) => {
+const InputField = ({ inputData, handleChange, size }: Props) => {
   return (
-    <div>
-      <textarea
-        value={inputData}
-        onChange={e => handleChange(e.target.value)}
-        placeholder="답변을 입력하세요..."
-        className="w-96 h-36 p-2 bg-white rounded-[10px] border border-zinc-300 overflow-y-scroll resize-none"
-      />
-    </div>
+    <textarea
+      value={inputData}
+      onChange={e => handleChange(e.target.value)}
+      placeholder="답변을 입력하세요..."
+      className={`p-2 bg-white rounded-[10px] border border-zinc-300 overflow-y-scroll resize-none ${size}`}
+    />
   );
 };
 
