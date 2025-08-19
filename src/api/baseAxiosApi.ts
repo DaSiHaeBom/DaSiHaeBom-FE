@@ -20,7 +20,7 @@ const baseAxiosInstance = axios.create({
 
 // 요청 인터셉터
 baseAxiosInstance.interceptors.request.use(async config => {
-  await new Promise(resolve => setTimeout(resolve, 1000)); // 로딩 상태 테스트를 위해 1000ms 지연
+  // await new Promise(resolve => setTimeout(resolve, 1000)); // 로딩 상태 테스트를 위해 1000ms 지연
   return config;
 });
 
@@ -39,7 +39,7 @@ baseAxiosInstance.interceptors.response.use(
 
       // 토큰 갱신 로직 실행
       try {
-        await axios.post('/api/auth/refresh', null, {
+        await axios.post('/api/v1/auth/refresh', null, {
           baseURL,
           withCredentials: true,
         });
@@ -47,7 +47,7 @@ baseAxiosInstance.interceptors.response.use(
         return baseAxiosInstance(originalRequest);
       } catch {
         // 토큰 갱신에 실패하면 로그인 페이지로 리다이렉트
-        window.location.href = '/';
+        window.location.href = '/login';
       }
     }
     return Promise.reject(error);
