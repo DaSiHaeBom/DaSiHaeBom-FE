@@ -6,30 +6,18 @@ import LicenseFormModal from '../components/mypage/LicenseFormModal';
 import ConfirmModals from '../components/mypage/ConfirmModals';
 import type { ModalType } from '../types/ModalType';
 import { fetchPersonalInfo } from '../api/userApi';
+import type { License } from '../types/License';
 
 const PersonalMyPage = () => {
   // 모달/자격증 관련 상태
   const [modalType, setModalType] = useState<ModalType>(null);
-  const [licenseData, setLicenseData] = useState({
-    id: Date.now(),
+  const [licenseData, setLicenseData] = useState<License>({
+    licenseId: 0, // 새로 등록 시 임시로 0
     name: '',
-    date: '',
-    agency: '',
+    issuer: '',
+    issuedAt: '',
   });
-  const [certList, setCertList] = useState([
-    {
-      id: 1,
-      name: '운전면허증 (2종)',
-      agency: '도로교통공단',
-      date: '1987-09-15',
-    },
-    {
-      id: 2,
-      name: '요양보호사 자격증',
-      agency: '보건복지부',
-      date: '2020-06-28',
-    },
-  ]);
+  const [certList, setCertList] = useState<License[]>([]);
 
   type User = {
     memberType: 'personal';
@@ -55,7 +43,7 @@ const PersonalMyPage = () => {
 
     const now = new Date();
     let year = parseInt(birth.substring(0, 2), 10);
-    const month = parseInt(birth.substring(2, 4), 10) - 1; // JS month는 0부터 시작
+    const month = parseInt(birth.substring(2, 4), 10) - 1;
     const day = parseInt(birth.substring(4, 6), 10);
 
     // 2000년 이후 출생인지 1900년대 출생인지 판별
