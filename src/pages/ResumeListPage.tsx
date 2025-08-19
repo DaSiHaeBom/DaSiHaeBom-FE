@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SortDropdown from '../components/resumeList/SortDropdown';
 import FilterPopover from '../components/resumeList/FilterPopover';
 import ResumeCard from '../components/resumeList/ResumeCard';
@@ -23,6 +23,7 @@ const ResumeListPage = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [selectedResume, setSelectedResume] = useState<any | null>(null); // ✅ 모달용
 
+  // 임시 로그인
   useEffect(() => {
     const doLogin = async () => {
       try {
