@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
+import step1Image from '../assets/HomeAssets/step1Image.svg';
+import step2Image from '../assets/HomeAssets/step2Image.svg';
+import step3Image from '../assets/HomeAssets/step3Image.svg';
 
 export default function Home() {
   const [isResumeCreated, setIsResumeCreated] = useState(false);
@@ -38,23 +41,23 @@ export default function Home() {
         <p className="text-neutral-700 text-4xl font-bold leading-16">
           우리 서비스는 이렇게 진행됩니다.
         </p>
-        <div className="flex gap-6">
+        <div className="flex gap-8 justify-center">
           <HomeCard
             step="1단계"
-            imageSrc="https://via.placeholder.com/150"
-            altText="예시 이미지"
+            imageSrc={step1Image}
+            altText="1단계 이미지"
             text="말로 질문에 답해요"
           />
           <HomeCard
             step="2단계"
-            imageSrc="https://via.placeholder.com/150"
-            altText="예시 이미지"
+            imageSrc={step2Image}
+            altText="2단계 이미지"
             text="이력서가 만들어져요"
           />
           <HomeCard
             step="3단계"
-            imageSrc="https://via.placeholder.com/150"
-            altText="예시 이미지"
+            imageSrc={step3Image}
+            altText="3단계 이미지"
             text="기업이 먼저 연락해요"
           />
         </div>
