@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { sendPasswordResetCode } from '../api/authApi';
 
 interface PasswordFindModalProps {
   isOpen: boolean;
@@ -25,7 +26,27 @@ export default function PasswordFindModal({
     }
 
     setIsSubmitting(true);
-    // TODO: 임시 비밀번호 발송 API 호출 로직 구현
+    try {
+      const result = await sendPasswordResetCode(phoneNumber);
+      if (result.isSuccess) {
+        alert('임시 비밀번호가 발송되었습니다. 문자를 확인해주세요.');
+        handleClose();
+      } else {
+        alert(
+          result.message ||
+            '임시 비밀번호 발송에 실패했습니다. 다시 시도해주세요.'
+        );
+      }
+    } catch (error: unknown) {
+      console.error('임시 비밀번호 발송 실패:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '임시 비밀번호 발송에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {

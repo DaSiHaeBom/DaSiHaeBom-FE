@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PasswordFindModal from '../components/PasswordFindModal';
+import { login } from '../api/authApi';
 
 interface PersonalLoginForm {
   phoneNumber: string;
@@ -18,9 +19,27 @@ export default function PersonalLogin() {
     formState: { errors, isSubmitting },
   } = useForm<PersonalLoginForm>();
 
-  const onSubmit = (data: PersonalLoginForm) => {
-    // TODO: 개인회원 로그인 API 호출 로직 구현
-    console.log('개인회원 로그인:', data);
+  const onSubmit = async (data: PersonalLoginForm) => {
+    try {
+      const result = await login({
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+      });
+
+      if (result.isSuccess) {
+        alert('로그인이 완료되었습니다!');
+        navigate('/'); // 홈페이지로 이동
+      } else {
+        alert(result.message || '로그인에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: unknown) {
+      console.error('로그인 실패:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '로그인에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    }
   };
 
   const handleBack = () => {
@@ -120,7 +139,6 @@ export default function PersonalLogin() {
                 비밀번호 찾기
               </button>
             </div>
-
             <div className="text-center">
               <button
                 type="button"
@@ -133,7 +151,6 @@ export default function PersonalLogin() {
         </div>
       </div>
 
-      {/* 비밀번호 찾기 모달 */}
       <PasswordFindModal
         isOpen={isPasswordFindModalOpen}
         onClose={() => setIsPasswordFindModalOpen(false)}

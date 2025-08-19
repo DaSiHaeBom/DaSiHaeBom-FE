@@ -1,6 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  sendPhoneVerificationCode,
+  verifyPhoneCode,
+  personalSignup,
+} from '../api/authApi';
 
 interface PersonalSignupForm {
   phoneNumber: string;
@@ -18,6 +23,8 @@ export default function PersonalSignup() {
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [isVerificationCompleted, setIsVerificationCompleted] = useState(false);
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const [isVerifyingCode, setIsVerifyingCode] = useState(false);
 
   const {
     register,
@@ -28,39 +35,103 @@ export default function PersonalSignup() {
 
   const watchedPhoneNumber = watch('phoneNumber');
 
-  const handleSendVerificationCode = () => {
+  const handleSendVerificationCode = async () => {
     if (!watchedPhoneNumber || watchedPhoneNumber.length < 10) {
       alert('올바른 휴대폰 번호를 입력해주세요');
       return;
     }
-    // TODO: 인증번호 발송 API 호출
-    setIsVerificationSent(true);
-    alert('인증번호가 발송되었습니다');
+
+    setIsSendingCode(true);
+    try {
+      const result = await sendPhoneVerificationCode(watchedPhoneNumber);
+      if (result.isSuccess) {
+        setIsVerificationSent(true);
+        alert('인증번호가 발송되었습니다');
+      } else {
+        alert(
+          result.message || '인증번호 발송에 실패했습니다. 다시 시도해주세요.'
+        );
+      }
+    } catch (error: unknown) {
+      console.error('인증번호 발송 실패:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '인증번호 발송에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    } finally {
+      setIsSendingCode(false);
+    }
   };
 
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
     const verificationCode = watch('verificationCode');
     if (!verificationCode) {
       alert('인증번호를 입력해주세요');
       return;
     }
-    // TODO: 인증번호 확인 API 호출
-    setIsVerificationCompleted(true);
-    setIsPhoneVerified(true);
-    alert('인증이 완료되었습니다');
+
+    setIsVerifyingCode(true);
+    try {
+      const result = await verifyPhoneCode(
+        watchedPhoneNumber,
+        verificationCode
+      );
+      if (result.isSuccess) {
+        setIsVerificationCompleted(true);
+        setIsPhoneVerified(true);
+        alert('인증이 완료되었습니다');
+      } else {
+        alert(result.message || '인증에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: unknown) {
+      console.error('인증 실패:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '인증에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    } finally {
+      setIsVerifyingCode(false);
+    }
   };
 
   const handleAddressSearch = () => {
     // TODO: 주소 검색 API 연동 (카카오 주소 검색 등)
   };
 
-  const onSubmit = (data: PersonalSignupForm) => {
+  const onSubmit = async (data: PersonalSignupForm) => {
     if (!isPhoneVerified) {
       alert('휴대폰 인증을 완료해주세요');
       return;
     }
-    // TODO: 개인 회원가입 API 호출 로직 구현
-    console.log('개인 회원가입:', data);
+
+    try {
+      const signupData = {
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+        name: data.name,
+        birthDate: data.birthDate,
+        gender: data.gender,
+        address: data.address,
+        detailedAddress: data.detailedAddress,
+      };
+
+      const result = await personalSignup(signupData);
+      if (result.isSuccess) {
+        alert('회원가입이 완료되었습니다!');
+        navigate('/login/personal');
+      } else {
+        alert(result.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: unknown) {
+      console.error('회원가입 실패:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '회원가입에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    }
   };
 
   const handleBack = () => {
@@ -83,11 +154,9 @@ export default function PersonalSignup() {
             </h1>
           </div>
 
-          {/* 회원가입 폼 */}
           <div className="bg-white">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="flex flex-col gap-2">
-                {/* 휴대폰 번호 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     휴대폰 번호
@@ -112,9 +181,10 @@ export default function PersonalSignup() {
                     <button
                       type="button"
                       onClick={handleSendVerificationCode}
-                      className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
+                      disabled={isSendingCode}
+                      className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      인증번호
+                      {isSendingCode ? '발송중...' : '인증번호'}
                     </button>
                   </div>
                   {errors.phoneNumber && (
@@ -123,8 +193,6 @@ export default function PersonalSignup() {
                     </p>
                   )}
                 </div>
-
-                {/* 인증번호 입력 */}
                 {isVerificationSent && (
                   <div>
                     <div className="flex gap-2">
@@ -147,10 +215,14 @@ export default function PersonalSignup() {
                       <button
                         type="button"
                         onClick={handleVerifyCode}
-                        disabled={isVerificationCompleted}
-                        className="w-28 h-14 px-4 py-3 text-xl text-orange-400 border border-zinc-300 rounded-lg hover:bg-gray-400 transition-colors font-medium whitespace-nowrap disabled:opacity-50"
+                        disabled={isVerificationCompleted || isVerifyingCode}
+                        className="w-28 h-14 px-4 py-3 text-xl text-orange-400 border border-zinc-300 rounded-lg hover:bg-gray-400 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {isVerificationCompleted ? '인증완료' : '인증'}
+                        {isVerificationCompleted
+                          ? '인증완료'
+                          : isVerifyingCode
+                            ? '인증중...'
+                            : '인증'}
                       </button>
                     </div>
                     {errors.verificationCode && (
