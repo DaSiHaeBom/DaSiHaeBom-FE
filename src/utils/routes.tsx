@@ -3,6 +3,11 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../layout/LayOut';
 import ResumeLayout from '../layout/ResumeLayOut';
 import Home from '../pages/Home';
+import Login from '../pages/Login';
+import PersonalLogin from '../pages/PersonalLogin';
+import BusinessLogin from '../pages/BusinessLogin';
+import PersonalSignup from '../pages/PersonalSignup';
+import Signup from '../pages/Signup';
 import BusinessMyPage from '../pages/BusinessMyPage';
 import BusinessInfoPage from '../pages/BusinessInfoPage';
 import PersonalMyPage from '../pages/PersonalMyPage';
@@ -65,6 +70,26 @@ const routes = createBrowserRouter([
             element: <Resume />,
           },
         ],
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'login/personal',
+        element: <PersonalLogin />,
+      },
+      {
+        path: 'login/business',
+        element: <BusinessLogin />,
+      },
+      {
+        path: 'signup/personal',
+        element: <PersonalSignup />,
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
       },
     ],
   },
