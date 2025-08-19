@@ -32,7 +32,7 @@ const ResumeConfirm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center h-full mt-16">
       <div className="flex flex-col items-center justify-start gap-6 w-[894px] max-w-full bg-stone-100 rounded-[10px] px-30 py-20 h-fit min-h-[400px]">
         <h2 className="text-neutral-700 text-4xl font-bold w-full text-start">
           {data.name}님 자기소개서
