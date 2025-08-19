@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import personalImage from '../assets/LoginAssets/personalImage.svg';
+import businessImage from '../assets/LoginAssets/businessImage.svg';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,9 +26,9 @@ export default function Login() {
               className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
               onClick={handlePersonalLogin}
             >
-              <div className="w-full h-32 bg-amber-50 rounded mb-6 flex items-center justify-center">
+              <div className="w-full h-32 bg-white rounded mb-6 flex items-center justify-center">
                 <img
-                  src={'https://picsum.photos/200/300'}
+                  src={personalImage}
                   alt="개인회원"
                   className="w-full h-full object-cover"
                 />
@@ -39,9 +41,9 @@ export default function Login() {
               className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
               onClick={handleBusinessLogin}
             >
-              <div className="w-full h-32 bg-amber-50 rounded mb-6 flex items-center justify-center">
+              <div className="w-full h-32 bg-white rounded mb-6 flex items-center justify-center">
                 <img
-                  src={'https://picsum.photos/200/300'}
+                  src={businessImage}
                   alt="기업회원"
                   className="w-full h-full object-cover"
                 />

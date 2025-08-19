@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { sendPasswordResetCode } from '../api/authApi';
+import { sendPasswordResetCode } from '../../api/authApi';
 
 interface PasswordFindModalProps {
   isOpen: boolean;
