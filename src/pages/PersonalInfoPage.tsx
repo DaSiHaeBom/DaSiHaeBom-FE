@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import CheckIcon from '../assets/MyPageAssets/CheckIcon';
 import GenderSelect from '../components/GenderSelect';
+import { fetchPersonalInfo, updatePersonalInfo } from '../api/userApi';
 
 /** ===== Types ===== */
 type PersonalProfile = {
@@ -27,40 +28,70 @@ const ctaGhost =
   'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100  text-[#FF9555] text-[20px] font-semibold leading-[150%]';
 
 export default function PersonalInfoPage() {
-  /** 초기값 */
-  const initialData = useMemo<PersonalProfile>(
-    () => ({
-      memberType: '개인',
-      phone: '01012345678',
-      name: '김상명',
-      birth: '600801',
-      gender: '남성',
-      address: '서울 종로구 ...',
-      zip: '00000',
-    }),
-    []
-  );
-
   /** 상태 */
-  const [data, setData] = useState<PersonalProfile>(initialData);
+  const [data, setData] = useState<PersonalProfile>({
+    memberType: '개인',
+    phone: '',
+    name: '',
+    birth: '',
+    gender: '',
+    address: '',
+    zip: '',
+  });
+
   const [isEditing, setIsEditing] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
+
+  /** 회원정보 불러오기 */
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const user = await fetchPersonalInfo();
+        setData({
+          memberType: '개인',
+          phone: user.phoneNumber,
+          name: user.username,
+          birth: user.birthDate, // "yymmdd"
+          gender: user.gender === 'MALE' ? '남성' : '여성',
+          address: user.address ?? '',
+          zip: user.zip ?? '',
+        });
+      } catch (err) {
+        console.error('회원 정보 불러오기 실패:', err);
+      }
+    };
+    loadUser();
+  }, []);
 
   /** change 헬퍼 */
   const updateField =
     <K extends keyof PersonalProfile>(key: K) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
-      setData(prev => ({ ...prev, [key]: e.target.value }));
+      setData(prev => (prev ? { ...prev, [key]: e.target.value } : prev));
 
   /** 액션 */
   const startEdit = () => setIsEditing(true);
   const cancelEdit = () => {
-    setData(initialData);
     setIsEditing(false);
   };
-  const saveEdit = () => {
-    setIsEditing(false);
-    setIsSavedModalOpen(true);
+  const saveEdit = async () => {
+    if (!data) return;
+
+    try {
+      const suc = await updatePersonalInfo({
+        phoneNumber: data.phone,
+        username: data.name,
+        birthDate: data.birth,
+        address: data.address,
+      });
+
+      setIsEditing(false);
+      setIsSavedModalOpen(true);
+      console.log(suc);
+    } catch (err) {
+      console.error('개인정보 수정 실패:', err);
+      alert('저장 중 오류가 발생했습니다.');
+    }
   };
 
   /** 스타일 */
@@ -68,25 +99,34 @@ export default function PersonalInfoPage() {
     ? 'bg-[#F5F5F5] text-[#737373] border-[#D9D9D9]'
     : 'bg-white';
 
+  if (!data) {
+    return (
+      <div className="mt-20 text-center text-lg text-gray-600">
+        회원 정보를 불러오는 중입니다...
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto w-full mt-16 max-w-[512px] py-8 font-[Pretendard] leading-[150%]">
       <h1 className="mb-[67px] text-center text-[36px] font-bold text-[#3C3C3C]">
         {isEditing ? '개인정보 수정' : '개인정보 조회'}
       </h1>
 
-      {/* 회원 유형 */}
-      <div className="mb-[30px]">
-        <div className="flex items-end gap-2 mb-2">
-          <span className="text-[#3C3C3C] font-[Pretendard] text-[24px] font-semibold leading-[150%]">
-            회원 유형
-          </span>
-          <span className={`${noteRedCls} pb-[2px]`}>수정 불가능한 항목</span>
-        </div>
+      {data && (
+        <div className="mb-[30px]">
+          <div className="flex items-end gap-2 mb-2">
+            <span className="text-[#3C3C3C] text-[24px] font-semibold leading-[150%]">
+              회원 유형
+            </span>
+            <span className={`${noteRedCls} pb-[2px]`}>수정 불가능한 항목</span>
+          </div>
 
-        <div className="flex max-w-[116px] items-center justify-center rounded-[10px] bg-[#d9d9d9] border border-[#d9d9d9] px-6 py-3 text-[#737373] text-[20px] font-semibold">
-          {data.memberType}
+          <div className="flex max-w-[116px] items-center justify-center rounded-[10px] bg-[#d9d9d9] border border-[#d9d9d9] px-6 py-3 text-[#737373] text-[20px] font-semibold">
+            {data.memberType}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 휴대폰 */}
       <div className="mb-[30px]">
