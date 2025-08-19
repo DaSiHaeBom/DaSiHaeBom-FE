@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../layout/LayOut';
 import ResumeLayout from '../layout/ResumeLayOut';
 import Home from '../pages/Home';
+import Landing from '../pages/Landing';
 import Login from '../pages/Login';
 import PersonalLogin from '../pages/PersonalLogin';
 import BusinessLogin from '../pages/BusinessLogin';
@@ -90,6 +91,10 @@ const routes = createBrowserRouter([
       {
         path: 'signup',
         element: <Signup />,
+      },
+      {
+        path: 'landing',
+        element: <Landing />,
       },
     ],
   },
