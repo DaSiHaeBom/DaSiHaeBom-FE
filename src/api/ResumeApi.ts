@@ -7,3 +7,11 @@ export const login = async () => {
   });
   return data;
 };
+
+// 이력서 필터 api
+export const searchLicenses = async (keyword: string) => {
+  const { data } = await baseAxiosInstance.get(
+    `/licenses/search?keyword=${encodeURIComponent(keyword)}`
+  );
+  return data.result.licenseTypes;
+};
