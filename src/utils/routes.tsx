@@ -20,15 +20,41 @@ import ResumeConfirm from '../pages/ResumeConfirm';
 const routes = createBrowserRouter([
   {
     path: '/',
+    element: <Landing />,
+  },
+  {
+    path: 'login',
+    element: <Login />,
+  },
+  {
+    path: 'login/personal',
+    element: <PersonalLogin />,
+  },
+  {
+    path: 'login/business',
+    element: <BusinessLogin />,
+  },
+  {
+    path: 'signup/personal',
+    element: <PersonalSignup />,
+  },
+  {
+    path: 'signup',
+    element: <Signup />,
+  },
+  {
+    path: 'landing',
+    element: <Landing />,
+  },
+  {
+    path: '/',
     element: (
       <Layout>
         <Outlet />
       </Layout>
     ),
     children: [
-      { index: true, element: <Navigate to="/home" replace /> },
       { path: 'home', element: <Home /> },
-
       {
         path: 'personal/mypage',
         element: <Outlet />,
@@ -71,30 +97,6 @@ const routes = createBrowserRouter([
             element: <Resume />,
           },
         ],
-      },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'login/personal',
-        element: <PersonalLogin />,
-      },
-      {
-        path: 'login/business',
-        element: <BusinessLogin />,
-      },
-      {
-        path: 'signup/personal',
-        element: <PersonalSignup />,
-      },
-      {
-        path: 'signup',
-        element: <Signup />,
-      },
-      {
-        path: 'landing',
-        element: <Landing />,
       },
     ],
   },
