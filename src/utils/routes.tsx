@@ -6,6 +6,7 @@ import BusinessMyPage from '../pages/BusinessMyPage';
 import BusinessInfoPage from '../pages/BusinessInfoPage';
 import PersonalMyPage from '../pages/PersonalMyPage';
 import PersonalInfoPage from '../pages/PersonalInfoPage';
+import ResumeListPage from '../pages/ResumeListPage';
 
 const routes = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const routes = createBrowserRouter([
           { index: true, element: <BusinessMyPage /> }, // /business/mypage
           { path: 'profile', element: <BusinessInfoPage /> }, // /business/mypage/profile
         ],
+      },
+      {
+        path: 'resume/list',
+        element: <ResumeListPage />,
       },
     ],
   },
