@@ -6,8 +6,8 @@ interface ResumeSmallBtnProps {
 
 const ResumeSmallBtn = ({ name, clickEvent, color }: ResumeSmallBtnProps) => {
   const extraCss = color
-    ? 'bg-orange-400 text-white'
-    : 'bg-white border border-neutral-500 text-neutral-500';
+    ? 'bg-orange-400 text-[#FFFEFD]'
+    : 'bg-[#FFFEFD] border border-neutral-500 text-neutral-500';
 
   return (
     <button

@@ -229,7 +229,7 @@ const Resume = () => {
             ) : null}
             {qnaList[currentIndex].isAnswered && (
               <button
-                className="w-110 h-14 bg-orange-500 rounded-[10px] border text-white text-3xl font-semibold"
+                className="w-110 h-14 bg-orange-500 rounded-[10px] border text-[#FFFEFD] text-3xl font-semibold"
                 onClick={goNext}
               >
                 {currentIndex < qnaList.length - 1 ? '다음 질문' : '완료하기'}
@@ -237,7 +237,7 @@ const Resume = () => {
             )}
             {qnaList[currentIndex].isAnswered && (
               <button
-                className="w-110 h-14 bg-white rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold"
+                className="w-110 h-14 bg-[#FFFEFD] rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold"
                 onClick={handleReAnswer}
               >
                 다시 답변하기

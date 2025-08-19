@@ -10,7 +10,7 @@ const InputField = ({ inputData, handleChange, size }: Props) => {
       value={inputData}
       onChange={e => handleChange(e.target.value)}
       placeholder="답변을 입력하세요..."
-      className={`p-2 bg-white rounded-[10px] border border-zinc-300 overflow-y-scroll resize-none ${size}`}
+      className={`p-2 bg-[#FFFEFD] rounded-[10px] border border-zinc-300 overflow-y-scroll resize-none ${size}`}
     />
   );
 };
