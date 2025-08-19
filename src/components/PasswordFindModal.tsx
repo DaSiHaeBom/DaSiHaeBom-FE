@@ -10,24 +10,24 @@ export default function PasswordFindModal({
   isOpen,
   onClose,
 }: PasswordFindModalProps) {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+  const handleLoginIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginId(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!phoneNumber || phoneNumber.length < 10) {
+    if (!loginId || loginId.length < 10) {
       alert('올바른 휴대폰 번호를 입력해주세요');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const result = await sendPasswordResetCode(phoneNumber);
+      const result = await sendPasswordResetCode(loginId);
       if (result.isSuccess) {
         alert('임시 비밀번호가 발송되었습니다. 문자를 확인해주세요.');
         handleClose();
@@ -50,7 +50,7 @@ export default function PasswordFindModal({
   };
 
   const handleClose = () => {
-    setPhoneNumber('');
+    setLoginId('');
     setIsSubmitting(false);
     onClose();
   };
@@ -82,8 +82,8 @@ export default function PasswordFindModal({
           <div className="flex flex-col gap-2">
             <input
               type="tel"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
+              value={loginId}
+              onChange={handleLoginIdChange}
               className="w-full h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
               placeholder="휴대폰 번호 '-'제외하고 입력"
               maxLength={11}
@@ -92,7 +92,7 @@ export default function PasswordFindModal({
 
           <button
             type="submit"
-            disabled={isSubmitting || !phoneNumber}
+            disabled={isSubmitting || !loginId}
             className="w-full bg-orange-400 text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? '발송 중...' : '임시 비밀번호 발송'}

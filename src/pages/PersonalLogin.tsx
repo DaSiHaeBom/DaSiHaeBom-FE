@@ -5,7 +5,7 @@ import PasswordFindModal from '../components/PasswordFindModal';
 import { login } from '../api/authApi';
 
 interface PersonalLoginForm {
-  phoneNumber: string;
+  loginId: string;
   password: string;
 }
 
@@ -22,13 +22,13 @@ export default function PersonalLogin() {
   const onSubmit = async (data: PersonalLoginForm) => {
     try {
       const result = await login({
-        phoneNumber: data.phoneNumber,
+        loginId: data.loginId,
         password: data.password,
       });
 
       if (result.isSuccess) {
         alert('로그인이 완료되었습니다!');
-        navigate('/'); // 홈페이지로 이동
+        navigate('/home');
       } else {
         alert(result.message || '로그인에 실패했습니다. 다시 시도해주세요.');
       }
@@ -71,22 +71,22 @@ export default function PersonalLogin() {
               <div>
                 <input
                   type="tel"
-                  id="phoneNumber"
-                  {...register('phoneNumber', {
-                    required: '전화번호를 입력해주세요',
+                  id="loginId"
+                  {...register('loginId', {
+                    required: '휴대폰 번호를 입력해주세요',
                     pattern: {
-                      value: /^[0-9-]+$/,
-                      message: '올바른 전화번호 형식이 아닙니다',
+                      value: /^[0-9]{10,11}$/,
+                      message: '올바른 휴대폰 번호 형식이 아닙니다',
                     },
                   })}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
-                    errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                    errors.loginId ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="전화번호"
+                  placeholder="휴대폰 번호 ('-'제외하고 입력)"
                 />
-                {errors.phoneNumber && (
+                {errors.loginId && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.phoneNumber.message}
+                    {errors.loginId.message}
                   </p>
                 )}
               </div>

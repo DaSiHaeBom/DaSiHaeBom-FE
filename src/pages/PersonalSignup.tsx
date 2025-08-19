@@ -11,9 +11,9 @@ interface PersonalSignupForm {
   phoneNumber: string;
   verificationCode: string;
   password: string;
-  name: string;
+  username: string;
   birthDate: string;
-  gender: 'male' | 'female';
+  gender: 'MALE' | 'FEMALE';
   address: string;
   detailedAddress: string;
 }
@@ -31,6 +31,7 @@ export default function PersonalSignup() {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    setValue,
   } = useForm<PersonalSignupForm>();
 
   const watchedPhoneNumber = watch('phoneNumber');
@@ -97,7 +98,33 @@ export default function PersonalSignup() {
   };
 
   const handleAddressSearch = () => {
-    // TODO: 주소 검색 API 연동 (카카오 주소 검색 등)
+    if (window.daum && window.daum.Postcode) {
+      openDaumPostcode();
+    } else {
+      const script = document.createElement('script');
+      script.src =
+        '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      script.onload = () => {
+        openDaumPostcode();
+      };
+      document.head.appendChild(script);
+    }
+  };
+
+  const openDaumPostcode = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data: {
+        roadAddress?: string;
+        jibunAddress?: string;
+      }) {
+        const address = data.roadAddress || data.jibunAddress;
+        if (address) {
+          setValue('address', address);
+        }
+      },
+      onclose: function () {},
+    }).open();
   };
 
   const onSubmit = async (data: PersonalSignupForm) => {
@@ -107,13 +134,17 @@ export default function PersonalSignup() {
     }
 
     try {
+      const fullAddress = data.detailedAddress
+        ? `${data.address} ${data.detailedAddress}`.trim()
+        : data.address;
+
       const signupData = {
         phoneNumber: data.phoneNumber,
         password: data.password,
-        name: data.name,
+        username: data.username,
         birthDate: data.birthDate,
         gender: data.gender,
-        address: data.address,
+        address: fullAddress,
         detailedAddress: data.detailedAddress,
       };
 
@@ -271,7 +302,7 @@ export default function PersonalSignup() {
                 </label>
                 <input
                   type="text"
-                  {...register('name', {
+                  {...register('username', {
                     required: '이름을 입력해주세요',
                     minLength: {
                       value: 2,
@@ -279,13 +310,13 @@ export default function PersonalSignup() {
                     },
                   })}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
-                    errors.name ? 'border-red-500' : 'border-gray-300'
+                    errors.username ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="이름"
                 />
-                {errors.name && (
+                {errors.username && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.name.message}
+                    {errors.username.message}
                   </p>
                 )}
               </div>
@@ -326,7 +357,7 @@ export default function PersonalSignup() {
                   <label className="flex items-center">
                     <input
                       type="radio"
-                      value="male"
+                      value="MALE"
                       {...register('gender', {
                         required: '성별을 선택해주세요',
                       })}
@@ -337,7 +368,7 @@ export default function PersonalSignup() {
                   <label className="flex items-center">
                     <input
                       type="radio"
-                      value="female"
+                      value="FEMALE"
                       {...register('gender', {
                         required: '성별을 선택해주세요',
                       })}

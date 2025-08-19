@@ -1,3 +1,4 @@
+import axios from 'axios';
 import baseAxiosInstance from './baseAxiosApi';
 import type { PhoneVerificationResponse, SignupResponse } from './types';
 
@@ -5,10 +6,16 @@ import type { PhoneVerificationResponse, SignupResponse } from './types';
 export const sendPhoneVerificationCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await baseAxiosInstance.post(
-    '/api/v1/validations/phone/code/sign-up',
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/validations/phone/code/sign-up',
     {
       phoneNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
     }
   );
   console.log(response.data);
@@ -20,11 +27,17 @@ export const verifyPhoneCode = async (
   phoneNumber: string,
   code: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await baseAxiosInstance.post(
-    '/api/v1/validations/phone/code/confirmation',
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/validations/phone/code/confirmation',
     {
       phoneNumber,
       code,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
     }
   );
   return response.data;
@@ -34,15 +47,21 @@ export const verifyPhoneCode = async (
 export const personalSignup = async (signupData: {
   phoneNumber: string;
   password: string;
-  name: string;
+  username: string;
   birthDate: string;
-  gender: 'male' | 'female';
+  gender: 'MALE' | 'FEMALE';
   address: string;
   detailedAddress: string;
 }): Promise<SignupResponse> => {
-  const response = await baseAxiosInstance.post(
-    '/api/v1/auth/signup/personal',
-    signupData
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/workers',
+    signupData,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
   );
   return response.data;
 };
@@ -51,10 +70,16 @@ export const personalSignup = async (signupData: {
 export const sendPasswordResetCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await baseAxiosInstance.post(
-    '/api/v1/validations/phone/code/reset-password',
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/validations/phone/code/reset-password',
     {
       phoneNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
     }
   );
   console.log(response.data);
@@ -63,9 +88,10 @@ export const sendPasswordResetCode = async (
 
 // 개인 로그인
 export const login = async (loginData: {
-  phoneNumber: string;
+  loginId: string;
   password: string;
 }): Promise<SignupResponse> => {
+  // 로그인 성공 시 쿠키에 토큰이 저장되도록 baseAxiosInstance 사용
   const response = await baseAxiosInstance.post(
     '/api/v1/auth/login',
     loginData
