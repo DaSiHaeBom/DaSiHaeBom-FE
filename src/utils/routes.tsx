@@ -16,6 +16,7 @@ import PersonalInfoPage from '../pages/PersonalInfoPage';
 import Resume from '../pages/Resume';
 import ResumeStart from '../pages/ResumeStart';
 import ResumeConfirm from '../pages/ResumeConfirm';
+import ResumeFinish from '../pages/ResumeFinish';
 
 const routes = createBrowserRouter([
   {
@@ -89,12 +90,16 @@ const routes = createBrowserRouter([
             element: <ResumeStart />,
           },
           {
-            path: 'confirm',
+            path: 'result',
             element: <ResumeConfirm />,
           },
           {
-            path: 'qna',
+            path: 'qna/:questionNumber',
             element: <Resume />,
+          },
+          {
+            path: 'finish',
+            element: <ResumeFinish />,
           },
         ],
       },
