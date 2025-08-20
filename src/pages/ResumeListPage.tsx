@@ -4,11 +4,12 @@ import FilterPopover from '../components/resumeList/FilterPopover';
 import ResumeCard from '../components/resumeList/ResumeCard';
 import Filter from '../assets/ResumeListAssets/Filter.svg';
 import ResumeModal from '../components/resumeList/ResumeModal';
-import { login } from '../api/ResumeApi';
+import { login, searchResume } from '../api/ResumeApi';
 
 const ResumeListPage = () => {
   type SortKey = 'latest' | 'distance';
   const [sort, setSort] = useState<SortKey>('latest');
+  const [resumeList, setResumeList] = useState<any[]>([]);
 
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
   const [ageRange, setAgeRange] = useState<{
@@ -21,20 +22,51 @@ const ResumeListPage = () => {
 
   const [filterOpen, setFilterOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedResume, setSelectedResume] = useState<any | null>(null); // ✅ 모달용
+  const [selectedResume, setSelectedResume] = useState<any | null>(null);
 
   // 임시 로그인
   useEffect(() => {
     const doLogin = async () => {
       try {
-        const res = await login();
-        console.log('로그인 성공:', res.result);
+        await login();
+        loadResumes(); // 로그인 성공 후 이력서 불러오기
       } catch (err) {
         console.error('로그인 실패:', err);
       }
     };
     doLogin();
   }, []);
+
+  // API 호출
+  const loadResumes = async () => {
+    try {
+      console.log('API 요청 파라미터:', {
+        size: 20,
+        cursorId: 1,
+        sortBy: sort,
+        minAge: ageRange.min,
+        maxAge: ageRange.max,
+        licenses: selectedCerts,
+      });
+
+      const data = await searchResume({
+        sortBy: sort,
+        minAge: ageRange.min,
+        maxAge: ageRange.max,
+        licenses: selectedCerts,
+      });
+
+      console.log('API 응답:', data);
+      setResumeList(data);
+    } catch (err) {
+      console.error('이력서 조회 실패:', err);
+    }
+  };
+  // 정렬 / 필터 바뀌면 다시 불러오기
+  useEffect(() => {
+    console.log('ㅇㅇ 필터 적용됨');
+    loadResumes();
+  }, [sort, selectedCerts, ageRange]);
 
   // 바깥 클릭 시 닫기
   useEffect(() => {
@@ -50,15 +82,6 @@ const ResumeListPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const dummy = {
-    name: '김상명',
-    age: 66,
-    address: '서울특별시 종로구 자하문로 15길',
-    certs: ['운전면허증 (2종)', '요양보호사 자격증', '귀멸의 칼날 시청'],
-    summary:
-      '사람이 좋다 사람이 좋아 사람이 좋다 사람이 좋다 사람이 좋아 사람이 좋다 나는 나비다 나는 벌이다 나는 나비다 나는 벌이다 나는 나비다 나는 벌이다',
-  };
-
   return (
     <div className="mt-26 flex justify-center px-4 font-[Pretendard]">
       <div className="w-[900px]">
@@ -67,7 +90,6 @@ const ResumeListPage = () => {
           <h1 className="text-[36px] font-bold text-[#3C3C3C]">이력서 조회</h1>
           <div className="flex gap-2">
             <SortDropdown sort={sort} setSort={setSort} />
-
             {/* 필터 버튼 */}
             <div className="relative" ref={popoverRef}>
               <button
@@ -94,13 +116,14 @@ const ResumeListPage = () => {
 
         {/* 카드 리스트 */}
         <div className="grid grid-cols-3 gap-6 mb-26">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} onClick={() => setSelectedResume(dummy)}>
-              <ResumeCard {...dummy} />
+          {resumeList.map((resume, i) => (
+            <div key={i} onClick={() => setSelectedResume(resume)}>
+              <ResumeCard {...resume} />
             </div>
           ))}
         </div>
       </div>
+
       {/* 모달 */}
       {selectedResume && (
         <ResumeModal
