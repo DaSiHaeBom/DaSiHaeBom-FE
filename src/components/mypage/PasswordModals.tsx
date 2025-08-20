@@ -1,8 +1,8 @@
-// components/modals/PasswordModals.tsx
 import React, { useState } from 'react';
 import Modal from '../Modal';
 import CheckIcon from '../../assets/MyPageAssets/CheckIcon';
 import type { ModalType } from '../../types/ModalType';
+import { updatePassword } from '../../api/userApi';
 
 type PasswordModalsProps = {
   modalType: ModalType;
@@ -49,10 +49,20 @@ const PasswordModals = ({
 
   const handleSubmit = async () => {
     if (!validate()) return;
-    // 비밀번호 변경 API 호출 필요함
-    // await changePassword({ currentPw, newPw })
-    resetForm();
-    setModalType('PASSWORD_DONE');
+
+    try {
+      await updatePassword({
+        currentPassword: currentPw,
+        newPassword: newPw,
+        newPasswordConfirmation: confirmPw,
+      });
+
+      resetForm();
+      setModalType('PASSWORD_DONE'); // 비번 변경 성공 시 모달처리
+    } catch (err: any) {
+      console.error(err);
+      setError('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (

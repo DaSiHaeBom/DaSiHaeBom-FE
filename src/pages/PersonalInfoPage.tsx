@@ -11,8 +11,8 @@ type PersonalProfile = {
   name: string; // 이름
   birth: string; // yymmdd
   gender: '남성' | '여성' | '';
-  address: string;
-  zip: string;
+  address: string; // 기본 주소
+  detailAddress?: string;
 };
 
 /** ===== UI classes ===== */
@@ -36,7 +36,7 @@ export default function PersonalInfoPage() {
     birth: '',
     gender: '',
     address: '',
-    zip: '',
+    detailAddress: '',
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -54,7 +54,7 @@ export default function PersonalInfoPage() {
           birth: user.birthDate, // "yymmdd"
           gender: user.gender === 'MALE' ? '남성' : '여성',
           address: user.address ?? '',
-          zip: user.zip ?? '',
+          detailAddress: user.address ?? '',
         });
       } catch (err) {
         console.error('회원 정보 불러오기 실패:', err);
@@ -68,6 +68,40 @@ export default function PersonalInfoPage() {
     <K extends keyof PersonalProfile>(key: K) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setData(prev => (prev ? { ...prev, [key]: e.target.value } : prev));
+
+  /** 카카오 우편번호 검색 */
+  const openDaumPostcode = () => {
+    type DaumPostcodeData = {
+      zonecode: string;
+      roadAddress?: string;
+      jibunAddress?: string;
+    };
+
+    const loadPostcode = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data: DaumPostcodeData) {
+          const address = data.roadAddress || data.jibunAddress;
+          if (address) {
+            setData(prev => ({
+              ...prev,
+              address: address,
+            }));
+          }
+        },
+      }).open();
+    };
+
+    if (window.daum && window.daum.Postcode) {
+      loadPostcode();
+    } else {
+      const script = document.createElement('script');
+      script.src =
+        '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      script.onload = loadPostcode;
+      document.body.appendChild(script);
+    }
+  };
 
   /** 액션 */
   const startEdit = () => setIsEditing(true);
@@ -200,35 +234,47 @@ export default function PersonalInfoPage() {
         </div>
       </div>
 
-      {/* 주소(기업: 우편번호 + 검색 버튼 노출) */}
+      {/* 주소 */}
       <div className="mb-[60px]">
         <label className={labelCls}>주소</label>
 
-        {isEditing && (
-          <div className="mt-[10px] flex gap-2">
-            <input
-              className={`${inputCls} w-[180px]`}
-              placeholder="우편번호"
-              value={data.zip ?? ''}
-              onChange={updateField('zip')}
-            />
-            <button
-              type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
-              // TODO: 주소 검색 모달/다음우편번호 연동
-            >
-              주소 검색
-            </button>
-          </div>
-        )}
+        {isEditing ? (
+          <>
+            {/* 기본 주소 (검색 결과) */}
+            <div className="mt-[10px] flex gap-2">
+              <input
+                className={`${inputCls} flex-1`}
+                placeholder="주소"
+                value={data.address || ''}
+                disabled
+              />
+              <button
+                type="button"
+                className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
+                onClick={openDaumPostcode}
+              >
+                주소 검색
+              </button>
+            </div>
 
-        <input
-          className={`${inputCls} ${readonlyStyle} mt-[10px]`}
-          placeholder="기본 주소"
-          value={data.address}
-          onChange={updateField('address')}
-          disabled={!isEditing}
-        />
+            {/* 상세주소 입력 */}
+            <input
+              className={`${inputCls} mt-[10px]`}
+              placeholder="상세 주소 입력"
+              value={data.detailAddress || ''}
+              onChange={e =>
+                setData(prev => ({ ...prev, detailAddress: e.target.value }))
+              }
+            />
+          </>
+        ) : (
+          // 조회 모드 → 기본주소 + 상세주소 합쳐서 표시
+          <input
+            className={`${inputCls} ${readonlyStyle} mt-[10px]`}
+            value={`${data.address || ''} ${data.detailAddress || ''}`.trim()}
+            disabled
+          />
+        )}
       </div>
 
       {/* CTA */}
