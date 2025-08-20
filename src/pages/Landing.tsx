@@ -1,6 +1,10 @@
-import landingImage from '../assets/LandingAssets/landingImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
 import { useNavigate } from 'react-router-dom';
+//이미지
+import landingImage from '../assets/LandingAssets/landingImage.svg';
+import imageOne from '../assets/LandingAssets/imageOne.svg';
+import imageTwo from '../assets/LandingAssets/imageTwo.svg';
+import imageThree from '../assets/LandingAssets/imageThree.svg';
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -44,19 +48,19 @@ export default function Landing() {
         <div className="flex gap-6">
           <HomeCard
             step="1단계"
-            imageSrc="https://via.placeholder.com/150"
+            imageSrc={imageOne}
             altText="예시 이미지"
             text="말로 질문에 답해요"
           />
           <HomeCard
             step="2단계"
-            imageSrc="https://via.placeholder.com/150"
+            imageSrc={imageTwo}
             altText="예시 이미지"
             text="이력서가 만들어져요"
           />
           <HomeCard
             step="3단계"
-            imageSrc="https://via.placeholder.com/150"
+            imageSrc={imageThree}
             altText="예시 이미지"
             text="기업이 먼저 연락해요"
           />
