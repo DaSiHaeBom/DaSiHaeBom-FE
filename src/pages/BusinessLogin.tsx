@@ -27,16 +27,16 @@ export default function BusinessLogin() {
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="flex items-center justify-center">
         <div className="w-114">
+          <button
+            onClick={handleBack}
+            className="text-gray-500 hover:text-gray-700 mb-4"
+          >
+            ← 뒤로가기
+          </button>
           <div className="text-center mb-8">
-            <button
-              onClick={handleBack}
-              className="text-gray-500 hover:text-gray-700 mb-4"
-            >
-              ← 뒤로가기
-            </button>
-            <h1 className="text-3xl font-bold text-black mb-8">
+            <p className="text-3xl font-bold text-black mb-8">
               기업 회원 로그인
-            </h1>
+            </p>
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
@@ -100,7 +100,7 @@ export default function BusinessLogin() {
           <div className="mt-6">
             <div className="flex gap-3">
               <button
-                onClick={() => navigate('/signup')}
+                onClick={() => navigate('/signup/business')}
                 className="flex-1 bg-white border border-gray-300 text-lg text-[#FF9555] py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 회원가입

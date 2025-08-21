@@ -1,6 +1,10 @@
 import axios from 'axios';
 import baseAxiosInstance from './baseAxiosApi';
-import type { PhoneVerificationResponse, SignupResponse } from './types';
+import type {
+  BusinessNumberValidationResponse,
+  PhoneVerificationResponse,
+  SignupResponse,
+} from './types';
 
 // 휴대폰 인증번호 발송 (회원가입용)
 export const sendPhoneVerificationCode = async (
@@ -40,6 +44,7 @@ export const verifyPhoneCode = async (
       },
     }
   );
+  console.log(response.data);
   return response.data;
 };
 
@@ -50,8 +55,8 @@ export const personalSignup = async (signupData: {
   username: string;
   birthDate: string;
   gender: 'MALE' | 'FEMALE';
-  address: string;
-  detailedAddress: string;
+  baseAddress: string;
+  detailAddress: string;
 }): Promise<SignupResponse> => {
   const response = await axios.post(
     'https://www.dlrbdjs.store/api/v1/users/workers',
@@ -66,7 +71,20 @@ export const personalSignup = async (signupData: {
   return response.data;
 };
 
-// 비밀번호 찾기용 휴대폰 인증번호 발송
+// 개인 로그인
+export const login = async (loginData: {
+  loginId: string;
+  password: string;
+}): Promise<SignupResponse> => {
+  // 로그인 성공 시 쿠키에 토큰이 저장되도록 baseAxiosInstance 사용
+  const response = await baseAxiosInstance.post(
+    '/api/v1/auth/login',
+    loginData
+  );
+  return response.data;
+};
+
+// 비밀번호 찾기에서 휴대폰 인증번호 발송
 export const sendPasswordResetCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
@@ -86,15 +104,66 @@ export const sendPasswordResetCode = async (
   return response.data;
 };
 
-// 개인 로그인
-export const login = async (loginData: {
+// 임시 비밀번호 발급 (비밀번호 찾기용)
+export const sendTempPassword = async (
+  phoneNumber: string
+): Promise<PhoneVerificationResponse> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/auth/temp-password',
+    {
+      phoneNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 사업자 번호 유효성 검사
+export const validateBusinessNumber = async (
+  corpNumber: string
+): Promise<BusinessNumberValidationResponse> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/corps/business-validation',
+    {
+      corpNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
+// 기업 회원가입
+export const businessSignup = async (signupData: {
   loginId: string;
   password: string;
+  ceoName: string;
+  phoneNumber: string;
+  corpNumber: string;
+  corpName: string;
+  corpBaseAddress: string;
+  corpDetailAddress: string;
 }): Promise<SignupResponse> => {
-  // 로그인 성공 시 쿠키에 토큰이 저장되도록 baseAxiosInstance 사용
-  const response = await baseAxiosInstance.post(
-    '/api/v1/auth/login',
-    loginData
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/corps',
+    signupData,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
   );
+  console.log(response.data);
   return response.data;
 };

@@ -14,8 +14,8 @@ interface PersonalSignupForm {
   username: string;
   birthDate: string;
   gender: 'MALE' | 'FEMALE';
-  address: string;
-  detailedAddress: string;
+  baseAddress: string;
+  detailAddress: string;
 }
 
 export default function PersonalSignup() {
@@ -120,7 +120,7 @@ export default function PersonalSignup() {
       }) {
         const address = data.roadAddress || data.jibunAddress;
         if (address) {
-          setValue('address', address);
+          setValue('baseAddress', address);
         }
       },
       onclose: function () {},
@@ -134,18 +134,14 @@ export default function PersonalSignup() {
     }
 
     try {
-      const fullAddress = data.detailedAddress
-        ? `${data.address} ${data.detailedAddress}`.trim()
-        : data.address;
-
       const signupData = {
         phoneNumber: data.phoneNumber,
         password: data.password,
         username: data.username,
         birthDate: data.birthDate,
         gender: data.gender,
-        address: fullAddress,
-        detailedAddress: data.detailedAddress,
+        baseAddress: data.baseAddress,
+        detailAddress: data.detailAddress,
       };
 
       const result = await personalSignup(signupData);
@@ -173,13 +169,13 @@ export default function PersonalSignup() {
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="flex items-center justify-center">
         <div className="w-114">
+          <button
+            onClick={handleBack}
+            className="text-gray-500 hover:text-gray-700 mb-4"
+          >
+            ← 뒤로가기
+          </button>
           <div className="text-center mb-8">
-            <button
-              onClick={handleBack}
-              className="text-gray-500 hover:text-gray-700 mb-4"
-            >
-              ← 뒤로가기
-            </button>
             <h1 className="text-3xl font-bold text-black mb-8">
               개인 회원가입
             </h1>
@@ -391,7 +387,7 @@ export default function PersonalSignup() {
                 <div className="flex gap-2 mb-2">
                   <input
                     type="text"
-                    {...register('address', {
+                    {...register('baseAddress', {
                       required: '주소를 입력해주세요',
                     })}
                     className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
@@ -408,20 +404,20 @@ export default function PersonalSignup() {
                 </div>
                 <input
                   type="text"
-                  {...register('detailedAddress', {
+                  {...register('detailAddress', {
                     required: '상세주소를 입력해주세요',
                   })}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
                   placeholder="상세주소"
                 />
-                {errors.address && (
+                {errors.baseAddress && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.address.message}
+                    {errors.baseAddress.message}
                   </p>
                 )}
-                {errors.detailedAddress && (
+                {errors.detailAddress && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.detailedAddress.message}
+                    {errors.detailAddress.message}
                   </p>
                 )}
               </div>
@@ -439,6 +435,7 @@ export default function PersonalSignup() {
               <button
                 type="button"
                 className="w-full bg-white border border-gray-300 text-orange-400 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                onClick={() => alert('개발 준비중입니다')}
               >
                 카카오톡 회원가입
               </button>

@@ -17,6 +17,7 @@ import ResumeListPage from '../pages/ResumeListPage';
 import Resume from '../pages/Resume';
 import ResumeStart from '../pages/ResumeStart';
 import ResumeConfirm from '../pages/ResumeConfirm';
+import BusinessSignup from '../pages/BusinessSignup';
 import ResumeFinish from '../pages/ResumeFinish';
 
 const routes = createBrowserRouter([
