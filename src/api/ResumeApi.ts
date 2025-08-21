@@ -1,51 +1,55 @@
 import baseAxiosInstance from './baseAxiosApi';
+import type {
+  getAnswerResponse,
+  makeAnswerResponse,
+} from '../types/resumeApiType';
 
-export const login = async () => {
-  const { data } = await baseAxiosInstance.post('api/v1/auth/login', {
-    loginId: 'qwe123',
-    password: 'qwe123!!!',
+// 내 답변 상세 조회 API
+export const getAnswer = async (questionId: getAnswerResponse) => {
+  const response = await baseAxiosInstance.get(`/api/v1/answer/${questionId}`, {
+    params: {
+      questionId,
+    },
   });
-  console.log('로그인 정보:', data.result);
-  return data;
+  return response.data;
 };
 
-// 이력서 필터 api
-export const searchLicenses = async (keyword: string) => {
-  const { data } = await baseAxiosInstance.get(
-    `api/v1/licenses/search?keyword=${encodeURIComponent(keyword)}`
+//답변 생성 및 수정 API
+export const makeAnswer = async ({
+  questionId,
+  content,
+}: makeAnswerResponse) => {
+  const response = await baseAxiosInstance.put(`/api/v1/answer/${questionId}`, {
+    content,
+  });
+  return response.data;
+};
+
+//전체 답변 조회
+export const getAllAnswer = async () => {
+  const response = await baseAxiosInstance.get(`/api/v1/answer/my`, {});
+  return response.data;
+};
+
+//자기소개서 생성
+export const makeResume = async () => {
+  const response = await baseAxiosInstance.post(`/api/v1/answer/generate`, {});
+  return response.data;
+};
+
+//자기소개서 조회
+export const getResume = async () => {
+  const response = await baseAxiosInstance.get(
+    `/api/v1/answer/introduction`,
+    {}
   );
-  return data.result.licenseTypes;
+  return response.data;
 };
 
-// 이력서 조회
-export const searchResume = async ({
-  size = 12,
-  sortBy = 'latest',
-  minAge,
-  maxAge,
-  licenses = [],
-  latitude,
-  longitude,
-}: {
-  size?: number;
-  sortBy?: string;
-  minAge?: number | null;
-  maxAge?: number | null;
-  licenses?: string[];
-  latitude?: number;
-  longitude?: number;
-}) => {
-  const { data } = await baseAxiosInstance.post('api/v1/resume/search', {
-    size,
-    cursorId: 0,
-    cursorDistance: 0.1, // 기본값
-    sortBy,
-    minAge: minAge ?? 0,
-    maxAge: maxAge ?? 0,
-    latitude: latitude ?? 37.5665, // 임시: 서울 위도
-    longitude: longitude ?? 126.978, // 임시: 서울 경도
-    licenses,
+//자기소개서 본문 수정
+export const editResume = async (fullText: string) => {
+  const response = await baseAxiosInstance.patch(`/api/v1/answer/full-text`, {
+    fullText,
   });
-  console.log('이력서 조회 목록:', data.result.resumes);
-  return data.result.resumes;
+  return response.data;
 };
