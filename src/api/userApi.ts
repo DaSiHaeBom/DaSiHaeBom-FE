@@ -2,7 +2,7 @@ import baseAxiosInstance from './baseAxiosApi';
 
 // 개인 유저 조회
 export const fetchPersonalInfo = async () => {
-  const { data } = await baseAxiosInstance.get('api/v1/users/workers/me');
+  const { data } = await baseAxiosInstance.get('/api/v1/users/workers/me');
   return data.result;
 };
 
@@ -13,13 +13,13 @@ export async function updatePersonalInfo(data: {
   birthDate: string;
   address: string;
 }) {
-  const res = await baseAxiosInstance.patch('api/v1/users/workers/me', data);
+  const res = await baseAxiosInstance.patch('/api/v1/users/workers/me', data);
   return res.data;
 }
 
 // 기업 유저 조회
 export const fetchCorpInfo = async () => {
-  const { data } = await baseAxiosInstance.get('api/v1/users/corps/me');
+  const { data } = await baseAxiosInstance.get('/api/v1/users/corps/me');
   return data.result;
 };
 
@@ -31,7 +31,7 @@ export async function updateCorpInfo(data: {
   corpName: string;
   corpAddress: string;
 }) {
-  const res = await baseAxiosInstance.patch('api/v1/users/corps/me', data);
+  const res = await baseAxiosInstance.patch('/api/v1/users/corps/me', data);
   return res.data;
 }
 
