@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../components/Modal';
 import CheckIcon from '../assets/MyPageAssets/CheckIcon';
+import { fetchCorpInfo, updateCorpInfo } from '../api/userApi';
 
 /** ===== Types ===== */
 type BusinessProfile = {
@@ -10,7 +11,7 @@ type BusinessProfile = {
   bizRegNo: string; // 사업자 등록 번호
   companyName: string; // 회사/점포명
   address: string; // 주소(상세 포함)
-  zip?: string; // 우편번호(선택)
+  detailAddress?: string;
 };
 
 /** ===== UI classes ===== */
@@ -26,16 +27,16 @@ const ctaGhost =
   'w-1/2 h-12 rounded-[10px] border border-gray-300 hover:bg-gray-100  text-[#FF9555] text-[20px] font-semibold leading-[150%]';
 
 export default function BusinessInfoPage() {
-  /** 초기값 */
+  // 초기 더미값
   const initialData = useMemo<BusinessProfile>(
     () => ({
       memberType: '기업',
-      phone: '02-123-4567',
-      name: '홍길동',
-      bizRegNo: '000-00-00000',
-      companyName: '주식회사 상명',
-      address: '서울 종로구 ...',
-      zip: '00000',
+      phone: '',
+      name: '',
+      bizRegNo: '',
+      companyName: '',
+      address: '',
+      detailAddress: '',
     }),
     []
   );
@@ -43,6 +44,29 @@ export default function BusinessInfoPage() {
   const [data, setData] = useState<BusinessProfile>(initialData);
   const [isEditing, setIsEditing] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
+
+  // 기업 회원 정보 불러오기
+  useEffect(() => {
+    const loadCorpUser = async () => {
+      try {
+        const user = await fetchCorpInfo();
+        console.log(user);
+        setData({
+          memberType: '기업',
+          phone: user.phoneNumber,
+          name: user.ceoName,
+          bizRegNo: user.corpNumber,
+          companyName: user.corpName,
+          address: user.corpAddress,
+          detailAddress: user.corpAddress || '',
+        });
+      } catch (err) {
+        console.error('기업회원 정보 불러오기 실패', err);
+      }
+    };
+
+    loadCorpUser();
+  }, []);
 
   // 자주 반복되는 동작을 위해 뺴놓은 함수
   const updateField =
@@ -56,10 +80,59 @@ export default function BusinessInfoPage() {
     setData(initialData);
     setIsEditing(false);
   };
-  const saveEdit = () => {
-    // API 연동
-    setIsEditing(false);
-    setIsSavedModalOpen(true);
+  const saveEdit = async () => {
+    if (!data) return;
+
+    try {
+      const res = await updateCorpInfo({
+        ceoName: data.name,
+        phoneNumber: data.phone,
+        corpNumber: data.bizRegNo,
+        corpName: data.companyName,
+        corpAddress: data.address,
+      });
+      console.log(res);
+      setIsEditing(false);
+      setIsSavedModalOpen(true);
+    } catch (err) {
+      console.error('개인정보 수정 실패:', err);
+      alert('저장 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 카카오 우편번호 열기
+  const openDaumPostcode = () => {
+    type DaumPostcodeData = {
+      zonecode: string;
+      roadAddress?: string;
+      jibunAddress?: string;
+    };
+
+    const loadPostcode = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data: DaumPostcodeData) {
+          const address = data.roadAddress || data.jibunAddress;
+          if (address) {
+            setData(prev => ({
+              ...prev,
+              address: address,
+            }));
+          }
+        },
+      }).open();
+    };
+
+    // 이미 스크립트 있으면 바로 실행
+    if (window.daum && window.daum.Postcode) {
+      loadPostcode();
+    } else {
+      const script = document.createElement('script');
+      script.src =
+        '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      script.onload = loadPostcode;
+      document.body.appendChild(script);
+    }
   };
 
   /** 스타일 */
@@ -178,13 +251,14 @@ export default function BusinessInfoPage() {
             <input
               className={`${inputCls} w-[180px]`}
               placeholder="우편번호"
-              value={data.zip ?? ''}
-              onChange={updateField('zip')}
+              value={data.detailAddress ?? ''}
+              onChange={updateField('detailAddress')}
+              disabled
             />
             <button
               type="button"
               className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
-              // TODO: 주소 검색 모달/다음우편번호 연동
+              onClick={openDaumPostcode}
             >
               주소 검색
             </button>

@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import ResumeLongBtn from '../components/MakeResume/ResumeLongBtn';
+import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
 
 const ResumeStart = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/Resume/qna'); // 이력서 작성 페이지로 이동
+    navigate('/Resume/qna/1'); // 이력서 작성 페이지로 이동
   };
 
   return (
