@@ -8,7 +8,7 @@ interface Props {
 
 const ResumeCard = ({ name, age, address, certs = [], summary }: Props) => {
   return (
-    <article className="w-[282px] h-[346px] rounded-[15px] border-none bg-[#F8F3F0] py-5 px-[25px] hover:shadow transition-shadow">
+    <article className="w-[282px] h-[346px] rounded-[15px] border-none bg-[#F8F3F0] py-5 px-[25px] cursor-pointer transition-transform duration-200  hover:shadow-lg ">
       <h2 className="text-[18px] font-semibold text-[#3C3C3C]">
         {name} {age}세
       </h2>
