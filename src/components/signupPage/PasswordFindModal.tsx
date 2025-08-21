@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { sendPasswordResetCode, sendTempPassword } from '../../api/authApi';
+import {
+  sendPasswordResetCode,
+  verifyPhoneCode,
+  sendTempPassword,
+} from '../../api/authApi';
 
 interface PasswordFindModalProps {
   isOpen: boolean;
@@ -36,7 +40,7 @@ export default function PasswordFindModal({
 
     setIsSendingCode(true);
     try {
-      const result = await sendTempPassword(phoneNumber);
+      const result = await sendPasswordResetCode(phoneNumber);
       if (result.isSuccess) {
         setIsVerificationSent(true);
         alert('인증번호가 발송되었습니다');
@@ -65,17 +69,21 @@ export default function PasswordFindModal({
 
     setIsVerifyingCode(true);
     try {
-      // 여기에 인증번호 검증 API 호출
-      // const result = await verifyCode(phoneNumber, verificationCode);
-      // 임시로 성공 처리
-      setTimeout(() => {
+      const result = await verifyPhoneCode(phoneNumber, verificationCode);
+      if (result.isSuccess) {
         setIsVerificationCompleted(true);
         alert('인증이 완료되었습니다');
-        setIsVerifyingCode(false);
-      }, 1000);
-    } catch (error) {
+      } else {
+        alert(result.message || '인증에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: unknown) {
       console.error('인증 실패:', error);
-      alert('인증에 실패했습니다. 다시 시도해주세요.');
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '인증에 실패했습니다. 다시 시도해주세요.';
+      alert(errorMessage);
+    } finally {
       setIsVerifyingCode(false);
     }
   };
@@ -90,7 +98,7 @@ export default function PasswordFindModal({
 
     setIsSubmitting(true);
     try {
-      const result = await sendPasswordResetCode(phoneNumber);
+      const result = await sendTempPassword(phoneNumber);
       if (result.isSuccess) {
         alert('임시 비밀번호가 발송되었습니다. 문자를 확인해주세요.');
         handleClose();

@@ -66,7 +66,20 @@ export const personalSignup = async (signupData: {
   return response.data;
 };
 
-// 비밀번호 찾기용 휴대폰 인증번호 발송
+// 개인 로그인
+export const login = async (loginData: {
+  loginId: string;
+  password: string;
+}): Promise<SignupResponse> => {
+  // 로그인 성공 시 쿠키에 토큰이 저장되도록 baseAxiosInstance 사용
+  const response = await baseAxiosInstance.post(
+    '/api/v1/auth/login',
+    loginData
+  );
+  return response.data;
+};
+
+// 비밀번호 찾기에서 휴대폰 인증번호 발송
 export const sendPasswordResetCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
@@ -86,19 +99,6 @@ export const sendPasswordResetCode = async (
   return response.data;
 };
 
-// 개인 로그인
-export const login = async (loginData: {
-  loginId: string;
-  password: string;
-}): Promise<SignupResponse> => {
-  // 로그인 성공 시 쿠키에 토큰이 저장되도록 baseAxiosInstance 사용
-  const response = await baseAxiosInstance.post(
-    '/api/v1/auth/login',
-    loginData
-  );
-  return response.data;
-};
-
 // 임시 비밀번호 발급 (비밀번호 찾기용)
 export const sendTempPassword = async (
   phoneNumber: string
@@ -115,5 +115,6 @@ export const sendTempPassword = async (
       },
     }
   );
+  console.log(response.data);
   return response.data;
 };
