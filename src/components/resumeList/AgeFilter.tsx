@@ -16,7 +16,7 @@ const AgeFilter = ({ draftAge, setDraftAge }: Props) => {
       <div className="flex items-center gap-2">
         <input
           type="number"
-          min={20}
+          min={0}
           max={100}
           value={draftAge.min ?? ''}
           onChange={e =>
@@ -25,7 +25,7 @@ const AgeFilter = ({ draftAge, setDraftAge }: Props) => {
               min: e.target.value ? Number(e.target.value) : null,
             }))
           }
-          className="w-[62px] h-[38px] border border-[#d9d9d9] bg-[#FFFEFD] rounded-[10px] px-2 text-[18px] flex items-center justify-center"
+          className="text-center w-[62px] h-[38px] border border-[#d9d9d9] bg-[#FFFEFD] rounded-[10px] px-2 text-[18px] flex items-center justify-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <span>세 ~</span>
         <input
@@ -39,7 +39,7 @@ const AgeFilter = ({ draftAge, setDraftAge }: Props) => {
               max: e.target.value ? Number(e.target.value) : null,
             }))
           }
-          className="w-[62px] h-[38px] border border-[#d9d9d9] bg-[#FFFEFD] rounded-[10px] px-2 text-[18px] flex items-center justify-center]"
+          className="text-center w-[62px] h-[38px] border border-[#d9d9d9] bg-[#FFFEFD] rounded-[10px] px-2 text-[18px] flex items-center justify-center] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <span>세</span>
       </div>
