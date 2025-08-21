@@ -15,6 +15,7 @@ import PersonalInfoPage from '../pages/PersonalInfoPage';
 import Resume from '../pages/Resume';
 import ResumeStart from '../pages/ResumeStart';
 import ResumeConfirm from '../pages/ResumeConfirm';
+import BusinessSignup from '../pages/BusinessSignup';
 
 const routes = createBrowserRouter([
   {
@@ -88,8 +89,8 @@ const routes = createBrowserRouter([
         element: <PersonalSignup />,
       },
       {
-        path: 'signup',
-        element: <Signup />,
+        path: 'signup/business',
+        element: <BusinessSignup />,
       },
     ],
   },

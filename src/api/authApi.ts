@@ -1,6 +1,10 @@
 import axios from 'axios';
 import baseAxiosInstance from './baseAxiosApi';
-import type { PhoneVerificationResponse, SignupResponse } from './types';
+import type {
+  BusinessNumberValidationResponse,
+  PhoneVerificationResponse,
+  SignupResponse,
+} from './types';
 
 // 휴대폰 인증번호 발송 (회원가입용)
 export const sendPhoneVerificationCode = async (
@@ -40,6 +44,7 @@ export const verifyPhoneCode = async (
       },
     }
   );
+  console.log(response.data);
   return response.data;
 };
 
@@ -108,6 +113,50 @@ export const sendTempPassword = async (
     {
       phoneNumber,
     },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 사업자 번호 유효성 검사
+export const validateBusinessNumber = async (
+  corpNumber: string
+): Promise<BusinessNumberValidationResponse> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/corps/business-validation',
+    {
+      corpNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
+// 기업 회원가입
+export const businessSignup = async (signupData: {
+  loginId: string;
+  password: string;
+  ceoName: string;
+  phoneNumber: string;
+  corpNumber: string;
+  corpName: string;
+  corpBaseAddress: string;
+  corpDetailAddress: string;
+}): Promise<SignupResponse> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/corps',
+    signupData,
     {
       headers: {
         'Content-Type': 'application/json',

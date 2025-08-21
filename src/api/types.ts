@@ -21,3 +21,14 @@ export interface SignupResponse {
   message: string;
   result: string;
 }
+
+// 사업자 번호 유효성 검사 응답 타입
+export interface BusinessNumberValidationResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    corpNumber: string;
+    isValid: boolean;
+  };
+}
