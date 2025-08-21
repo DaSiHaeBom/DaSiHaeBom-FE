@@ -435,6 +435,7 @@ export default function PersonalSignup() {
               <button
                 type="button"
                 className="w-full bg-white border border-gray-300 text-orange-400 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                onClick={() => alert('개발 준비중입니다')}
               >
                 카카오톡 회원가입
               </button>

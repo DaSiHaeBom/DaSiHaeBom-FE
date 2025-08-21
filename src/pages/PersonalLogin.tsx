@@ -54,16 +54,16 @@ export default function PersonalLogin() {
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="flex items-center justify-center">
         <div className="w-114">
+          <button
+            onClick={handleBack}
+            className="text-gray-500 hover:text-gray-700 mb-4"
+          >
+            ← 뒤로가기
+          </button>
           <div className="text-center mb-8">
-            <button
-              onClick={handleBack}
-              className="text-gray-500 hover:text-gray-700 mb-4"
-            >
-              ← 뒤로가기
-            </button>
-            <h1 className="text-3xl font-bold text-black mb-8">
+            <p className="text-3xl font-bold text-black mb-8">
               개인 회원 로그인
-            </h1>
+            </p>
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
@@ -143,6 +143,7 @@ export default function PersonalLogin() {
               <button
                 type="button"
                 className="text-gray-500 hover:text-gray-700 text-sm underline"
+                onClick={() => alert('개발 준비중입니다')}
               >
                 또는 카카오톡 간편 로그인
               </button>
