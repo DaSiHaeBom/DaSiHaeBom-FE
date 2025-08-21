@@ -112,7 +112,7 @@ const ResumeListPage = () => {
       <div className="mt-30 flex justify-center px-4 font-[Pretendard] over">
         <div className="w-[900px]">
           {/* 헤더 */}
-          <div className="flex items-center justify-between mb-[60px] relative pr-1 -z-1">
+          <div className="flex items-center justify-between mb-[60px] relative pr-1">
             <h1 className="text-[36px] font-bold text-[#3C3C3C]">
               이력서 조회
             </h1>
@@ -129,7 +129,7 @@ const ResumeListPage = () => {
                 </button>
 
                 {filterOpen && (
-                  <div className="absolute right-0 mt-2 z-20">
+                  <div className="absolute right-0 mt-1 z-20">
                     <FilterPopover
                       selectedCerts={selectedCerts}
                       setSelectedCerts={setSelectedCerts}
