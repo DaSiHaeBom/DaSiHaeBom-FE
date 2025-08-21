@@ -28,9 +28,15 @@ export interface ResumeDetail {
 // 리스트 모달에 넘겨줄 데이터 타입
 export interface ResumeModalData {
   name: string;
-  age: number;
+  age: string;
+  gender: string;
+  phoneNumber: string;
   address: string;
-  certs: string[];
+  certs: {
+    name: string;
+    issuedAt: string;
+    issuer: string;
+  }[];
   summary: string;
 }
 
