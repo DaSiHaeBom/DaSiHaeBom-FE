@@ -14,8 +14,8 @@ interface PersonalSignupForm {
   username: string;
   birthDate: string;
   gender: 'MALE' | 'FEMALE';
-  address: string;
-  detailedAddress: string;
+  baseAddress: string;
+  detailAddress: string;
 }
 
 export default function PersonalSignup() {
@@ -120,7 +120,7 @@ export default function PersonalSignup() {
       }) {
         const address = data.roadAddress || data.jibunAddress;
         if (address) {
-          setValue('address', address);
+          setValue('baseAddress', address);
         }
       },
       onclose: function () {},
@@ -134,18 +134,14 @@ export default function PersonalSignup() {
     }
 
     try {
-      const fullAddress = data.detailedAddress
-        ? `${data.address} ${data.detailedAddress}`.trim()
-        : data.address;
-
       const signupData = {
         phoneNumber: data.phoneNumber,
         password: data.password,
         username: data.username,
         birthDate: data.birthDate,
         gender: data.gender,
-        address: fullAddress,
-        detailedAddress: data.detailedAddress,
+        baseAddress: data.baseAddress,
+        detailAddress: data.detailAddress,
       };
 
       const result = await personalSignup(signupData);
@@ -391,7 +387,7 @@ export default function PersonalSignup() {
                 <div className="flex gap-2 mb-2">
                   <input
                     type="text"
-                    {...register('address', {
+                    {...register('baseAddress', {
                       required: '주소를 입력해주세요',
                     })}
                     className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
@@ -408,20 +404,20 @@ export default function PersonalSignup() {
                 </div>
                 <input
                   type="text"
-                  {...register('detailedAddress', {
+                  {...register('detailAddress', {
                     required: '상세주소를 입력해주세요',
                   })}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
                   placeholder="상세주소"
                 />
-                {errors.address && (
+                {errors.baseAddress && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.address.message}
+                    {errors.baseAddress.message}
                   </p>
                 )}
-                {errors.detailedAddress && (
+                {errors.detailAddress && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.detailedAddress.message}
+                    {errors.detailAddress.message}
                   </p>
                 )}
               </div>
