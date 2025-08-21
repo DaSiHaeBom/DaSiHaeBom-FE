@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import EndPage from '../components/MakeResume/EndPage';
-import ResumeLongBtn from '../components/MakeResume/ResumeLongBtn';
+import EndPage from '../components/makeResume/EndPage';
+import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
 
 const ResumeFinish = () => {
   const navigate = useNavigate();
 
   const handleFinish = async () => {
-    // 이력서 확인 페이지로 이동
-    navigate('/resume/confirm');
+    // 이력서 결과 페이지로 이동
+    navigate('/resume/result');
   };
 
   return (

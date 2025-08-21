@@ -12,7 +12,7 @@ const ResumeSmallBtn = ({ name, clickEvent, color }: ResumeSmallBtnProps) => {
   return (
     <button
       onClick={clickEvent}
-      className={`max-w-80 w-full h-14 rounded-[10px] text-3xl font-semibold ${extraCss}`}
+      className={`max-w-80 w-full h-14 rounded-[10px] text-3xl font-semibold hover:opacity-75 cursor-pointer ${extraCss}`}
     >
       {name}
     </button>

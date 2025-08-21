@@ -106,7 +106,7 @@ const VoiceRecordBtn = ({
   return (
     <button
       onClick={isListening ? stopListening : startListening}
-      className={`flex flex-col items-center justify-center rounded-[10px] w-52 h-52 text-[#FFFEFD] cursor-pointer ${
+      className={`flex flex-col items-center justify-center rounded-[10px] w-52 h-52 text-[#FFFEFD] cursor-pointer hover:opacity-75 ${
         isListening ? 'bg-red-600' : 'bg-orange-500'
       }`}
     >

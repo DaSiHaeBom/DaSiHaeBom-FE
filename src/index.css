@@ -16,3 +16,14 @@ body {
     transform: scale(1.1);
   }
 }
+
+button {
+  transition: transform 150ms;
+}
+button:hover {
+  transform: scale(1.02);
+  cursor: pointer;
+}
+button:active {
+  transform: scale(0.95);
+}

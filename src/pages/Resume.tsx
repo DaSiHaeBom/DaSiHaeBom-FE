@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import VoiceRecordBtn from '../components/MakeResume/VoiceRecordBtn';
-import InputField from '../components/MakeResume/InputField';
-import EditNBtn from '../components/MakeResume/EditBtn';
-import ResumeLongBtn from '../components/MakeResume/ResumeLongBtn';
+import VoiceRecordBtn from '../components/makeResume/VoiceRecordBtn';
+import InputField from '../components/makeResume/InputField';
+import EditNBtn from '../components/makeResume/EditBtn';
+import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
+
+//로딩
+import MakeLoading from '../utils/Loading/MakeResumeLoading';
+import Loading from '../utils/Loading/Loading';
 
 //타입
 import type { QnA } from '../utils/interface';
@@ -48,6 +52,10 @@ const Resume = () => {
     return Math.max(0, Math.min(questionNum - 1, questions.length - 1));
   });
 
+  //로딩 상태
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMakeLoading, setIsMakeLoading] = useState(false);
+
   // URL 업데이트 함수
   const updateURL = (index: number) => {
     const questionNum = index + 1;
@@ -75,7 +83,9 @@ const Resume = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const res = await getAllAnswer();
+        setIsLoading(false);
         let mockApiResponse = [];
         if (res.isSuccess) {
           mockApiResponse = res.result;
@@ -127,9 +137,11 @@ const Resume = () => {
     }
     if (currentIndex === qnaList.length - 1) {
       try {
+        setIsMakeLoading(true);
         const res = await makeResume();
+        setIsMakeLoading(false);
         console.log('자기소개서 생성 결과:', res);
-        navigate('/resume/result');
+        navigate('/resume/finish');
       } catch (error) {
         console.error('자기소개서 생성 실패:', error);
         alert('자기소개서 생성에 실패했습니다.');
@@ -204,6 +216,15 @@ const Resume = () => {
     });
   };
 
+  //로딩 제어
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isMakeLoading) {
+    return <MakeLoading />;
+  }
+
   return (
     <>
       <div className="flex justify-around w-full">
@@ -211,7 +232,7 @@ const Resume = () => {
         {!qnaList[currentIndex].isSubmitted && !isListening && (
           <button
             onClick={goPrev}
-            className={`${currentIndex === 0 ? 'invisible' : ''}`}
+            className={`${currentIndex === 0 ? 'invisible' : ''} hover:opacity-75 cursor-pointer`}
           >
             <img src={leftArrow} alt="이전" />
           </button>
@@ -249,7 +270,7 @@ const Resume = () => {
           ) : null}
           {qnaList[currentIndex].isAnswered && (
             <button
-              className="w-110 h-14 bg-orange-500 rounded-[10px] border text-[#FFFEFD] text-3xl font-semibold"
+              className={`w-110 h-14 bg-orange-500 rounded-[10px] border text-[#FFFEFD] text-3xl font-semibold hover:opacity-75 cursor-pointer`}
               onClick={goNext}
             >
               {currentIndex < qnaList.length - 1 ? '다음 질문' : '완료하기'}
@@ -257,7 +278,7 @@ const Resume = () => {
           )}
           {qnaList[currentIndex].isAnswered && (
             <button
-              className="w-110 h-14 bg-[#FFFEFD] rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold"
+              className={`w-110 h-14 bg-[#FFFEFD] rounded-[10px] border border-neutral-500 text-neutral-500 text-3xl font-semibold hover:opacity-75 cursor-pointer`}
               onClick={handleReAnswer}
             >
               다시 답변하기
@@ -268,7 +289,7 @@ const Resume = () => {
         {!qnaList[currentIndex].isSubmitted && !isListening && (
           <button
             onClick={goNext}
-            className={`${currentIndex < qnaList.length - 1 ? '' : 'invisible'}`}
+            className={`${currentIndex < qnaList.length - 1 ? '' : 'invisible'} hover:opacity-75 cursor-pointer`}
           >
             <img src={rightArrow} alt="다음" />
           </button>
