@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getResumeIsOrNot } from '../api/home';
+import { useNavigate } from 'react-router-dom';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
 import step1Image from '../assets/HomeAssets/step1Image.svg';
@@ -6,7 +8,19 @@ import step2Image from '../assets/HomeAssets/step2Image.svg';
 import step3Image from '../assets/HomeAssets/step3Image.svg';
 
 export default function Home() {
+  const navigate = useNavigate();
   const [isResumeCreated, setIsResumeCreated] = useState(false);
+
+  useEffect(() => {
+    const checkResumeExistence = async () => {
+      const res = await getResumeIsOrNot();
+      if (res.isSuccess) {
+        setIsResumeCreated(res.result.exists);
+      }
+    };
+    checkResumeExistence();
+  }, []);
+
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-30 mt-16">
       <div className="flex flex-col items-center justify-center mt-30">
@@ -24,14 +38,14 @@ export default function Home() {
         {isResumeCreated ? (
           <button
             className="w-40 h-14 rounded-lg bg-white text-[#FF6B01] border border-[#FF6B01] text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => setIsResumeCreated(false)}
+            onClick={() => navigate('/resume/result')}
           >
             이력서 보기
           </button>
         ) : (
           <button
             className="w-40 h-14 rounded-xl bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => setIsResumeCreated(true)}
+            onClick={() => navigate('/resume')}
           >
             이력서 작성
           </button>
