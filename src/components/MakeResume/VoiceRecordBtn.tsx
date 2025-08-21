@@ -106,11 +106,18 @@ const VoiceRecordBtn = ({
   return (
     <button
       onClick={isListening ? stopListening : startListening}
-      className={`flex flex-col items-center justify-center rounded-[10px] w-52 h-52 text-[#FFFEFD] cursor-pointer ${
+      className={`flex flex-col items-center justify-center rounded-[10px] w-52 h-52 text-[#FFFEFD] cursor-pointer hover:opacity-75 ${
         isListening ? 'bg-red-600' : 'bg-orange-500'
       }`}
     >
-      <img className="mb-2" src={isListening ? circle : mike} />
+      <img
+        className={`mb-2 transition-transform duration-300 ${
+          isListening
+            ? 'animate-[heartbeat_2s_ease-in-out_infinite]'
+            : 'scale-100'
+        }`}
+        src={isListening ? circle : mike}
+      />
       <span className="text-3xl text-[#FFFEFD]">
         {isListening ? '음성 답변' : '녹음 시작'}
       </span>
