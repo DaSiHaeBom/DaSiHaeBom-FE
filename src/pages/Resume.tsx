@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import VoiceRecordBtn from '../components/makeResume/VoiceRecordBtn';
-import InputField from '../components/makeResume/InputField';
-import EditNBtn from '../components/makeResume/EditBtn';
-import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
+import VoiceRecordBtn from '../components/resumeMake/VoiceRecordBtn';
+import InputField from '../components/resumeMake/InputField';
+import EditNBtn from '../components/resumeMake/EditBtn';
+import ResumeLongBtn from '../components/resumeMake/ResumeLongBtn';
 
 //로딩
 import MakeLoading from '../utils/Loading/MakeResumeLoading';

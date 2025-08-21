@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import EndPage from '../components/makeResume/EndPage';
-import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
+import EndPage from '../components/resumeMake/EndPage';
+import ResumeLongBtn from '../components/resumeMake/ResumeLongBtn';
 
 const ResumeFinish = () => {
   const navigate = useNavigate();

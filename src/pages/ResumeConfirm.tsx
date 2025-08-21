@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getResume, editResume } from '../api/resumePageApi';
-import ResumeSmallBtn from '../components/makeResume/ResumeSmallBtn';
-import ResumeLongBtn from '../components/makeResume/ResumeLongBtn';
-import InputField from '../components/makeResume/InputField';
+import ResumeSmallBtn from '../components/resumeMake/ResumeSmallBtn';
+import ResumeLongBtn from '../components/resumeMake/ResumeLongBtn';
+import InputField from '../components/resumeMake/InputField';
 
 const ResumeConfirm = () => {
   const navigate = useNavigate();
