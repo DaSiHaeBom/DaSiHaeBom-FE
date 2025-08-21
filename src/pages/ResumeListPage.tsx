@@ -4,12 +4,17 @@ import FilterPopover from '../components/resumeList/FilterPopover';
 import ResumeCard from '../components/resumeList/ResumeCard';
 import Filter from '../assets/ResumeListAssets/Filter.svg';
 import ResumeModal from '../components/resumeList/ResumeModal';
-import { login, searchResume } from '../api/ResumeApi';
+import { fetchResumeByWorkerId, searchResume } from '../api/resumeListApi';
+import type { ResumeDetail, ResumeSummary } from '../types/resumeList';
+
+type SortKey = 'latest' | 'distance'; // 최신순 + 거리별
 
 const ResumeListPage = () => {
-  type SortKey = 'latest' | 'distance';
-  const [sort, setSort] = useState<SortKey>('latest');
-  const [resumeList, setResumeList] = useState<any[]>([]);
+  const [sort, setSort] = useState<SortKey | null>(null);
+  const [allResumes, setAllResumes] = useState<ResumeSummary[]>([]);
+  const [resumeList, setResumeList] = useState<ResumeSummary[]>([]);
+  const [page, setPage] = useState(1);
+  const pageSize = 12;
 
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
   const [ageRange, setAgeRange] = useState<{
@@ -22,53 +27,70 @@ const ResumeListPage = () => {
 
   const [filterOpen, setFilterOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedResume, setSelectedResume] = useState<any | null>(null);
 
-  // 임시 로그인
-  useEffect(() => {
-    const doLogin = async () => {
-      try {
-        await login();
-        loadResumes(); // 로그인 성공 후 이력서 불러오기
-      } catch (err) {
-        console.error('로그인 실패:', err);
-      }
-    };
-    doLogin();
-  }, []);
+  const [selectedResume, setSelectedResume] = useState<ResumeDetail | null>(
+    null
+  );
 
-  // API 호출
-  const loadResumes = async () => {
+  // 카드 클릭 후 모달 여는 핸들러
+  const handleOpenResumeModal = async (workerId: number) => {
     try {
-      console.log('API 요청 파라미터:', {
-        size: 20,
-        cursorId: 1,
-        sortBy: sort,
-        minAge: ageRange.min,
-        maxAge: ageRange.max,
-        licenses: selectedCerts,
-      });
-
-      const data = await searchResume({
-        sortBy: sort,
-        minAge: ageRange.min,
-        maxAge: ageRange.max,
-        licenses: selectedCerts,
-      });
-
-      console.log('API 응답:', data);
-      setResumeList(data);
+      const detail = await fetchResumeByWorkerId(workerId);
+      setSelectedResume(detail);
     } catch (err) {
-      console.error('이력서 조회 실패:', err);
+      console.error('❌ 이력서 상세 조회 실패:', err);
     }
   };
-  // 정렬 / 필터 바뀌면 다시 불러오기
+
+  // 리스트 데이터 불러오기(커서 기반)
+  const loadAllResumes = async () => {
+    try {
+      let results: ResumeSummary[] = [];
+      let nextCursorId: number | null = null;
+      let nextCursorDistance: number | null = null;
+
+      while (true) {
+        const body = {
+          size: 100,
+          cursorId: nextCursorId ?? undefined,
+          cursorDistance: nextCursorDistance ?? undefined,
+          sortBy: sort ?? 'latest', // 기본값은 최신순
+          minAge: ageRange.min ?? 0,
+          maxAge: ageRange.max ?? 100,
+          licenses: selectedCerts.length > 0 ? selectedCerts : null,
+          latitude: 0.1,
+          longitude: 0.1,
+        };
+
+        const data = await searchResume(body);
+        results = [...results, ...data.resumes];
+
+        if (!data.nextCursorId && !data.nextCursorDistance) break;
+
+        nextCursorId = data.nextCursorId;
+        nextCursorDistance = data.nextCursorDistance;
+      }
+
+      setAllResumes(results);
+    } catch (err) {
+      console.error('❌ 이력서 전체 불러오기 실패:', err);
+    }
+  };
+
+  // 페이지네이션 처리
   useEffect(() => {
-    console.log('ㅇㅇ 필터 적용됨');
-    loadResumes();
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    setResumeList(allResumes.slice(start, end));
+  }, [page, allResumes]);
+
+  // 필터 정렬 사용 시 리스트 다시 불러오기
+  useEffect(() => {
+    setPage(1);
+    loadAllResumes();
   }, [sort, selectedCerts, ageRange]);
 
-  // 바깥 클릭 시 닫기
+  // 바깥 클릭 시 모달 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -82,8 +104,14 @@ const ResumeListPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // 나이 계산 유틸
+  const calculateAge = (birthDate: string): number => {
+    const birthYear = Number(birthDate.split('.')[0]);
+    return new Date().getFullYear() - birthYear;
+  };
+
   return (
-    <div className="mt-26 flex justify-center px-4 font-[Pretendard]">
+    <div className="mt-30 flex justify-center px-4 font-[Pretendard]">
       <div className="w-[900px]">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-[60px] relative pr-1">
@@ -94,9 +122,9 @@ const ResumeListPage = () => {
             <div className="relative" ref={popoverRef}>
               <button
                 onClick={() => setFilterOpen(prev => !prev)}
-                className="h-[50px] w-[136px] justify-center flex gap-3 text-white items-center px-3 rounded-[8px] border-none bg-[#FF9555] text-[20px] font-semibold cursor-pointer hover:bg-orange-400"
+                className="h-[50px] w-[136px] flex gap-3 justify-center items-center px-3 rounded-[8px] bg-[#FF9555] text-white text-[20px] font-semibold hover:bg-orange-400"
               >
-                <img src={Filter} alt="filter" title="filter" />
+                <img src={Filter} alt="filter" />
                 필터
               </button>
 
@@ -115,11 +143,40 @@ const ResumeListPage = () => {
         </div>
 
         {/* 카드 리스트 */}
-        <div className="grid grid-cols-3 gap-6 mb-26">
-          {resumeList.map((resume, i) => (
-            <div key={i} onClick={() => setSelectedResume(resume)}>
-              <ResumeCard {...resume} />
+        <div className="grid grid-cols-3 gap-6 mb-16">
+          {resumeList.map(resume => (
+            <div
+              key={resume.resumeId}
+              onClick={() => handleOpenResumeModal(resume.workerId)}
+            >
+              <ResumeCard
+                name={resume.username}
+                age={resume.age}
+                address={resume.address}
+                certs={resume.licenseNames ?? []}
+                summary={resume.introductionSummary}
+              />
             </div>
+          ))}
+        </div>
+
+        {/* 페이지네이션 */}
+        <div className="flex justify-center gap-2 mb-20">
+          {Array.from(
+            { length: Math.ceil(allResumes.length / pageSize) },
+            (_, i) => i + 1
+          ).map(num => (
+            <button
+              key={num}
+              onClick={() => setPage(num)}
+              className={`px-3 py-1 rounded ${
+                page === num
+                  ? 'bg-orange-400 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+            >
+              {num}
+            </button>
           ))}
         </div>
       </div>
@@ -127,7 +184,13 @@ const ResumeListPage = () => {
       {/* 모달 */}
       {selectedResume && (
         <ResumeModal
-          data={selectedResume}
+          data={{
+            name: selectedResume.username,
+            age: calculateAge(selectedResume.birthDate),
+            address: selectedResume.address,
+            certs: selectedResume.licenses?.map(l => l.name) ?? [],
+            summary: selectedResume.introductionFullText ?? '',
+          }}
           onClose={() => setSelectedResume(null)}
         />
       )}
