@@ -27,7 +27,7 @@ const FilterPopover = ({
   }, [selectedCerts, ageRange]);
 
   return (
-    <div className="w-[400px] rounded-[12px] border border-[#E7E5E4] bg-white shadow z-20">
+    <div className="w-[400px] rounded-[12px] border border-[#E7E5E4] bg-white shadow-[0_2px_6px_0_rgba(0,0,0,0.25)] z-10">
       {/* 선택된 값들 렌더링되는 chip 영역 */}
       <FilterChips
         selectedCerts={draftCerts}

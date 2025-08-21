@@ -13,7 +13,7 @@ import Loading from '../utils/Loading/Loading';
 import type { QnA } from '../utils/interface';
 
 //API
-import { makeAnswer, getAllAnswer, makeResume } from '../api/resumeApi';
+import { makeAnswer, getAllAnswer, makeResume } from '../api/resumePageApi';
 
 // 이미지
 import rightArrow from '../assets/ResumeAssets/rightArrow.svg';

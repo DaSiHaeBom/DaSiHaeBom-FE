@@ -75,8 +75,11 @@ const routes = createBrowserRouter([
         ],
       },
       {
-        path: 'resume/list',
-        element: <ResumeListPage />,
+        path: 'business/resume',
+        element: <Outlet />,
+        children: [
+          { path: 'list', element: <ResumeListPage /> }, // /business/resume/list
+        ],
       },
       {
         path: 'Resume',
