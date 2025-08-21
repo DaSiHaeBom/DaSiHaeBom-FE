@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Search from '../../assets/ResumeListAssets/Search.svg';
-import { searchLicenses } from '../../api/ResumeApi';
+import { searchLicenses } from '../../api/resumeListApi';
 
 interface Props {
   draftCerts: string[];
