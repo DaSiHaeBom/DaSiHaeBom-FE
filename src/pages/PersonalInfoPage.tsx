@@ -233,7 +233,7 @@ export default function PersonalInfoPage() {
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleVerifyCode}
               disabled={isVerified}
             >
