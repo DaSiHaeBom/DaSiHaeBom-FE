@@ -1,5 +1,4 @@
 // 마이페이지 버튼 (개인/기업 겸용)
-import React from 'react';
 import Person from '../../assets/MyPageAssets/Person.svg';
 import Resume from '../../assets/MyPageAssets/Resume.svg';
 import Qualify from '../../assets/MyPageAssets/Qualify.svg';
@@ -7,6 +6,7 @@ import Password from '../../assets/MyPageAssets/Password.svg';
 import Withdraw from '../../assets/MyPageAssets/Withdraw.svg';
 import { useNavigate } from 'react-router-dom';
 import type { ModalType } from '../../types/ModalType';
+import { getResumeIsOrNot } from '../../api/home';
 
 type Props = {
   memberType: 'personal' | 'business';
@@ -25,6 +25,22 @@ const dangerBtn =
 
 const ActionButtons = ({ memberType, setModalType }: Props) => {
   const navigate = useNavigate();
+
+  // 자기소개서 버튼 클릭
+  const handleResumeClick = async () => {
+    try {
+      const data = await getResumeIsOrNot();
+      const exists = data.result.exists; // true / false
+      if (exists) {
+        navigate('/personal/resume/result');
+      } else {
+        navigate('/personal/resume');
+      }
+    } catch (err) {
+      console.error('자기소개서 존재 여부 확인 실패:', err);
+      alert('자기소개서 확인 중 오류가 발생했습니다.');
+    }
+  };
 
   // 라우팅에 맞춘 프로필 경로
   const profilePath =
@@ -52,7 +68,7 @@ const ActionButtons = ({ memberType, setModalType }: Props) => {
       {/* 개인회원 전용: 자기소개서 / 자격증 등록 */}
       {memberType === 'personal' && (
         <>
-          <button className={baseBtn}>
+          <button onClick={handleResumeClick} className={baseBtn}>
             <img src={Resume} alt="자기소개서 아이콘" className="mr-[2px]" />
             자기소개서
           </button>
