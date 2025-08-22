@@ -18,7 +18,8 @@ const PersonalSidebar = () => {
 
         // 로그아웃 로직 구현
         console.log('로그아웃 - 토큰 제거됨');
-        navigate('/login');
+        alert('로그아웃이 완료되었습니다.');
+        navigate('/landing');
       } else {
         console.error('로그아웃 실패:', response.message);
         alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
