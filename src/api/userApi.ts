@@ -11,7 +11,8 @@ export async function updatePersonalInfo(data: {
   phoneNumber: string;
   username: string;
   birthDate: string;
-  address: string;
+  baseAddress: string;
+  detailAddress: string;
 }) {
   const res = await baseAxiosInstance.patch('/api/v1/users/workers/me', data);
   return res.data;
@@ -42,5 +43,11 @@ export async function updatePassword(data: {
   newPasswordConfirmation: string;
 }) {
   const res = await baseAxiosInstance.post('/api/v1/auth/me/password', data);
+  return res.data;
+}
+
+// 회원 탈퇴
+export async function deleteUser() {
+  const res = await baseAxiosInstance.delete('/api/v1/users/withdrawal');
   return res.data;
 }
