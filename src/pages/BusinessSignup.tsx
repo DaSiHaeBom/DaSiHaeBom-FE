@@ -208,6 +208,12 @@ export default function BusinessSignup() {
     }
 
     try {
+      // 데이터 검증
+      if (!data.representativeName || !data.companyName || !data.baseAddress) {
+        alert('모든 필수 항목을 입력해주세요.');
+        return;
+      }
+
       const signupData = {
         loginId: data.loginId,
         password: data.password,
@@ -219,6 +225,8 @@ export default function BusinessSignup() {
         corpDetailAddress: data.detailAddress,
       };
 
+      console.log('전송할 데이터:', signupData);
+
       const result = await businessSignup(signupData);
       if (result.isSuccess) {
         alert('회원가입이 완료되었습니다!');
@@ -228,11 +236,29 @@ export default function BusinessSignup() {
       }
     } catch (error: unknown) {
       console.error('회원가입 실패:', error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : '회원가입에 실패했습니다. 다시 시도해주세요.';
-      alert(errorMessage);
+
+      // 409 Conflict 오류 처리
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as {
+          response?: { status?: number; data?: { message?: string } };
+        };
+        if (axiosError.response?.status === 409) {
+          alert(
+            '이미 가입된 정보가 있습니다. 아이디, 전화번호, 사업자등록번호를 확인해주세요.'
+          );
+        } else {
+          const errorMessage =
+            axiosError.response?.data?.message ||
+            '회원가입에 실패했습니다. 다시 시도해주세요.';
+          alert(errorMessage);
+        }
+      } else {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : '회원가입에 실패했습니다. 다시 시도해주세요.';
+        alert(errorMessage);
+      }
     }
   };
 

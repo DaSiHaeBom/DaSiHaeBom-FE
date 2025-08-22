@@ -7,7 +7,7 @@ import step1Image from '../assets/HomeAssets/step1Image.svg';
 import step2Image from '../assets/HomeAssets/step2Image.svg';
 import step3Image from '../assets/HomeAssets/step3Image.svg';
 
-export default function Home() {
+export default function PersonalHome() {
   const navigate = useNavigate();
   const [isResumeCreated, setIsResumeCreated] = useState(false);
 

@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../api/authApi';
 
 interface BusinessLoginForm {
   id: string;
@@ -14,9 +15,19 @@ export default function BusinessLogin() {
     formState: { errors, isSubmitting },
   } = useForm<BusinessLoginForm>();
 
-  const onSubmit = (data: BusinessLoginForm) => {
-    // TODO: 기업회원 로그인 API 호출 로직 구현
-    console.log('기업회원 로그인:', data);
+  const onSubmit = async (data: BusinessLoginForm) => {
+    try {
+      const response = await login({
+        loginId: data.id,
+        password: data.password,
+      });
+      console.log('기업회원 로그인 성공:', response);
+      // 로그인 성공 후 리다이렉트 (예: 기업 마이페이지)
+      navigate('/home');
+    } catch (error) {
+      console.error('기업회원 로그인 실패:', error);
+      // 에러 처리 로직 추가 가능
+    }
   };
 
   const handleBack = () => {
