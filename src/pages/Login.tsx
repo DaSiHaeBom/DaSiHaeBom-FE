@@ -13,10 +13,20 @@ export default function Login() {
     navigate('/login/business');
   };
 
+  const handleBack = () => {
+    navigate('/landing');
+  };
+
   return (
     <div className="flex h-screen bg-white">
       <div className="flex-1 flex items-center justify-center">
         <div className="flex flex-col items-center justify-center">
+          <button
+            onClick={handleBack}
+            className="text-gray-500 hover:text-gray-700 mb-4 absolute top-10 left-10 flex items-center gap-2 cursor-pointer"
+          >
+            <span className="text-[#FF9555]">←</span> 뒤로가기
+          </button>
           <p className="text-4xl font-bold text-black mb-4">로그인</p>
           <p className="text-lg text-black mb-12">회원 유형을 선택해주세요</p>
 

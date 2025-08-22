@@ -1,3 +1,68 @@
+import { useNavigate } from 'react-router-dom';
+import personalImage from '../assets/LoginAssets/personalImage.svg';
+import businessImage from '../assets/LoginAssets/businessImage.svg';
+
 export default function Signup() {
-  return <div>Signup</div>;
+  const navigate = useNavigate();
+
+  const handlePersonalSignup = () => {
+    navigate('/signup/personal');
+  };
+
+  const handleBusinessSignup = () => {
+    navigate('/signup/business');
+  };
+
+  const handleBack = () => {
+    navigate('/landing');
+  };
+
+  return (
+    <div className="flex h-screen bg-white">
+      <div className="flex-1 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <button
+            onClick={handleBack}
+            className="text-gray-500 hover:text-gray-700 mb-4 absolute top-10 left-10 flex items-center gap-2 cursor-pointer"
+          >
+            <span className="text-[#FF9555]">←</span> 뒤로가기
+          </button>
+          <p className="text-4xl font-bold text-black mb-4">회원가입</p>
+          <p className="text-lg text-black mb-12">가입 유형을 선택해주세요</p>
+
+          <div className="flex gap-16">
+            {/* 개인 */}
+            <div
+              className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={handlePersonalSignup}
+            >
+              <div className="w-full h-32 bg-white rounded mb-6 flex items-center justify-center">
+                <img
+                  src={personalImage}
+                  alt="개인회원"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="text-2xl font-bold text-black">개인회원</p>
+            </div>
+
+            {/* 기업 */}
+            <div
+              className="flex flex-col items-center justify-center w-80 h-80 border-2 border-[#FF9555] rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={handleBusinessSignup}
+            >
+              <div className="w-full h-32 bg-white rounded mb-6 flex items-center justify-center">
+                <img
+                  src={businessImage}
+                  alt="기업회원"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="text-2xl font-bold text-black">기업회원</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
