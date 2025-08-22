@@ -3,11 +3,11 @@ import { getResumeIsOrNot } from '../api/home';
 import { useNavigate } from 'react-router-dom';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
-import step1Image from '../assets/HomeAssets/PersonalHomeAssets/step1Image.svg';
-import step2Image from '../assets/HomeAssets/PersonalHomeAssets/step2Image.svg';
-import step3Image from '../assets/HomeAssets/PersonalHomeAssets/step3Image.svg';
+import step1Image from '../assets/HomeAssets/BusinessHomeAssets/step1Image.svg';
+import step2Image from '../assets/HomeAssets/BusinessHomeAssets/step2Image.svg';
+import step3Image from '../assets/HomeAssets/BusinessHomeAssets/step3Image.svg';
 
-export default function PersonalHome() {
+export default function BusinessHome() {
   const navigate = useNavigate();
   const [isResumeCreated, setIsResumeCreated] = useState(false);
 

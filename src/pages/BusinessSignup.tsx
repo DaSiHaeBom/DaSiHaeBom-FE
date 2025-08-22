@@ -6,6 +6,7 @@ import {
   verifyPhoneCode,
   validateBusinessNumber,
   businessSignup,
+  checkBusinessIdDuplicate,
 } from '../api/authApi';
 
 interface BusinessSignupForm {
@@ -53,16 +54,26 @@ export default function BusinessSignup() {
 
     setIsCheckingId(true);
     try {
-      // TODO: 아이디 중복검사 API 호출
-      // const result = await checkIdDuplicate(watchedLoginId);
-      setTimeout(() => {
-        setIsIdVerified(true);
-        alert('사용 가능한 아이디입니다');
-        setIsCheckingId(false);
-      }, 1000);
+      const result = await checkBusinessIdDuplicate(watchedLoginId);
+      if (result.isSuccess) {
+        if (result.result.isAlreadyRegistered) {
+          // 이미 등록된 아이디
+          setIsIdVerified(false);
+          alert('이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.');
+        } else {
+          // 사용 가능한 아이디
+          setIsIdVerified(true);
+          alert('사용 가능한 아이디입니다');
+        }
+      } else {
+        alert(
+          result.message || '아이디 중복검사에 실패했습니다. 다시 시도해주세요.'
+        );
+      }
     } catch (error) {
       console.error('아이디 중복검사 실패:', error);
       alert('아이디 중복검사에 실패했습니다. 다시 시도해주세요.');
+    } finally {
       setIsCheckingId(false);
     }
   };

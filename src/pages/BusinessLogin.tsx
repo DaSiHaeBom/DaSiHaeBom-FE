@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../api/authApi';
+import { businessLogin } from '../api/authApi';
 
 interface BusinessLoginForm {
   id: string;
@@ -17,16 +17,40 @@ export default function BusinessLogin() {
 
   const onSubmit = async (data: BusinessLoginForm) => {
     try {
-      const response = await login({
+      const response = await businessLogin({
         loginId: data.id,
         password: data.password,
       });
       console.log('기업회원 로그인 성공:', response);
-      // 로그인 성공 후 리다이렉트 (예: 기업 마이페이지)
-      navigate('/home');
-    } catch (error) {
+
+      if (response.isSuccess) {
+        alert('로그인이 완료되었습니다!');
+        navigate('/business/home');
+      } else {
+        alert(response.message || '로그인에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: unknown) {
       console.error('기업회원 로그인 실패:', error);
-      // 에러 처리 로직 추가 가능
+
+      // 구체적인 에러 메시지 표시
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as {
+          response?: { status?: number; data?: { message?: string } };
+        };
+
+        if (axiosError.response?.status === 401) {
+          alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+        } else if (axiosError.response?.status === 400) {
+          alert('잘못된 요청입니다. 입력 정보를 확인해주세요.');
+        } else {
+          const errorMessage =
+            axiosError.response?.data?.message ||
+            '로그인에 실패했습니다. 다시 시도해주세요.';
+          alert(errorMessage);
+        }
+      } else {
+        alert('로그인에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
 

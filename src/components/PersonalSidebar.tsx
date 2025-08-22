@@ -1,12 +1,39 @@
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../api/authApi';
 
 const PersonalSidebar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // 로그아웃 로직 구현
-    console.log('로그아웃');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      // 로그아웃 API 호출
+      const response = await logout();
+
+      if (response.isSuccess) {
+        // 쿠키에 저장된 토큰 제거
+        document.cookie =
+          'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie =
+          'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+        // 로그아웃 로직 구현
+        console.log('로그아웃 - 토큰 제거됨');
+        navigate('/login');
+      } else {
+        console.error('로그아웃 실패:', response.message);
+        alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('로그아웃 에러:', error);
+      // 에러가 발생해도 클라이언트 측에서 토큰 제거
+      document.cookie =
+        'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie =
+        'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+      alert('로그아웃 중 오류가 발생했습니다. 로그인 페이지로 이동합니다.');
+      navigate('/login');
+    }
   };
 
   const handleHome = () => {
