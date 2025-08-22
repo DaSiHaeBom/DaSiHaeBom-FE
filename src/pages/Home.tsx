@@ -38,14 +38,14 @@ export default function Home() {
         {isResumeCreated ? (
           <button
             className="w-40 h-14 rounded-lg bg-white text-[#FF6B01] border border-[#FF6B01] text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => navigate('/resume/result')}
+            onClick={() => navigate('/personal/resume/result')}
           >
             이력서 보기
           </button>
         ) : (
           <button
             className="w-40 h-14 rounded-xl bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => navigate('/resume')}
+            onClick={() => navigate('/personal/resume')}
           >
             이력서 작성
           </button>

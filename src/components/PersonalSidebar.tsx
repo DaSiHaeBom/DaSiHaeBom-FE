@@ -10,7 +10,7 @@ const PersonalSidebar = () => {
   };
 
   const handleHome = () => {
-    navigate('/');
+    navigate('/personal/home');
   };
 
   const handleMyInfo = () => {

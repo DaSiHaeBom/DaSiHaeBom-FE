@@ -59,7 +59,7 @@ const Resume = () => {
   // URL 업데이트 함수
   const updateURL = (index: number) => {
     const questionNum = index + 1;
-    navigate(`/resume/qna/${questionNum}`, { replace: true });
+    navigate(`/personal/resume/qna/${questionNum}`, { replace: true });
   };
 
   // URL 파라미터 변경 시 currentIndex 업데이트
@@ -75,7 +75,7 @@ const Resume = () => {
   // 첫 방문 시 URL 검증 및 리다이렉트
   useEffect(() => {
     if (!questionNumber) {
-      navigate('/resume/qna/1', { replace: true });
+      navigate('/personal/resume/qna/1', { replace: true });
     }
   }, [questionNumber, navigate]);
 
@@ -141,7 +141,7 @@ const Resume = () => {
         const res = await makeResume();
         setIsMakeLoading(false);
         console.log('자기소개서 생성 결과:', res);
-        navigate('/resume/finish');
+        navigate('/personal/resume/finish');
       } catch (error) {
         console.error('자기소개서 생성 실패:', error);
         alert('자기소개서 생성에 실패했습니다.');

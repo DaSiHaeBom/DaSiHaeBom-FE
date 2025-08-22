@@ -37,7 +37,7 @@ const ResumeConfirm = () => {
   };
 
   const handleClick = () => {
-    navigate('/resume/qna/1'); // 이력서 작성 페이지로 이동
+    navigate('/personal/resume/qna/1'); // 이력서 작성 페이지로 이동
   };
 
   const handleEditFinish = async () => {

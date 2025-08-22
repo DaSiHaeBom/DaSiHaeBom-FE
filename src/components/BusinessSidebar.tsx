@@ -11,7 +11,7 @@ const BusinessSidebar: React.FC = () => {
   };
 
   const handleHome = () => {
-    navigate('/');
+    navigate('/business/home');
   };
 
   const handleMyInfo = () => {

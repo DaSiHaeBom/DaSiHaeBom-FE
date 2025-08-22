@@ -5,7 +5,7 @@ import ResumeLongBtn from '../components/resumeMake/ResumeLongBtn';
 const ResumeStart = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/Resume/qna/1'); // 이력서 작성 페이지로 이동
+    navigate('/personal/resume/qna/1'); // 이력서 작성 페이지로 이동
   };
 
   return (

@@ -6,7 +6,7 @@ interface LayoutProps {
 
 const ResumeLayout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4 py-4">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4 py-4 -mt-16">
       {children}
     </div>
   );
