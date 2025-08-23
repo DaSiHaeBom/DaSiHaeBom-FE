@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../components/Modal';
 import CheckIcon from '../assets/MyPageAssets/CheckIcon';
 import { fetchCorpInfo, updateCorpInfo } from '../api/userApi';
+import {
+  sendProfilePhoneVerificationCode,
+  verifyPhoneCode,
+} from '../api/authApi';
 
 /** ===== Types ===== */
 type BusinessProfile = {
@@ -10,8 +14,8 @@ type BusinessProfile = {
   name: string; // 대표자명
   bizRegNo: string; // 사업자 등록 번호
   companyName: string; // 회사/점포명
-  address: string; // 주소(상세 포함)
-  detailAddress?: string;
+  address: string; // 기본 주소
+  detailAddress: string; // 상세 주소
 };
 
 /** ===== UI classes ===== */
@@ -40,7 +44,8 @@ export default function BusinessInfoPage() {
     }),
     []
   );
-
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
   const [data, setData] = useState<BusinessProfile>(initialData);
   const [isEditing, setIsEditing] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
@@ -50,15 +55,14 @@ export default function BusinessInfoPage() {
     const loadCorpUser = async () => {
       try {
         const user = await fetchCorpInfo();
-        console.log(user);
         setData({
           memberType: '기업',
           phone: user.phoneNumber,
           name: user.ceoName,
           bizRegNo: user.corpNumber,
           companyName: user.corpName,
-          address: user.corpAddress,
-          detailAddress: user.corpAddress || '',
+          address: user.corpBaseAddress ?? '',
+          detailAddress: user.corpDetailAddress ?? '',
         });
       } catch (err) {
         console.error('기업회원 정보 불러오기 실패', err);
@@ -80,22 +84,23 @@ export default function BusinessInfoPage() {
     setData(initialData);
     setIsEditing(false);
   };
+
   const saveEdit = async () => {
     if (!data) return;
-
     try {
       const res = await updateCorpInfo({
         ceoName: data.name,
         phoneNumber: data.phone,
         corpNumber: data.bizRegNo,
         corpName: data.companyName,
-        corpAddress: data.address,
+        corpBaseAddress: data.address,
+        corpDetailAddress: data.detailAddress,
       });
       console.log(res);
       setIsEditing(false);
       setIsSavedModalOpen(true);
     } catch (err) {
-      console.error('개인정보 수정 실패:', err);
+      console.error('기업정보 수정 실패:', err);
       alert('저장 중 오류가 발생했습니다.');
     }
   };
@@ -135,6 +140,47 @@ export default function BusinessInfoPage() {
     }
   };
 
+  // 휴대폰 인증번호 발송 핸들러
+  const handleSendCode = async () => {
+    if (!data.phone) {
+      alert('휴대폰 번호를 입력해주세요.');
+      return;
+    }
+    try {
+      const res = await sendProfilePhoneVerificationCode(data.phone);
+      console.log('인증번호 전송 성공:', res);
+      alert('인증번호가 전송되었습니다.');
+    } catch (err: any) {
+      if (err.response?.status === 409) {
+        console.warn('이미 등록된 번호이거나 중복 요청입니다.');
+        alert('이미 사용 중인 번호이거나 요청이 중복되었습니다.');
+      } else {
+        console.error('인증번호 전송 실패:', err);
+        alert('인증번호 전송 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+  // 휴대폰 인증번호 인증 로직
+  const handleVerifyCode = async () => {
+    try {
+      const res = await verifyPhoneCode(
+        data.phone.replace(/[^0-9]/g, ''),
+        verificationCode
+      );
+
+      if (res.isSuccess) {
+        setIsVerified(true);
+        alert('휴대폰 인증이 완료되었습니다.');
+      } else {
+        alert(res.message || '인증 실패');
+      }
+    } catch (err) {
+      console.error('인증번호 검증 실패:', err);
+      alert('인증번호 검증 중 오류가 발생했습니다.');
+    }
+  };
+
   /** 스타일 */
   const readonlyStyle = !isEditing
     ? 'bg-[#F5F5F5] text-[#737373] border-[#D9D9D9]'
@@ -166,7 +212,7 @@ export default function BusinessInfoPage() {
         <div className="mt-[10px] flex gap-2">
           <input
             className={`${inputCls} ${readonlyStyle} flex-1`}
-            placeholder="02-0000-0000"
+            placeholder="010-xxxx-xxxx"
             value={data.phone}
             onChange={updateField('phone')}
             disabled={!isEditing}
@@ -175,6 +221,7 @@ export default function BusinessInfoPage() {
             type="button"
             className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] disabled:opacity-50 cursor-pointer"
             disabled={!isEditing}
+            onClick={handleSendCode}
           >
             인증번호
           </button>
@@ -184,12 +231,16 @@ export default function BusinessInfoPage() {
             <input
               className={`${inputCls} flex-1`}
               placeholder="인증번호 입력"
+              value={verificationCode}
+              onChange={e => setVerificationCode(e.target.value)}
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleVerifyCode}
+              disabled={isVerified}
             >
-              인증
+              {isVerified ? '인증완료' : '인증'}
             </button>
           </div>
         )}
@@ -222,7 +273,6 @@ export default function BusinessInfoPage() {
             <button
               type="button"
               className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] hover:opacity-90 cursor-pointer"
-              // TODO: 사업자번호 유효성/조회 로직 연결 (onClick)
             >
               확인
             </button>
@@ -242,36 +292,45 @@ export default function BusinessInfoPage() {
         />
       </div>
 
-      {/* 주소(기업: 우편번호 + 검색 버튼 노출) */}
+      {/* 주소 */}
       <div className="mb-[60px]">
         <label className={labelCls}>주소</label>
 
-        {isEditing && (
-          <div className="mt-[10px] flex gap-2">
-            <input
-              className={`${inputCls} w-[180px]`}
-              placeholder="우편번호"
-              value={data.detailAddress ?? ''}
-              onChange={updateField('detailAddress')}
-              disabled
-            />
-            <button
-              type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
-              onClick={openDaumPostcode}
-            >
-              주소 검색
-            </button>
-          </div>
-        )}
+        {isEditing ? (
+          <>
+            {/* 기본 주소 (검색 결과) */}
+            <div className="mt-[10px] flex gap-2">
+              <input
+                className={`${inputCls} flex-1`}
+                placeholder="주소"
+                value={data.address || ''}
+                disabled
+              />
+              <button
+                type="button"
+                className="h-[56px] min-w-[116px] px-4 rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] cursor-pointer"
+                onClick={openDaumPostcode}
+              >
+                주소 검색
+              </button>
+            </div>
 
-        <input
-          className={`${inputCls} ${readonlyStyle} mt-[10px]`}
-          placeholder="기본 주소"
-          value={data.address}
-          onChange={updateField('address')}
-          disabled={!isEditing}
-        />
+            {/* 상세주소 입력 */}
+            <input
+              className={`${inputCls} mt-[10px]`}
+              placeholder="상세 주소 입력"
+              value={data.detailAddress || ''}
+              onChange={updateField('detailAddress')}
+            />
+          </>
+        ) : (
+          // 조회 모드 → 기본주소 + 상세주소 합쳐서 표시
+          <input
+            className={`${inputCls} ${readonlyStyle} mt-[10px]`}
+            value={`${data.address || ''} ${data.detailAddress || ''}`.trim()}
+            disabled
+          />
+        )}
       </div>
 
       {/* CTA */}
