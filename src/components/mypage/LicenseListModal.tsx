@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import type { ModalType } from '../../types/ModalType';
 import Modal from '../Modal';
-import {
-  deleteLicense,
-  fetchLicenses,
-  updateLicense,
-} from '../../api/licenseApi';
+import { deleteLicense, fetchLicenses } from '../../api/licenseApi';
 import type { License } from '../../types/License';
 
 type LicenseListModalProps = {
@@ -14,10 +10,9 @@ type LicenseListModalProps = {
   certList: License[];
   setCertList: React.Dispatch<React.SetStateAction<License[]>>;
   setModalType: (modal: ModalType) => void;
+  setLicenseData: React.Dispatch<React.SetStateAction<License>>;
+  setMode: React.Dispatch<React.SetStateAction<'create' | 'edit'>>;
 };
-
-const inputCls =
-  'w-full h-[44px] rounded-[10px] border border-[#D9D9D9] focus:border-black px-[12px] py-[8px] text-[14px]';
 
 const LicenseListModal = ({
   modalType,
@@ -25,14 +20,9 @@ const LicenseListModal = ({
   certList,
   setCertList,
   setModalType,
+  setLicenseData,
+  setMode,
 }: LicenseListModalProps) => {
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState({
-    name: '',
-    issuer: '',
-    issuedAt: '',
-  });
-
   // 모달 열릴 때 데이터 불러오기
   useEffect(() => {
     if (modalType === 'LICENSE_LIST') {
@@ -53,19 +43,6 @@ const LicenseListModal = ({
     }
   };
 
-  // 수정 저장
-  const handleEditSave = async (licenseId: number) => {
-    try {
-      await updateLicense(licenseId, editForm);
-      setCertList(prev =>
-        prev.map(c => (c.licenseId === licenseId ? { ...c, ...editForm } : c))
-      );
-      setEditingId(null);
-    } catch (err) {
-      console.error('자격증 수정 실패:', err);
-    }
-  };
-
   return (
     <div className="font-[Pretendard]">
       <Modal isOpen={modalType === 'LICENSE_LIST'} onClose={handleClose}>
@@ -80,92 +57,43 @@ const LicenseListModal = ({
             certList.map(cert => (
               <li
                 key={cert.licenseId}
-                className="flex flex-col border border-[#E5E7EB] rounded-[10px] p-4"
+                className="flex justify-between items-center border border-[#E5E7EB] rounded-[10px] p-4"
               >
-                {editingId === cert.licenseId ? (
-                  <div className="flex flex-col gap-3">
-                    <input
-                      value={editForm.name}
-                      onChange={e =>
-                        setEditForm({ ...editForm, name: e.target.value })
-                      }
-                      placeholder="자격증 이름"
-                      className={inputCls}
-                    />
-                    <input
-                      value={editForm.issuer}
-                      onChange={e =>
-                        setEditForm({ ...editForm, issuer: e.target.value })
-                      }
-                      placeholder="발급 기관"
-                      className={inputCls}
-                    />
-                    <input
-                      type="date"
-                      value={editForm.issuedAt}
-                      onChange={e =>
-                        setEditForm({ ...editForm, issuedAt: e.target.value })
-                      }
-                      className={inputCls}
-                    />
-                    <div className="flex gap-2 justify-end mt-2">
-                      <button
-                        onClick={() => handleEditSave(cert.licenseId)}
-                        className="px-4 py-2 rounded-[8px] border border-green-500 text-green-600 hover:bg-green-50"
-                      >
-                        저장
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="px-4 py-2 rounded-[8px] border border-gray-300 text-gray-600 hover:bg-gray-50"
-                      >
-                        취소
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex justify-between items-center">
-                    {/* 왼쪽: 텍스트 */}
-                    <div className="flex-1 min-w-0">
-                      {' '}
-                      <p
-                        title={cert.name}
-                        className="font-semibold text-[#3C3C3C] text-[16px] truncate"
-                      >
-                        {cert.name}
-                      </p>
-                      <p
-                        title={cert.issuer}
-                        className="text-sm text-gray-500 mt-1 truncate"
-                      >
-                        {cert.issuer} · {cert.issuedAt}
-                      </p>
-                    </div>
+                {/* 왼쪽: 텍스트 */}
+                <div className="flex-1 min-w-0">
+                  <p
+                    title={cert.name}
+                    className="font-semibold text-[#3C3C3C] text-[16px] truncate"
+                  >
+                    {cert.name}
+                  </p>
+                  <p
+                    title={cert.issuer}
+                    className="text-sm text-gray-500 mt-1 truncate"
+                  >
+                    {cert.issuer} · {cert.issuedAt}
+                  </p>
+                </div>
 
-                    {/* 오른쪽: 버튼 */}
-                    <div className="flex gap-2 flex-shrink-0 ml-2">
-                      <button
-                        className="px-3 py-1 rounded-[8px] border border-gray-300 hover:bg-gray-50"
-                        onClick={() => {
-                          setEditingId(cert.licenseId);
-                          setEditForm({
-                            name: cert.name,
-                            issuer: cert.issuer,
-                            issuedAt: cert.issuedAt,
-                          });
-                        }}
-                      >
-                        수정
-                      </button>
-                      <button
-                        className="px-3 py-1 rounded-[8px] border border-red-400 text-red-500 hover:bg-red-50"
-                        onClick={() => handleDelete(cert.licenseId)}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                )}
+                {/* 오른쪽: 버튼 */}
+                <div className="flex gap-2 flex-shrink-0 ml-2">
+                  <button
+                    className="px-3 py-1 rounded-[8px] border border-gray-300 hover:bg-gray-50"
+                    onClick={() => {
+                      setLicenseData(cert); // 수정할 자격증 데이터 넘김
+                      setMode('edit');
+                      setModalType('LICENSE_FORM');
+                    }}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="px-3 py-1 rounded-[8px] border border-red-400 text-red-500 hover:bg-red-50"
+                    onClick={() => handleDelete(cert.licenseId)}
+                  >
+                    삭제
+                  </button>
+                </div>
               </li>
             ))
           ) : (
@@ -178,7 +106,10 @@ const LicenseListModal = ({
         {/* 추가 버튼 */}
         <button
           className="w-full py-3 rounded-[10px] border border-[#FF9555] text-[#FF9555] font-semibold hover:bg-orange-50"
-          onClick={() => setModalType('LICENSE_FORM')}
+          onClick={() => {
+            setMode('create');
+            setModalType('LICENSE_FORM');
+          }}
         >
           + 자격증 추가
         </button>
