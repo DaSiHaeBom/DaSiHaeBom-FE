@@ -167,6 +167,10 @@ export default function BusinessLogin() {
       <IdFindModal
         isOpen={isIdFindModalOpen}
         onClose={() => setIsIdFindModalOpen(false)}
+        onOpenPasswordFind={() => {
+          setIsIdFindModalOpen(false);
+          setIsPasswordFindModalOpen(true);
+        }}
       />
       <BusinessPasswordFindModal
         isOpen={isPasswordFindModalOpen}

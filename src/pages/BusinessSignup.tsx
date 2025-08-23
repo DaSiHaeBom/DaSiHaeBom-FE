@@ -475,8 +475,8 @@ export default function BusinessSignup() {
                       type="button"
                       onClick={handleVerifyCode}
                       disabled={isVerificationCompleted || isVerifyingCode}
-                      className={`w-28 h-14 px-4 py-3 text-xl text-white bg-orange-300 rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
-                        isVerificationCompleted ? '' : 'hover:bg-orange-400'
+                      className={`w-28 h-14 px-4 py-3 text-xl text-[#FF9555] bg-white border border-[#FF9555] rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isVerificationCompleted ? '' : 'hover:bg-orange-50'
                       }`}
                     >
                       {isVerificationCompleted

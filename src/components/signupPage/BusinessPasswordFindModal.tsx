@@ -23,6 +23,7 @@ export default function BusinessPasswordFindModal({
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [isVerifyingCode, setIsVerifyingCode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhoneNumber(e.target.value);
@@ -104,8 +105,7 @@ export default function BusinessPasswordFindModal({
     try {
       const result = await sendTempPassword(phoneNumber);
       if (result.isSuccess) {
-        alert('임시 비밀번호가 발송되었습니다. 문자를 확인해주세요.');
-        handleClose();
+        setShowSuccess(true);
       } else {
         alert(
           result.message ||
@@ -132,6 +132,7 @@ export default function BusinessPasswordFindModal({
     setIsSendingCode(false);
     setIsVerifyingCode(false);
     setIsSubmitting(false);
+    setShowSuccess(false);
     onClose();
   };
 
@@ -139,89 +140,126 @@ export default function BusinessPasswordFindModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="relative flex flex-col gap-10 w-121 h-110 justify-center bg-white rounded-lg border border-gray-200 p-8 max-h-[90vh] overflow-y-auto shadow-xl">
-        <div>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-black font-bold text-2xl hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            ✕
-          </button>
-          <div className="flex flex-col gap-2">
-            <p className="text-3xl font-bold text-black text-center">
-              비밀번호 찾기
-            </p>
-            <p className="text-sm text-gray-500 text-center">
-              등록한 전화번호를 입력해주세요
-            </p>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex gap-2">
-            <input
-              type="tel"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-              className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-              placeholder="전화번호 입력"
-              maxLength={11}
-              disabled={isVerificationSent}
-            />
+      <div className="relative flex flex-col gap-10 w-121 bg-white rounded-lg border border-gray-200 p-8 max-h-[90vh] overflow-y-auto shadow-xl">
+        {!showSuccess && (
+          <div>
             <button
               type="button"
-              onClick={handleSendVerificationCode}
-              disabled={isSendingCode || isVerificationSent}
-              className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleClose}
+              className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-black font-bold text-2xl hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
             >
-              {isSendingCode ? '발송중...' : '인증번호'}
+              ✕
             </button>
+            <div className="flex flex-col gap-2">
+              <p className="text-3xl font-bold text-black text-center">
+                비밀번호 찾기
+              </p>
+              <p className="text-sm text-gray-500 text-center">
+                등록한 전화번호를 입력해주세요
+              </p>
+            </div>
           </div>
+        )}
 
-          {isVerificationSent && (
+        {!showSuccess ? (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex gap-2">
               <input
-                type="text"
-                value={verificationCode}
-                onChange={handleVerificationCodeChange}
-                className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
-                placeholder="인증번호 입력"
-                maxLength={6}
-                disabled={isVerificationCompleted}
+                type="tel"
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+                className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                placeholder="전화번호 입력"
+                maxLength={11}
+                disabled={isVerificationSent}
               />
               <button
                 type="button"
-                onClick={handleVerifyCode}
-                disabled={isVerificationCompleted || isVerifyingCode}
-                className="w-28 h-14 px-4 py-3 text-xl text-white bg-gray-400 rounded-lg hover:bg-gray-500 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleSendVerificationCode}
+                disabled={isSendingCode || isVerificationSent}
+                className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isVerificationCompleted
-                  ? '인증완료'
-                  : isVerifyingCode
-                    ? '인증중...'
-                    : '인증'}
+                {isSendingCode ? '발송중...' : '인증번호'}
               </button>
             </div>
-          )}
 
-          <div className="flex flex-col gap-3">
+            {isVerificationSent && (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={verificationCode}
+                  onChange={handleVerificationCodeChange}
+                  className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent disabled:opacity-50 disabled:cursor-default"
+                  placeholder="인증번호 입력"
+                  maxLength={6}
+                  disabled={isVerificationCompleted}
+                />
+                <button
+                  type="button"
+                  onClick={handleVerifyCode}
+                  disabled={isVerificationCompleted || isVerifyingCode}
+                  className="w-28 h-14 px-4 py-3 text-xl bg-white border border-[#FF9555] text-[#FF9555] rounded-lg hover:bg-orange-50 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isVerificationCompleted
+                    ? '인증완료'
+                    : isVerifyingCode
+                      ? '인증중...'
+                      : '인증'}
+                </button>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-3">
+              <button
+                type="submit"
+                disabled={isSubmitting || !isVerificationCompleted}
+                className="flex-1 bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? '발송 중...' : '임시 비밀번호 발송'}
+              </button>
+              <button
+                type="button"
+                onClick={onOpenIdFind}
+                className="flex-1 bg-white border border-gray-300 text-[#FF9555] py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                아이디 찾기
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="flex flex-col items-center gap-6">
+            {/* 종이비행기 아이콘 */}
+            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+              <svg
+                className="w-8 h-8 text-orange-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </div>
+
+            {/* 성공 메시지 */}
+            <p className="text-lg text-gray-700 text-center">
+              문자로 임시 비밀번호가 발송되었습니다.
+            </p>
+
+            {/* 확인 버튼 */}
             <button
-              type="submit"
-              disabled={isSubmitting || !isVerificationCompleted}
-              className="flex-1 bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleClose}
+              className="w-full bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium"
             >
-              {isSubmitting ? '발송 중...' : '임시 비밀번호 발송'}
-            </button>
-            <button
-              type="button"
-              onClick={onOpenIdFind}
-              className="flex-1 bg-white border border-gray-300 text-[#FF9555] py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-            >
-              아이디 찾기
+              확인
             </button>
           </div>
-        </form>
+        )}
       </div>
     </div>
   );
