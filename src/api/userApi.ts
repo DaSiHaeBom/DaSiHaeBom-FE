@@ -30,7 +30,8 @@ export async function updateCorpInfo(data: {
   phoneNumber: string;
   corpNumber: string;
   corpName: string;
-  corpAddress: string;
+  corpBaseAddress: string;
+  corpDetailAddress: string;
 }) {
   const res = await baseAxiosInstance.patch('/api/v1/users/corps/me', data);
   return res.data;
