@@ -197,7 +197,7 @@ const BusinessSidebar = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className={`w-8 h-8 ${
-                location.pathname === '/business/resume/list'
+                location.pathname.startsWith('/business/resume')
                   ? 'text-orange-500'
                   : 'text-gray-600'
               }`}
@@ -234,7 +234,7 @@ const BusinessSidebar = () => {
           </div>
           <span
             className={`text-sm font-medium ${
-              location.pathname === '/business/resume/list'
+              location.pathname.startsWith('/business/resume')
                 ? 'text-orange-500'
                 : 'text-gray-800'
             }`}

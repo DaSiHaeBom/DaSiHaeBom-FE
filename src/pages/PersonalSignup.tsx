@@ -173,6 +173,9 @@ export default function PersonalSignup() {
 
   return (
     <div className="flex justify-center items-center h-screen bg-white my-30">
+      <div className="fixed top-8 left-8 z-10">
+        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+      </div>
       <div className="flex items-center justify-center">
         <div className="w-114">
           <button
@@ -182,9 +185,7 @@ export default function PersonalSignup() {
             <span className="text-[#FF9555]">←</span> 뒤로가기
           </button>
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-black mb-8">
-              개인 회원가입
-            </h1>
+            <p className="text-3xl font-bold text-black mb-8">개인 회원가입</p>
           </div>
 
           <div className="bg-white">
