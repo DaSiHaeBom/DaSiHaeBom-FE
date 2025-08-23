@@ -91,8 +91,8 @@ baseAxiosInstance.interceptors.response.use(
       try {
         // 개발환경에서는 프록시 경로 사용
         const refreshURL = import.meta.env.DEV
-          ? '/api/v1/auth/refresh'
-          : `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh`;
+          ? '/api/v1/security/reissue-cookie'
+          : `${import.meta.env.VITE_API_BASE_URL}/api/v1/security/reissue-cookie`;
 
         await axios.post(refreshURL, null, {
           withCredentials: true,
