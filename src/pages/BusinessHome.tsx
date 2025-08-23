@@ -22,8 +22,8 @@ export default function BusinessHome() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center gap-30 mt-16">
-      <div className="flex flex-col items-center justify-center mt-30">
+    <div className="flex flex-col items-center justify-center gap-30 mt-16">
+      <div className="flex flex-col items-center justify-center">
         <p className="text-center text-neutral-700 text-4xl font-bold leading-16">
           이력서를 쓰면, 기업이 먼저 연락합니다.
         </p>
@@ -51,7 +51,7 @@ export default function BusinessHome() {
           </button>
         )}
       </div>
-      <div className="flex flex-col justify-center items-center gap-10">
+      <div className="flex flex-col justify-center items-center gap-10 mb-30">
         <p className="text-neutral-700 text-4xl font-bold leading-16">
           우리 서비스는 이렇게 진행됩니다.
         </p>

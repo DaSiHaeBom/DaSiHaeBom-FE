@@ -19,6 +19,7 @@ const BusinessSidebar = () => {
 
         // 로그아웃 로직 구현
         console.log('로그아웃 - 토큰 제거됨');
+        alert('로그아웃이 완료되었습니다.');
         navigate('/landing');
       } else {
         console.error('로그아웃 실패:', response.message);

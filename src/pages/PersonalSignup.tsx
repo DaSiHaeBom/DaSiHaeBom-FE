@@ -172,11 +172,10 @@ export default function PersonalSignup() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-white">
+    <div className="flex justify-center items-center h-screen bg-white my-30">
       <div className="fixed top-8 left-8 z-10">
         <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
       </div>
-
       <div className="flex items-center justify-center">
         <div className="w-114">
           <button
