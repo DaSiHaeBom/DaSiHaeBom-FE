@@ -209,7 +209,7 @@ export default function PersonalInfoPage() {
         <div className="mt-[10px] flex gap-2">
           <input
             className={`${inputCls} ${readonlyStyle} flex-1`}
-            placeholder="01012345678"
+            placeholder="010-xxxx-xxxx"
             value={data.phone}
             onChange={updateField('phone')}
             disabled={!isEditing}
