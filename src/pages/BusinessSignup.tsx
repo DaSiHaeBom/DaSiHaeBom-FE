@@ -8,6 +8,7 @@ import {
   businessSignup,
   checkBusinessIdDuplicate,
 } from '../api/authApi';
+import SuccessModal from '../components/SuccessModal';
 
 interface BusinessSignupForm {
   loginId: string;
@@ -34,6 +35,7 @@ export default function BusinessSignup() {
     useState(false);
   const [isBusinessNumberValid, setIsBusinessNumberValid] = useState(false);
   const [businessNumberError, setBusinessNumberError] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -240,8 +242,7 @@ export default function BusinessSignup() {
 
       const result = await businessSignup(signupData);
       if (result.isSuccess) {
-        alert('회원가입이 완료되었습니다!');
-        navigate('/login/business');
+        setShowSuccessModal(true);
       } else {
         alert(result.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
       }
@@ -274,6 +275,11 @@ export default function BusinessSignup() {
   };
 
   const handleBack = () => {
+    navigate('/login/business');
+  };
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
     navigate('/login/business');
   };
 
@@ -632,6 +638,12 @@ export default function BusinessSignup() {
           </div>
         </div>
       </div>
+
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleModalClose}
+        message="가입이 완료되었습니다."
+      />
     </div>
   );
 }

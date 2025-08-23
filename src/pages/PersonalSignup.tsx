@@ -6,6 +6,7 @@ import {
   verifyPhoneCode,
   personalSignup,
 } from '../api/authApi';
+import SuccessModal from '../components/SuccessModal';
 
 interface PersonalSignupForm {
   phoneNumber: string;
@@ -25,6 +26,7 @@ export default function PersonalSignup() {
   const [isVerificationCompleted, setIsVerificationCompleted] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [isVerifyingCode, setIsVerifyingCode] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -146,8 +148,7 @@ export default function PersonalSignup() {
 
       const result = await personalSignup(signupData);
       if (result.isSuccess) {
-        alert('회원가입이 완료되었습니다!');
-        navigate('/login/personal');
+        setShowSuccessModal(true);
       } else {
         alert(result.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
       }
@@ -162,6 +163,11 @@ export default function PersonalSignup() {
   };
 
   const handleBack = () => {
+    navigate('/login/personal');
+  };
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
     navigate('/login/personal');
   };
 
@@ -243,7 +249,7 @@ export default function PersonalSignup() {
                         type="button"
                         onClick={handleVerifyCode}
                         disabled={isVerificationCompleted || isVerifyingCode}
-                        className="w-28 h-14 px-4 py-3 text-xl text-orange-400 border border-zinc-300 rounded-lg hover:bg-gray-400 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-28 h-14 px-4 py-3 text-xl text-[#FF9555] border border-[#FF9555] rounded-lg hover:bg-orange-50 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isVerificationCompleted
                           ? '인증완료'
@@ -443,6 +449,12 @@ export default function PersonalSignup() {
           </div>
         </div>
       </div>
+
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleModalClose}
+        message="가입이 완료되었습니다."
+      />
     </div>
   );
 }

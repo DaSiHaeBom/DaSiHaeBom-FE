@@ -197,7 +197,7 @@ export default function PersonalPasswordFindModal({
                     isVerificationCompleted ? undefined : handleVerifyCode
                   }
                   disabled={isVerificationCompleted || isVerifyingCode}
-                  className="w-28 h-14 px-4 py-3 text-xl text-white bg-gray-400 rounded-lg hover:bg-gray-500 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-28 h-14 px-4 py-3 text-xl text-[#FF9555] bg-white border border-[#FF9555] rounded-lg hover:bg-orange-50 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isVerificationCompleted
                     ? '인증완료'
