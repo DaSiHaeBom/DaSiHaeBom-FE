@@ -284,26 +284,26 @@ export default function BusinessSignup() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white py-4">
+    <div className="flex justify-center items-center min-h-screen bg-white my-30">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-14 h-14" />
+        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
       </div>
       <div className="flex items-center justify-center">
-        <div className="w-80 max-w-sm">
+        <div className="w-96 max-w-md">
           <button
             onClick={handleBack}
-            className="text-gray-500 text-sm hover:text-gray-700 mb-3"
+            className="text-gray-500 hover:text-gray-700 mb-4"
           >
             <span className="text-[#FF9555]">←</span> 뒤로가기
           </button>
-          <div className="text-center mb-4">
-            <p className="text-2xl font-bold text-black mb-4">기업 회원가입</p>
+          <div className="text-center mb-6">
+            <p className="text-2xl font-bold text-black mb-6">기업 회원가입</p>
           </div>
 
           <div className="bg-white">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="flex gap-2 items-center text-xs font-medium text-gray-700 mb-1">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
                   아이디
                 </label>
                 <div className="flex gap-2">
@@ -340,7 +340,7 @@ export default function BusinessSignup() {
                       },
                     })}
                     disabled={isIdVerified}
-                    className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                    className={`flex-1 h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                       errors.loginId ? 'border-red-500' : 'border-gray-300'
                     } ${isIdVerified ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                     placeholder="아이디 (5-16자, 영문+숫자)"
@@ -349,7 +349,7 @@ export default function BusinessSignup() {
                     type="button"
                     onClick={handleIdDuplicateCheck}
                     disabled={isCheckingId || isIdVerified}
-                    className={`w-20 h-10 px-2 py-2 text-xs bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                    className={`w-24 h-12 px-3 py-2 text-sm bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
                       isIdVerified ? '' : 'hover:bg-[#E67E22]'
                     }`}
                   >
@@ -361,14 +361,14 @@ export default function BusinessSignup() {
                   </button>
                 </div>
                 {errors.loginId && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.loginId.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="flex gap-2 items-center text-xs font-medium text-gray-700 mb-1">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
                   비밀번호
                   <span className="text-xs text-gray-500">
                     특수문자 포함 8자 이상 입력
@@ -385,20 +385,20 @@ export default function BusinessSignup() {
                         '특수문자, 영문, 숫자를 포함하여 8자 이상 입력해주세요',
                     },
                   })}
-                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                  className={`w-full h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                     errors.password ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="비밀번호"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.password.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1">
+                <label className="text-sm font-medium text-gray-700 mb-2">
                   대표자명
                 </label>
                 <input
@@ -410,7 +410,7 @@ export default function BusinessSignup() {
                       message: '대표자명은 2자 이상 입력해주세요',
                     },
                   })}
-                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                  className={`w-full h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                     errors.representativeName
                       ? 'border-red-500'
                       : 'border-gray-300'
@@ -418,14 +418,14 @@ export default function BusinessSignup() {
                   placeholder="대표자명"
                 />
                 {errors.representativeName && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.representativeName.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1">
+                <label className="text-sm font-medium text-gray-700 mb-2">
                   휴대폰 번호
                 </label>
                 <div className="flex gap-2 mb-2">
@@ -439,7 +439,7 @@ export default function BusinessSignup() {
                       },
                     })}
                     disabled={isPhoneVerified}
-                    className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                    className={`flex-1 h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                       errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
                     } ${isPhoneVerified ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                     placeholder="휴대폰 번호 '-'제외하고 입력"
@@ -448,7 +448,7 @@ export default function BusinessSignup() {
                     type="button"
                     onClick={handleSendVerificationCode}
                     disabled={isSendingCode || isPhoneVerified}
-                    className={`w-20 h-10 px-2 py-2 text-xs bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                    className={`w-24 h-12 px-3 py-2 text-sm bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
                       isPhoneVerified ? '' : 'hover:bg-[#E67E22]'
                     }`}
                   >
@@ -471,7 +471,7 @@ export default function BusinessSignup() {
                         },
                       })}
                       disabled={isVerificationCompleted}
-                      className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                      className={`flex-1 h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                         errors.verificationCode
                           ? 'border-red-500'
                           : 'border-gray-300'
@@ -482,7 +482,7 @@ export default function BusinessSignup() {
                       type="button"
                       onClick={handleVerifyCode}
                       disabled={isVerificationCompleted || isVerifyingCode}
-                      className={`w-20 h-10 px-2 py-2 text-xs text-[#FF9555] bg-white border border-[#FF9555] rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`w-24 h-12 px-3 py-2 text-sm text-[#FF9555] bg-white border border-[#FF9555] rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
                         isVerificationCompleted ? '' : 'hover:bg-orange-50'
                       }`}
                     >
@@ -495,19 +495,19 @@ export default function BusinessSignup() {
                   </div>
                 )}
                 {errors.phoneNumber && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.phoneNumber.message}
                   </p>
                 )}
                 {errors.verificationCode && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.verificationCode.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="flex gap-2 items-center text-xs font-medium text-gray-700 mb-1">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
                   사업자등록번호
                   {businessNumberError && (
                     <span className="text-xs text-red-500">
@@ -527,7 +527,7 @@ export default function BusinessSignup() {
                     })}
                     disabled={isBusinessNumberValid}
                     maxLength={10}
-                    className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                    className={`flex-1 h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                       errors.businessNumber
                         ? 'border-red-500'
                         : 'border-gray-300'
@@ -538,7 +538,7 @@ export default function BusinessSignup() {
                     type="button"
                     onClick={handleBusinessNumberCheck}
                     disabled={isCheckingBusinessNumber || isBusinessNumberValid}
-                    className={`w-20 h-10 px-2 py-2 text-xs bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                    className={`w-24 h-12 px-3 py-2 text-sm bg-orange-500 text-white rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
                       isBusinessNumberValid ? '' : 'hover:bg-[#E67E22]'
                     }`}
                   >
@@ -550,14 +550,14 @@ export default function BusinessSignup() {
                   </button>
                 </div>
                 {errors.businessNumber && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.businessNumber.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1">
+                <label className="text-sm font-medium text-gray-700 mb-2">
                   회사/점포명
                 </label>
                 <input
@@ -569,20 +569,20 @@ export default function BusinessSignup() {
                       message: '회사/점포명은 2자 이상 입력해주세요',
                     },
                   })}
-                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
+                  className={`w-full h-12 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
                     errors.companyName ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="회사/점포명"
                 />
                 {errors.companyName && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.companyName.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1">
+                <label className="text-sm font-medium text-gray-700 mb-2">
                   회사/점포 주소
                 </label>
                 <div className="flex gap-2 mb-2">
@@ -591,14 +591,14 @@ export default function BusinessSignup() {
                     {...register('baseAddress', {
                       required: '주소를 입력해주세요',
                     })}
-                    className="flex-1 h-10 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm"
+                    className="flex-1 h-12 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
                     placeholder="주소"
                     readOnly
                   />
                   <button
                     type="button"
                     onClick={handleAddressSearch}
-                    className="px-3 py-2 bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap h-10 text-xs"
+                    className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap h-12"
                   >
                     주소 검색
                   </button>
@@ -608,16 +608,16 @@ export default function BusinessSignup() {
                   {...register('detailAddress', {
                     required: '상세주소를 입력해주세요',
                   })}
-                  className="w-full h-10 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm"
+                  className="w-full h-12 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
                   placeholder="상세주소"
                 />
                 {errors.baseAddress && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.baseAddress.message}
                   </p>
                 )}
                 {errors.detailAddress && (
-                  <p className="mt-1 text-xs text-red-500">
+                  <p className="mt-1 text-sm text-red-500">
                     {errors.detailAddress.message}
                   </p>
                 )}
@@ -631,7 +631,7 @@ export default function BusinessSignup() {
                   !isPhoneVerified ||
                   !isBusinessNumberValid
                 }
-                className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? '가입 중...' : '가입하기'}
               </button>
