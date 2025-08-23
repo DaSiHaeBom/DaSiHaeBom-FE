@@ -46,7 +46,7 @@ const BusinessMyPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-white">
+    <div className="min-h-screen -mt-16 w-full flex items-center justify-center bg-white">
       <div className="max-w-[432px] w-full text-center">
         {/* 상단 기업 정보 */}
         {user ? (

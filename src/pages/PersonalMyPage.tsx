@@ -95,7 +95,7 @@ const PersonalMyPage = () => {
   const handleClose = () => setModalType(null);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-white">
+    <div className="min-h-screen -mt-16 w-full flex items-center justify-center bg-white">
       <div className="max-w-[432px] w-full text-center">
         {/* 유저 정보 섹션 */}
         {user ? (
