@@ -74,23 +74,23 @@ export default function PersonalInfoPage() {
 
   /** 카카오 우편번호 검색 */
   const openDaumPostcode = () => {
-    type DaumPostcodeData = {
-      zonecode: string;
+    type PostcodeDataMinimal = {
       roadAddress?: string;
       jibunAddress?: string;
     };
 
     const loadPostcode = () => {
       new window.daum.Postcode({
-        oncomplete: function (data: DaumPostcodeData) {
+        oncomplete: function (data: PostcodeDataMinimal) {
           const address = data.roadAddress || data.jibunAddress;
           if (address) {
             setData(prev => ({
               ...prev,
-              address: address,
+              address,
             }));
           }
         },
+        onclose: function () {},
       }).open();
     };
 
