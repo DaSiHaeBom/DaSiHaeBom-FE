@@ -37,10 +37,10 @@ export default function BusinessHome() {
         </p>
         {isResumeCreated ? (
           <button
-            className="w-40 h-14 rounded-lg bg-white text-[#FF6B01] border border-[#FF6B01] text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => navigate('/personal/resume/result')}
+            className="w-40 h-14 rounded-lg bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
+            onClick={() => navigate('/business/resume/list')}
           >
-            이력서 보기
+            이력서 조회
           </button>
         ) : (
           <button
