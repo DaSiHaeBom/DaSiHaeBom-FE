@@ -11,6 +11,10 @@ export default function Landing() {
 
   return (
     <div className="h-full flex flex-col items-center justify-center gap-30 p-30">
+      <div className="fixed top-0 left-8 z-10">
+        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+      </div>
+
       <div className="flex flex-col items-center justify-center">
         <p className="text-center text-neutral-700 text-4xl font-bold leading-16">
           이력서를 쓰면, 기업이 먼저 연락합니다.
