@@ -233,7 +233,7 @@ const BusinessSidebar = () => {
             </svg>
           </div>
           <span
-            className={`text-sm font-medium ${
+            className={`text-sm font-medium whitespace-nowrap ${
               location.pathname.startsWith('/business/resume')
                 ? 'text-orange-500'
                 : 'text-gray-800'

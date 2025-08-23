@@ -107,11 +107,10 @@ export default function BusinessInfoPage() {
 
   // 카카오 우편번호 열기
   const openDaumPostcode = () => {
-    type DaumPostcodeData = {
-      zonecode: string;
+    interface DaumPostcodeData {
       roadAddress?: string;
       jibunAddress?: string;
-    };
+    }
 
     const loadPostcode = () => {
       new window.daum.Postcode({
@@ -124,6 +123,7 @@ export default function BusinessInfoPage() {
             }));
           }
         },
+        onclose: () => {},
       }).open();
     };
 
@@ -150,14 +150,17 @@ export default function BusinessInfoPage() {
       const res = await sendProfilePhoneVerificationCode(data.phone);
       console.log('인증번호 전송 성공:', res);
       alert('인증번호가 전송되었습니다.');
-    } catch (err: any) {
-      if (err.response?.status === 409) {
-        console.warn('이미 등록된 번호이거나 중복 요청입니다.');
-        alert('이미 사용 중인 번호이거나 요청이 중복되었습니다.');
-      } else {
-        console.error('인증번호 전송 실패:', err);
-        alert('인증번호 전송 중 오류가 발생했습니다.');
+    } catch (err: unknown) {
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosErr = err as { response?: { status?: number } };
+        if (axiosErr.response?.status === 409) {
+          console.warn('이미 등록된 번호이거나 중복 요청입니다.');
+          alert('이미 사용 중인 번호이거나 요청이 중복되었습니다.');
+          return;
+        }
       }
+      console.error('인증번호 전송 실패:', err);
+      alert('인증번호 전송 중 오류가 발생했습니다.');
     }
   };
 
