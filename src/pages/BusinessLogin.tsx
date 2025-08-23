@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { businessLogin } from '../api/authApi';
+import IdFindModal from '../components/signupPage/IdFindModal';
+import BusinessPasswordFindModal from '../components/signupPage/BusinessPasswordFindModal';
 
 interface BusinessLoginForm {
   id: string;
@@ -9,6 +12,8 @@ interface BusinessLoginForm {
 
 export default function BusinessLogin() {
   const navigate = useNavigate();
+  const [isIdFindModalOpen, setIsIdFindModalOpen] = useState(false);
+  const [isPasswordFindModalOpen, setIsPasswordFindModalOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -142,12 +147,14 @@ export default function BusinessLogin() {
               </button>
               <button
                 type="button"
+                onClick={() => setIsIdFindModalOpen(true)}
                 className="flex-1 bg-white border border-gray-300 text-lg text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 아이디 찾기
               </button>
               <button
                 type="button"
+                onClick={() => setIsPasswordFindModalOpen(true)}
                 className="flex-1 bg-white border border-gray-300 text-lg text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 비밀번호 찾기
@@ -156,6 +163,19 @@ export default function BusinessLogin() {
           </div>
         </div>
       </div>
+
+      <IdFindModal
+        isOpen={isIdFindModalOpen}
+        onClose={() => setIsIdFindModalOpen(false)}
+      />
+      <BusinessPasswordFindModal
+        isOpen={isPasswordFindModalOpen}
+        onClose={() => setIsPasswordFindModalOpen(false)}
+        onOpenIdFind={() => {
+          setIsPasswordFindModalOpen(false);
+          setIsIdFindModalOpen(true);
+        }}
+      />
     </div>
   );
 }

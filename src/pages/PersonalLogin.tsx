@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PasswordFindModal from '../components/signupPage/PasswordFindModal';
+import PersonalPasswordFindModal from '../components/signupPage/PersonalPasswordFindModal';
 import { login } from '../api/authApi';
 
 interface PersonalLoginForm {
@@ -152,7 +152,7 @@ export default function PersonalLogin() {
         </div>
       </div>
 
-      <PasswordFindModal
+      <PersonalPasswordFindModal
         isOpen={isPasswordFindModalOpen}
         onClose={() => setIsPasswordFindModalOpen(false)}
       />
