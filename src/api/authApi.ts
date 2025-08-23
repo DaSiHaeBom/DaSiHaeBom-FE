@@ -259,3 +259,18 @@ export const logout = async (): Promise<{
   const response = await baseAxiosInstance.post('/api/v1/auth/logout');
   return response.data;
 };
+
+// 기업 회원 전화번호 변경
+export const sendProfilePhoneVerificationCode = async (phoneNumber: string) => {
+  const response = await axios.post(
+    '/api/v1/validations/phone/code/profile',
+    { phoneNumber },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  return response.data;
+};

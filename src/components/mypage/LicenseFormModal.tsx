@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
-import { createLicense, searchLicenses } from '../../api/licenseApi';
+import {
+  createLicense,
+  searchLicenses,
+  updateLicense,
+} from '../../api/licenseApi';
 import type { ModalType } from '../../types/ModalType';
 import Modal from '../Modal';
 import type React from 'react';
 import type { License } from '../../types/License';
+import Plus from '../../assets/MyPageAssets/Plus.svg';
 
 type LicenseFormModalProps = {
   modalType: ModalType;
@@ -13,6 +18,7 @@ type LicenseFormModalProps = {
   setLicenseData: React.Dispatch<React.SetStateAction<License>>;
   setCertList: React.Dispatch<React.SetStateAction<License[]>>;
   setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
+  mode: 'create' | 'edit';
 };
 
 const LicenseFormModal = ({
@@ -22,12 +28,25 @@ const LicenseFormModal = ({
   setLicenseData,
   setCertList,
   setModalType,
+  mode,
 }: LicenseFormModalProps) => {
   const [query, setQuery] = useState('');
   const [options, setOptions] = useState<
     { id: number; name: string; issuer: string }[]
   >([]);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // 모달 열릴 때 초기화 or 값 세팅
+  useEffect(() => {
+    if (modalType === 'LICENSE_FORM') {
+      if (mode === 'create') {
+        setLicenseData({ licenseId: 0, name: '', issuer: '', issuedAt: '' });
+        setQuery('');
+      } else {
+        setQuery(licenseData.name); // 수정 모드에서는 기존 이름 표시
+      }
+    }
+  }, [modalType, mode]);
 
   // 검색 api 호출 + 디바운스
   useEffect(() => {
@@ -70,102 +89,120 @@ const LicenseFormModal = ({
     setShowDropdown(false);
   };
 
-  //  자격증 등록 핸들러
-  const handleRegister = async () => {
+  // 등록/수정 공용 핸들러
+  const handleSubmit = async () => {
     if (!licenseData.name.trim()) return alert('자격증명을 입력하세요.');
     if (!licenseData.issuer.trim()) return alert('발급기관을 입력하세요.');
     if (!licenseData.issuedAt) return alert('발급일을 선택하세요.');
 
     try {
-      const res = await createLicense({
-        name: licenseData.name.trim(),
-        issuer: licenseData.issuer.trim(),
-        issuedAt: licenseData.issuedAt,
-      });
+      if (mode === 'create') {
+        // 등록
+        const res = await createLicense({
+          name: licenseData.name.trim(),
+          issuer: licenseData.issuer.trim(),
+          issuedAt: licenseData.issuedAt,
+        });
+        const newItem: License = {
+          licenseId: res.result.licenseId,
+          name: licenseData.name.trim(),
+          issuer: licenseData.issuer.trim(),
+          issuedAt: licenseData.issuedAt,
+        };
+        setCertList(prev => [...prev, newItem]);
+      } else {
+        // 수정
+        await updateLicense(licenseData.licenseId, {
+          name: licenseData.name.trim(),
+          issuer: licenseData.issuer.trim(),
+          issuedAt: licenseData.issuedAt,
+        });
+        setCertList(prev =>
+          prev.map(c =>
+            c.licenseId === licenseData.licenseId ? licenseData : c
+          )
+        );
+      }
 
-      const newItem: License = {
-        licenseId: res.result.licenseId,
-        name: licenseData.name.trim(),
-        issuer: licenseData.issuer.trim(),
-        issuedAt: licenseData.issuedAt,
-      };
-
-      setCertList(prev => [...prev, newItem]);
-      setLicenseData({ licenseId: 0, name: '', issuedAt: '', issuer: '' });
+      setLicenseData({ licenseId: 0, name: '', issuer: '', issuedAt: '' });
       setModalType('LICENSE_LIST');
     } catch (err) {
-      console.error('자격증 등록 실패:', err);
-      alert('자격증 등록에 실패했습니다.');
+      console.error(`${mode === 'create' ? '등록' : '수정'} 실패:`, err);
+      alert(`${mode === 'create' ? '등록' : '수정'}에 실패했습니다.`);
     }
   };
 
   return (
     <Modal isOpen={modalType === 'LICENSE_FORM'} onClose={handleClose}>
-      <h2 className="text-[#3C3C3C] font-[Pretendard] text-[20px] font-bold leading-[150%] mb-4">
-        자격증 등록
+      <h2 className="text-[#3C3C3C] font-[Pretendard] text-[30px] pl-2 text-left font-bold leading-[150%] mb-6">
+        {mode === 'create' ? '자격증 등록' : '자격증 수정'}
       </h2>
 
-      <div className="flex flex-col gap-3 text-left text-sm text-[#3C3C3C]">
-        {/* 자격증명 + 검색 드롭다운 */}
-        <label className="space-y-1 relative">
-          <span className="text-[14px] leading-[160%]">자격증명</span>
-          <input
-            className="w-full border border-[#D9D9D9] rounded-[8px] p-2 focus:outline-none focus:ring-1 focus:ring-orange-300"
-            placeholder="자격증 명을 입력하세요."
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-          {showDropdown && options.length > 0 && (
-            <ul className="absolute left-0 right-0 bg-white border rounded-[8px] mt-1 max-h-48 overflow-y-auto shadow z-10">
-              {options.map(opt => (
-                <li
-                  key={opt.id}
-                  onClick={() => handleSelectOption(opt)}
-                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {opt.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </label>
+      <div className="flex flex-col gap-4 text-[#3C3C3C] text-[17px]">
+        {/* 자격증명 */}
+        <div className="flex items-center gap-4">
+          <label className="w-[100px] text-left pl-2 font-semibold text-[20px]">
+            자격증
+          </label>
+          <div className="flex-1 relative">
+            <input
+              className="w-full h-[44px] border rounded-[8px] px-3 pr-10 focus:outline-none focus:ring-1 focus:ring-orange-300"
+              placeholder="자격증명 입력"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+            {showDropdown && options.length > 0 && (
+              <ul className="absolute left-0 right-0 bg-white border rounded-[8px] max-h-48 overflow-y-auto shadow z-10 mt-1">
+                {options.map(opt => (
+                  <li
+                    key={opt.id}
+                    onClick={() => handleSelectOption(opt)}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-left"
+                  >
+                    {opt.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
 
         {/* 발급일 */}
-        <label className="space-y-1">
-          <span className="text-[14px] leading-[160%]">발급일</span>
+        <div className="flex items-center gap-4">
+          <label className="w-[100px] text-left pl-2 font-semibold text-[20px]">
+            발급일
+          </label>
           <input
             type="date"
-            className="w-full border border-[#D9D9D9] rounded-[8px] p-2 focus:outline-none focus:ring-1 focus:ring-orange-300"
+            className="flex-1 h-[44px] border rounded-[8px] px-3 focus:outline-none focus:ring-1 focus:ring-orange-300"
             value={licenseData.issuedAt}
             onChange={onChange('issuedAt')}
           />
-        </label>
+        </div>
 
         {/* 발급기관 */}
-        <label className="space-y-1">
-          <span className="text-[14px] leading-[160%]">발급기관</span>
+        <div className="flex items-center gap-4">
+          <label className="w-[100px] text-left pl-2 font-semibold text-[20px]">
+            발급 기관
+          </label>
           <input
-            className="w-full border border-[#D9D9D9] rounded-[8px] p-2 focus:outline-none focus:ring-1 focus:ring-orange-300"
-            placeholder="자격증 발급기관을 입력하세요."
+            className="flex-1 h-[44px] border rounded-[8px] px-3 focus:outline-none focus:ring-1 focus:ring-orange-300"
+            placeholder="입력"
+            maxLength={15}
             value={licenseData.issuer}
             onChange={onChange('issuer')}
           />
-        </label>
+        </div>
       </div>
 
-      {/* 버튼 영역 */}
-      <div className="mt-6 flex gap-3">
+      {/* 버튼 */}
+      <div className="mt-8">
         <button
-          className="flex-1 py-3 rounded-[10px] border border-gray-300 hover:bg-gray-100"
-          onClick={handleClose}
+          className="w-full h-[48px] rounded-[8px] text-[20px] bg-[#FF6B01] text-white font-semibold hover:opacity-90 flex items-center justify-center gap-2"
+          onClick={handleSubmit}
         >
-          취소
-        </button>
-        <button
-          className="flex-1 py-3 rounded-[10px] bg-[#FF9555] text-white font-semibold hover:opacity-90"
-          onClick={handleRegister}
-        >
-          + 등록하기
+          <img src={Plus} alt="plus" className="w-5 h-5" />
+          {mode === 'create' ? '등록하기' : '수정하기'}
         </button>
       </div>
     </Modal>

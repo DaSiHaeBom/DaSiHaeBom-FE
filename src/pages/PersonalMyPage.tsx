@@ -19,6 +19,10 @@ const PersonalMyPage = () => {
   });
   const [certList, setCertList] = useState<License[]>([]);
 
+  // create | edit 모드 추가
+  const [mode, setMode] = useState<'create' | 'edit'>('create');
+
+  // 유저정보
   type User = {
     memberType: 'personal';
     name: string;
@@ -91,6 +95,7 @@ const PersonalMyPage = () => {
 
     loadUser();
   }, []);
+
   // 모달 닫는 핸들러
   const handleClose = () => setModalType(null);
 
@@ -120,15 +125,18 @@ const PersonalMyPage = () => {
         certList={certList}
         setCertList={setCertList}
         setModalType={setModalType}
+        setLicenseData={setLicenseData}
+        setMode={setMode}
       />
       <LicenseFormModal
         modalType={modalType}
         handleClose={handleClose}
         licenseData={licenseData}
-        certList={certList}
         setLicenseData={setLicenseData}
+        certList={certList}
         setCertList={setCertList}
         setModalType={setModalType}
+        mode={mode}
       />
     </div>
   );
