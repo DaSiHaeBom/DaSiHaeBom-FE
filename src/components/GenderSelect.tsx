@@ -1,4 +1,3 @@
-import React from 'react';
 import RadioChecked from '../assets/MyPageAssets/RadioChecked.svg';
 import RadioUnchecked from '../assets/MyPageAssets/RadioUnchecked.svg';
 

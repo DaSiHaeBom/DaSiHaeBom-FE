@@ -1,5 +1,4 @@
 // 기타 모달들 처리
-import React from 'react';
 import PasswordModals from './PasswordModals';
 import DeleteModals from './DeleteModals';
 import type { ModalType } from '../../types/ModalType';

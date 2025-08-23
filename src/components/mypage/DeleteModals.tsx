@@ -1,5 +1,4 @@
 // 회원 탈퇴 관련 모달
-import React from 'react';
 import Modal from '../Modal';
 import WarningIcon from '../../assets/MyPageAssets/WarningIcon';
 import CheckIcon from '../../assets/MyPageAssets/CheckIcon';

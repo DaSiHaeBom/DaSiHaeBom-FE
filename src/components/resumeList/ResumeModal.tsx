@@ -1,4 +1,4 @@
-import type { ResumeModalProps } from '../../types/resumeList';
+import type { ResumeModalData, ResumeModalProps } from '../../types/resumeList';
 import Download from '../../assets/ResumeListAssets/Download.svg';
 import CloseOn from '../../assets/ResumeListAssets/CloseOn.svg';
 import html2pdf from 'html2pdf.js';
@@ -28,7 +28,7 @@ const ResumeModal = ({ data, onClose }: ResumeModalProps) => {
     const element = document.getElementById('resume-content');
     if (!element) return;
 
-    replaceOKLCH(); // 👈 PDF 만들기 전에 변환
+    replaceOKLCH(); // PDF 만들기 전에 변환
 
     const opt = {
       margin: 0.5,
@@ -137,7 +137,7 @@ const ResumeModal = ({ data, onClose }: ResumeModalProps) => {
                 </tr>
               </thead>
               <tbody>
-                {data.certs.map((c: any, i: number) => (
+                {data.certs.map((c: ResumeModalData['certs'][number], i) => (
                   <tr key={i}>
                     <td className="border px-3 py-2 text-center h-10">
                       {c.name}

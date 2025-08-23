@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AgeFilter from './AgeFilter';
 import CertFilter from './CertFilter';
 import FilterChips from './FilterChips';

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import Modal from '../Modal';
 import CheckIcon from '../../assets/MyPageAssets/CheckIcon';
 import type { ModalType } from '../../types/ModalType';
 import { updatePassword } from '../../api/userApi';
+import { useState } from 'react';
 
 type PasswordModalsProps = {
   modalType: ModalType;
@@ -59,7 +59,7 @@ const PasswordModals = ({
 
       resetForm();
       setModalType('PASSWORD_DONE'); // 비번 변경 성공 시 모달처리
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       setError('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
     }

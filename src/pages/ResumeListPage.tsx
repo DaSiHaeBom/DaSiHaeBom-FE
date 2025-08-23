@@ -11,7 +11,7 @@ import Loading from '../utils/Loading/Loading';
 type SortKey = 'latest' | 'distance'; // 최신순 + 거리별
 
 const ResumeListPage = () => {
-  const [sort, setSort] = useState<SortKey | null>(null);
+  const [sort, setSort] = useState<SortKey>('latest');
   const [allResumes, setAllResumes] = useState<ResumeSummary[]>([]);
   const [resumeList, setResumeList] = useState<ResumeSummary[]>([]);
   const [page, setPage] = useState(1);
