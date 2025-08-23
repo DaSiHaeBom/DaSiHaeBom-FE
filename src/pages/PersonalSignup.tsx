@@ -172,27 +172,27 @@ export default function PersonalSignup() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-white mt-16">
+    <div className="flex justify-center items-center min-h-screen bg-white py-4">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src="/src/assets/logo.svg" alt="로고" className="w-14 h-14" />
       </div>
       <div className="flex items-center justify-center">
-        <div className="w-114">
+        <div className="w-80 max-w-sm">
           <button
             onClick={handleBack}
-            className="text-gray-500 hover:text-gray-700 mb-4"
+            className="text-gray-500 text-sm hover:text-gray-700 mb-3"
           >
-            <span className="text-[#FF9555]">←</span> 뒤로가기
+            <span className="text-[#FF9555] ">←</span> 뒤로가기
           </button>
-          <div className="text-center mb-8">
-            <p className="text-3xl font-bold text-black mb-8">개인 회원가입</p>
+          <div className="text-center mb-4">
+            <p className="text-2xl font-bold text-black mb-4">개인 회원가입</p>
           </div>
 
           <div className="bg-white">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div className="flex flex-col gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
                     휴대폰 번호
                   </label>
                   <div className="flex gap-2">
@@ -205,7 +205,7 @@ export default function PersonalSignup() {
                           message: '올바른 휴대폰 번호를 입력해주세요',
                         },
                       })}
-                      className={`w-96 h-14 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                      className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
                         errors.phoneNumber
                           ? 'border-red-500'
                           : 'border-gray-300'
@@ -216,13 +216,13 @@ export default function PersonalSignup() {
                       type="button"
                       onClick={handleSendVerificationCode}
                       disabled={isSendingCode}
-                      className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-20 h-10 px-2 py-2 text-xs bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSendingCode ? '발송중...' : '인증번호'}
                     </button>
                   </div>
                   {errors.phoneNumber && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p className="mt-1 text-xs text-red-500">
                       {errors.phoneNumber.message}
                     </p>
                   )}
@@ -239,7 +239,7 @@ export default function PersonalSignup() {
                             message: '6자리 인증번호를 입력해주세요',
                           },
                         })}
-                        className={`w-96 h-14 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                        className={`flex-1 h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
                           errors.verificationCode
                             ? 'border-red-500'
                             : 'border-gray-300'
@@ -250,7 +250,7 @@ export default function PersonalSignup() {
                         type="button"
                         onClick={handleVerifyCode}
                         disabled={isVerificationCompleted || isVerifyingCode}
-                        className="w-28 h-14 px-4 py-3 text-xl text-[#FF9555] border border-[#FF9555] rounded-lg hover:bg-orange-50 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-20 h-10 px-2 py-2 text-xs text-[#FF9555] border border-[#FF9555] rounded-lg hover:bg-orange-50 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isVerificationCompleted
                           ? '인증완료'
@@ -260,7 +260,7 @@ export default function PersonalSignup() {
                       </button>
                     </div>
                     {errors.verificationCode && (
-                      <p className="mt-1 text-sm text-red-500">
+                      <p className="mt-1 text-xs text-red-500">
                         {errors.verificationCode.message}
                       </p>
                     )}
@@ -269,7 +269,7 @@ export default function PersonalSignup() {
               </div>
 
               <div>
-                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
+                <label className="flex gap-2 items-center text-xs font-medium text-gray-700 mb-1">
                   비밀번호
                   <span className="text-xs text-gray-500">
                     특수문자 포함 8자 이상 입력
@@ -287,20 +287,20 @@ export default function PersonalSignup() {
                         '특수문자, 영문, 숫자를 포함하여 8자 이상 입력해주세요',
                     },
                   })}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
                     errors.password ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="비밀번호"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.password.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2">
+                <label className="text-xs font-medium text-gray-700 mb-1">
                   이름
                 </label>
                 <input
@@ -312,20 +312,20 @@ export default function PersonalSignup() {
                       message: '이름은 2자 이상 입력해주세요',
                     },
                   })}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
                     errors.username ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="이름"
                 />
                 {errors.username && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.username.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 mb-2">
+                <label className="flex gap-2 items-center text-xs font-medium text-gray-700 mb-1">
                   생년월일
                   <span className="text-xs text-gray-500">6자리 (YYMMDD)</span>
                 </label>
@@ -340,20 +340,20 @@ export default function PersonalSignup() {
                     },
                   })}
                   maxLength={6}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent ${
+                  className={`w-full h-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm ${
                     errors.birthDate ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="생년월일 (YYMMDD)"
                 />
                 {errors.birthDate && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.birthDate.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2">
+                <label className="text-xs font-medium text-gray-700 mb-1">
                   성별
                 </label>
                 <div className="flex gap-4">
@@ -366,7 +366,7 @@ export default function PersonalSignup() {
                       })}
                       className="mr-2 text-[#FF9555] focus:ring-[#FF9555]"
                     />
-                    <span className="text-gray-700">남성</span>
+                    <span className="text-gray-700 text-xs">남성</span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -377,18 +377,18 @@ export default function PersonalSignup() {
                       })}
                       className="mr-2 text-[#FF9555] focus:ring-[#FF9555]"
                     />
-                    <span className="text-gray-700">여성</span>
+                    <span className="text-gray-700 text-xs">여성</span>
                   </label>
                 </div>
                 {errors.gender && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.gender.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2">
+                <label className="text-xs font-medium text-gray-700 mb-1">
                   주소
                 </label>
                 <div className="flex gap-2 mb-2">
@@ -397,14 +397,14 @@ export default function PersonalSignup() {
                     {...register('baseAddress', {
                       required: '주소를 입력해주세요',
                     })}
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
+                    className="flex-1 h-10 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm"
                     placeholder="주소"
                     readOnly
                   />
                   <button
                     type="button"
                     onClick={handleAddressSearch}
-                    className="px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap"
+                    className="px-3 py-2 bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap h-10 text-xs"
                   >
                     주소 검색
                   </button>
@@ -414,16 +414,16 @@ export default function PersonalSignup() {
                   {...register('detailAddress', {
                     required: '상세주소를 입력해주세요',
                   })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
+                  className="w-full h-10 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent text-sm"
                   placeholder="상세주소"
                 />
                 {errors.baseAddress && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.baseAddress.message}
                   </p>
                 )}
                 {errors.detailAddress && (
-                  <p className="mt-1 text-sm text-red-500">
+                  <p className="mt-1 text-xs text-red-500">
                     {errors.detailAddress.message}
                   </p>
                 )}
@@ -432,16 +432,16 @@ export default function PersonalSignup() {
               <button
                 type="submit"
                 disabled={isSubmitting || !isPhoneVerified}
-                className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {isSubmitting ? '가입 중...' : '가입하기'}
               </button>
             </form>
 
-            <div className="mt-6">
+            <div className="mt-2">
               <button
                 type="button"
-                className="w-full bg-white border border-gray-300 text-orange-400 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="w-full bg-white border border-gray-300 text-orange-400 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
                 onClick={() => alert('개발 준비중입니다')}
               >
                 카카오톡 회원가입
