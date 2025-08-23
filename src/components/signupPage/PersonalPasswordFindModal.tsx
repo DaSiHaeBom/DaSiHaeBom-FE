@@ -10,7 +10,7 @@ interface PasswordFindModalProps {
   onClose: () => void;
 }
 
-export default function PasswordFindModal({
+export default function PersonalPasswordFindModal({
   isOpen,
   onClose,
 }: PasswordFindModalProps) {
@@ -135,7 +135,7 @@ export default function PasswordFindModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="relative flex flex-col gap-10 w-121 h-83 justify-center bg-white rounded-lg border border-gray-200 p-8 max-h-[90vh] overflow-y-auto shadow-xl">
+      <div className="relative flex flex-col gap-10 w-121 h-100 justify-center bg-white rounded-lg border border-gray-200 p-8 max-h-[90vh] overflow-y-auto shadow-xl">
         <div>
           <button
             type="button"
@@ -161,14 +161,17 @@ export default function PasswordFindModal({
                 type="tel"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
+                className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="전화번호 입력"
                 maxLength={11}
+                disabled={isVerificationSent}
               />
               <button
                 type="button"
-                onClick={handleSendVerificationCode}
-                disabled={isSendingCode}
+                onClick={
+                  isVerificationSent ? undefined : handleSendVerificationCode
+                }
+                disabled={isSendingCode || isVerificationSent}
                 className="w-28 h-14 px-4 py-3 text-xl bg-orange-500 text-white rounded-lg hover:bg-[#E67E22] transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSendingCode ? '발송중...' : '인증번호'}
@@ -183,21 +186,26 @@ export default function PasswordFindModal({
                   type="text"
                   value={verificationCode}
                   onChange={handleVerificationCodeChange}
-                  className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent"
+                  className="flex-1 h-14 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF9555] focus:border-transparent disabled:opacity-50 disabled:cursor-default"
                   placeholder="인증번호 입력"
                   maxLength={6}
+                  disabled={isVerificationCompleted}
                 />
                 <button
                   type="button"
-                  onClick={handleVerifyCode}
+                  onClick={
+                    isVerificationCompleted ? undefined : handleVerifyCode
+                  }
                   disabled={isVerificationCompleted || isVerifyingCode}
                   className="w-28 h-14 px-4 py-3 text-xl text-white bg-gray-400 rounded-lg hover:bg-gray-500 transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isVerificationCompleted
                     ? '인증완료'
-                    : isVerifyingCode
-                      ? '인증중...'
-                      : '인증'}
+                    : isVerificationCompleted
+                      ? '인증완료'
+                      : isVerifyingCode
+                        ? '인증중...'
+                        : '인증'}
                 </button>
               </div>
             </div>

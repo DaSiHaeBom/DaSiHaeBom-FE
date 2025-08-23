@@ -6,7 +6,8 @@ import BusinessLayout from '../layout/BusinessLayOut';
 
 //page
 import ResumeLayout from '../layout/ResumeLayOut';
-import Home from '../pages/Home';
+import PersonalHome from '../pages/PersonalHome';
+import BusinessHome from '../pages/BusinessHome';
 import Landing from '../pages/Landing';
 import Login from '../pages/Login';
 import PersonalLogin from '../pages/PersonalLogin';
@@ -50,6 +51,10 @@ const routes = createBrowserRouter([
     element: <Signup />,
   },
   {
+    path: 'signup/business',
+    element: <BusinessSignup />,
+  },
+  {
     path: 'landing',
     element: <Landing />,
   },
@@ -61,7 +66,7 @@ const routes = createBrowserRouter([
       </PersonalLayout>
     ),
     children: [
-      { path: 'home', element: <Home /> },
+      { path: 'home', element: <PersonalHome /> },
       {
         path: 'mypage',
         element: <Outlet />,
@@ -110,6 +115,10 @@ const routes = createBrowserRouter([
       </BusinessLayout>
     ),
     children: [
+      {
+        path: 'home',
+        element: <BusinessHome />,
+      },
       {
         path: 'mypage',
         element: <Outlet />,

@@ -3,11 +3,11 @@ import { getResumeIsOrNot } from '../api/home';
 import { useNavigate } from 'react-router-dom';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
-import step1Image from '../assets/HomeAssets/step1Image.svg';
-import step2Image from '../assets/HomeAssets/step2Image.svg';
-import step3Image from '../assets/HomeAssets/step3Image.svg';
+import step1Image from '../assets/HomeAssets/PersonalHomeAssets/step1Image.svg';
+import step2Image from '../assets/HomeAssets/PersonalHomeAssets/step2Image.svg';
+import step3Image from '../assets/HomeAssets/PersonalHomeAssets/step3Image.svg';
 
-export default function Home() {
+export default function PersonalHome() {
   const navigate = useNavigate();
   const [isResumeCreated, setIsResumeCreated] = useState(false);
 
@@ -22,8 +22,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center gap-30 mt-16">
-      <div className="flex flex-col items-center justify-center mt-30">
+    <div className="flex flex-col items-center justify-center gap-30 mt-16">
+      <div className="flex flex-col items-center justify-center">
         <p className="text-center text-neutral-700 text-4xl font-bold leading-16">
           이력서를 쓰면, 기업이 먼저 연락합니다.
         </p>
@@ -51,7 +51,7 @@ export default function Home() {
           </button>
         )}
       </div>
-      <div className="flex flex-col justify-center items-center gap-10">
+      <div className="flex flex-col justify-center items-center gap-10 mb-30">
         <p className="text-neutral-700 text-4xl font-bold leading-16">
           우리 서비스는 이렇게 진행됩니다.
         </p>

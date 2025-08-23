@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Header } from '../components/Header';
+import { BusinessHeader } from '../components/BusinessHeader';
 import BusinessSidebar from '../components/BusinessSidebar';
 
 interface LayoutProps {
@@ -14,7 +14,7 @@ const BusinessLayout = ({ children }: LayoutProps) => {
       {/* 여기에 사이드바 컴포넌트를 추가할 수 있습니다. */}
       <BusinessSidebar />
       <div className="ml-28">
-        <Header />
+        <BusinessHeader />
         {children}
       </div>
     </div>

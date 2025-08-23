@@ -6,6 +6,7 @@ import {
   verifyPhoneCode,
   validateBusinessNumber,
   businessSignup,
+  checkBusinessIdDuplicate,
 } from '../api/authApi';
 
 interface BusinessSignupForm {
@@ -53,16 +54,26 @@ export default function BusinessSignup() {
 
     setIsCheckingId(true);
     try {
-      // TODO: 아이디 중복검사 API 호출
-      // const result = await checkIdDuplicate(watchedLoginId);
-      setTimeout(() => {
-        setIsIdVerified(true);
-        alert('사용 가능한 아이디입니다');
-        setIsCheckingId(false);
-      }, 1000);
+      const result = await checkBusinessIdDuplicate(watchedLoginId);
+      if (result.isSuccess) {
+        if (result.result.isAlreadyRegistered) {
+          // 이미 등록된 아이디
+          setIsIdVerified(false);
+          alert('이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.');
+        } else {
+          // 사용 가능한 아이디
+          setIsIdVerified(true);
+          alert('사용 가능한 아이디입니다');
+        }
+      } else {
+        alert(
+          result.message || '아이디 중복검사에 실패했습니다. 다시 시도해주세요.'
+        );
+      }
     } catch (error) {
       console.error('아이디 중복검사 실패:', error);
       alert('아이디 중복검사에 실패했습니다. 다시 시도해주세요.');
+    } finally {
       setIsCheckingId(false);
     }
   };
@@ -208,6 +219,12 @@ export default function BusinessSignup() {
     }
 
     try {
+      // 데이터 검증
+      if (!data.representativeName || !data.companyName || !data.baseAddress) {
+        alert('모든 필수 항목을 입력해주세요.');
+        return;
+      }
+
       const signupData = {
         loginId: data.loginId,
         password: data.password,
@@ -219,6 +236,8 @@ export default function BusinessSignup() {
         corpDetailAddress: data.detailAddress,
       };
 
+      console.log('전송할 데이터:', signupData);
+
       const result = await businessSignup(signupData);
       if (result.isSuccess) {
         alert('회원가입이 완료되었습니다!');
@@ -228,11 +247,29 @@ export default function BusinessSignup() {
       }
     } catch (error: unknown) {
       console.error('회원가입 실패:', error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : '회원가입에 실패했습니다. 다시 시도해주세요.';
-      alert(errorMessage);
+
+      // 409 Conflict 오류 처리
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as {
+          response?: { status?: number; data?: { message?: string } };
+        };
+        if (axiosError.response?.status === 409) {
+          alert(
+            '이미 가입된 정보가 있습니다. 아이디, 전화번호, 사업자등록번호를 확인해주세요.'
+          );
+        } else {
+          const errorMessage =
+            axiosError.response?.data?.message ||
+            '회원가입에 실패했습니다. 다시 시도해주세요.';
+          alert(errorMessage);
+        }
+      } else {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : '회원가입에 실패했습니다. 다시 시도해주세요.';
+        alert(errorMessage);
+      }
     }
   };
 
@@ -438,8 +475,8 @@ export default function BusinessSignup() {
                       type="button"
                       onClick={handleVerifyCode}
                       disabled={isVerificationCompleted || isVerifyingCode}
-                      className={`w-28 h-14 px-4 py-3 text-xl text-white bg-orange-300 rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
-                        isVerificationCompleted ? '' : 'hover:bg-orange-400'
+                      className={`w-28 h-14 px-4 py-3 text-xl text-[#FF9555] bg-white border border-[#FF9555] rounded-lg transition-colors font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isVerificationCompleted ? '' : 'hover:bg-orange-50'
                       }`}
                     >
                       {isVerificationCompleted

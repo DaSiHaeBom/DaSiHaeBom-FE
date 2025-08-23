@@ -26,6 +26,26 @@ export const sendPhoneVerificationCode = async (
   return response.data;
 };
 
+// 휴대폰 인증번호 발송 (기업 회원 아이디 찾기용)
+export const sendIdFindVerificationCode = async (
+  phoneNumber: string
+): Promise<PhoneVerificationResponse> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/validations/phone/code/find-id',
+    {
+      phoneNumber,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
 // 휴대폰 인증번호 검증
 export const verifyPhoneCode = async (
   phoneNumber: string,
@@ -84,6 +104,17 @@ export const login = async (loginData: {
   return response.data;
 };
 
+export const businessLogin = async (loginData: {
+  loginId: string;
+  password: string;
+}): Promise<SignupResponse> => {
+  const response = await baseAxiosInstance.post(
+    '/api/v1/auth/login',
+    loginData
+  );
+  return response.data;
+};
+
 // 비밀번호 찾기에서 휴대폰 인증번호 발송
 export const sendPasswordResetCode = async (
   phoneNumber: string
@@ -104,7 +135,7 @@ export const sendPasswordResetCode = async (
   return response.data;
 };
 
-// 임시 비밀번호 발급 (비밀번호 찾기용)
+// 임시 비밀번호 발급 (개인, 기업 비밀번호 찾기용)
 export const sendTempPassword = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
@@ -120,6 +151,7 @@ export const sendTempPassword = async (
       },
     }
   );
+  console.log(response.data);
   return response.data;
 };
 
@@ -165,5 +197,65 @@ export const businessSignup = async (signupData: {
     }
   );
   console.log(response.data);
+  return response.data;
+};
+
+// 기업 회원 아이디 중복검사
+export const checkBusinessIdDuplicate = async (
+  loginId: string
+): Promise<{
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    loginId: string;
+    isAlreadyRegistered: boolean;
+  };
+}> => {
+  // 프록시를 통해 호출 (로컬호스트로 요청하면 프록시가 실제 서버로 전달)
+  const response = await axios.get(
+    `https://www.dlrbdjs.store/api/v1/users/corps/check-id?loginId=${loginId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 기업 회원 아이디 찾기
+export const findBusinessId = async (
+  phoneNumber: string
+): Promise<{
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    loginId: string;
+  };
+}> => {
+  const response = await axios.post(
+    'https://www.dlrbdjs.store/api/v1/users/corps/find-id',
+    { phoneNumber },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 로그아웃
+export const logout = async (): Promise<{
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: string;
+}> => {
+  const response = await baseAxiosInstance.post('/api/v1/auth/logout');
   return response.data;
 };

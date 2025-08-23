@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PasswordFindModal from '../components/signupPage/PasswordFindModal';
+import PersonalPasswordFindModal from '../components/signupPage/PersonalPasswordFindModal';
 import { login } from '../api/authApi';
 
 interface PersonalLoginForm {
@@ -28,7 +28,7 @@ export default function PersonalLogin() {
 
       if (result.isSuccess) {
         alert('로그인이 완료되었습니다!');
-        navigate('/home');
+        navigate('/personal/home');
       } else {
         alert(result.message || '로그인에 실패했습니다. 다시 시도해주세요.');
       }
@@ -152,7 +152,7 @@ export default function PersonalLogin() {
         </div>
       </div>
 
-      <PasswordFindModal
+      <PersonalPasswordFindModal
         isOpen={isPasswordFindModalOpen}
         onClose={() => setIsPasswordFindModalOpen(false)}
       />
