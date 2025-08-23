@@ -3,6 +3,7 @@ import Modal from '../components/Modal';
 import CheckIcon from '../assets/MyPageAssets/CheckIcon';
 import GenderSelect from '../components/GenderSelect';
 import { fetchPersonalInfo, updatePersonalInfo } from '../api/userApi';
+import { sendPhoneVerificationCode, verifyPhoneCode } from '../api/authApi';
 
 /** ===== Types ===== */
 type PersonalProfile = {
@@ -12,7 +13,7 @@ type PersonalProfile = {
   birth: string; // yymmdd
   gender: '남성' | '여성' | '';
   address: string; // 기본 주소
-  detailAddress?: string;
+  detailAddress: string;
 };
 
 /** ===== UI classes ===== */
@@ -38,6 +39,8 @@ export default function PersonalInfoPage() {
     address: '',
     detailAddress: '',
   });
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
@@ -53,8 +56,8 @@ export default function PersonalInfoPage() {
           name: user.username,
           birth: user.birthDate, // "yymmdd"
           gender: user.gender === 'MALE' ? '남성' : '여성',
-          address: user.address ?? '',
-          detailAddress: user.address ?? '',
+          address: user.baseAddress ?? '',
+          detailAddress: user.detailAddress ?? '',
         });
       } catch (err) {
         console.error('회원 정보 불러오기 실패:', err);
@@ -103,6 +106,42 @@ export default function PersonalInfoPage() {
     }
   };
 
+  // 휴대폰 인증번호 발송 핸들러
+  const handleSendCode = async () => {
+    if (!data.phone) {
+      alert('휴대폰 번호를 입력해주세요.');
+      return;
+    }
+    try {
+      const res = await sendPhoneVerificationCode(data.phone);
+      console.log('인증번호 전송 성공:', res);
+      alert('인증번호가 전송되었습니다.');
+    } catch (err) {
+      console.error('인증번호 전송 실패:', err);
+      alert('인증번호 전송 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 휴대폰 인증번호 인증 로직
+  const handleVerifyCode = async () => {
+    try {
+      const res = await verifyPhoneCode(
+        data.phone.replace(/[^0-9]/g, ''),
+        verificationCode
+      );
+
+      if (res.isSuccess) {
+        setIsVerified(true);
+        alert('휴대폰 인증이 완료되었습니다.');
+      } else {
+        alert(res.message || '인증 실패');
+      }
+    } catch (err) {
+      console.error('인증번호 검증 실패:', err);
+      alert('인증번호 검증 중 오류가 발생했습니다.');
+    }
+  };
+
   /** 액션 */
   const startEdit = () => setIsEditing(true);
   const cancelEdit = () => {
@@ -116,8 +155,10 @@ export default function PersonalInfoPage() {
         phoneNumber: data.phone,
         username: data.name,
         birthDate: data.birth,
-        address: data.address,
+        baseAddress: data.address,
+        detailAddress: data.detailAddress,
       });
+      console.log(suc);
 
       setIsEditing(false);
       setIsSavedModalOpen(true);
@@ -177,6 +218,7 @@ export default function PersonalInfoPage() {
             type="button"
             className="h-[56px] min-w-[116px] px-[13px] rounded-[10px] bg-[#FF9555] text-[#FFFEFD] text-[20px] font-semibold leading-[150%] disabled:opacity-50 cursor-pointer"
             disabled={!isEditing}
+            onClick={handleSendCode}
           >
             인증번호
           </button>
@@ -186,12 +228,16 @@ export default function PersonalInfoPage() {
             <input
               className={`${inputCls} flex-1`}
               placeholder="인증번호 입력"
+              value={verificationCode}
+              onChange={e => setVerificationCode(e.target.value)}
             />
             <button
               type="button"
-              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer"
+              className="h-[56px] min-w-[116px] px-4 rounded-[10px] border border-[#D9D9D9] text-[#FF9555] text-[20px] font-semibold leading-[150%] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleVerifyCode}
+              disabled={isVerified}
             >
-              인증
+              {isVerified ? '인증완료' : '인증'}
             </button>
           </div>
         )}

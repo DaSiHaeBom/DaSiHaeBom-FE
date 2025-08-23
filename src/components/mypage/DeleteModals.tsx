@@ -4,6 +4,8 @@ import Modal from '../Modal';
 import WarningIcon from '../../assets/MyPageAssets/WarningIcon';
 import CheckIcon from '../../assets/MyPageAssets/CheckIcon';
 import type { ModalType } from '../../types/ModalType';
+import { deleteUser } from '../../api/userApi';
+import { useNavigate } from 'react-router-dom';
 
 type DeleteModalsProps = {
   modalType: ModalType;
@@ -16,12 +18,18 @@ const DeleteModals = ({
   modalType,
   setModalType,
   handleClose,
-  onConfirmDelete,
 }: DeleteModalsProps) => {
+  const navigate = useNavigate();
+  // 회원 탈퇴 핸들러
   const handleConfirm = async () => {
-    // 실제 탈퇴 api 추가 예정
-    if (onConfirmDelete) await onConfirmDelete();
-    setModalType('DELETE_DONE');
+    try {
+      await deleteUser();
+      setModalType('DELETE_DONE');
+      // navigate('/login', { replace: true });
+    } catch (err) {
+      console.error('회원 탈퇴 실패:', err);
+      alert('회원 탈퇴 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -32,24 +40,24 @@ const DeleteModals = ({
           <div className="flex justify-center">
             <WarningIcon />
           </div>
-          <h2 className="mt-4 text-[20px] font-semibold text-[#3C3C3C]">
+          <h2 className="mt-4 text-[28px] font-semibold text-[#3C3C3C]">
             정말 탈퇴하시겠어요?
           </h2>
-          <p className="mt-1 text-[14px] text-[#6B6B6B]">
+          <p className="mt-1 text-[16px] font-[400] text-[#3c3c3c]">
             탈퇴 버튼 선택 시, 계정은
             <br />
             삭제되어 복구되지 않습니다.
           </p>
 
-          <div className="mt-6 flex gap-3 justify-center">
+          <div className="mt-4 flex gap-3 justify-center">
             <button
-              className="min-w-[96px] px-4 py-2 rounded-[12px] bg-[#FF2D2D] text-white font-semibold hover:opacity-90"
+              className="min-w-[106px] px-4 py-2 rounded-[10px] bg-[#ff0000] text-white font-semibold hover:opacity-90"
               onClick={handleConfirm}
             >
               확인
             </button>
             <button
-              className="min-w-[96px] px-4 py-2 rounded-[12px] border-2 border-[#FF2D2D] text-[#FF2D2D] font-semibold bg-white/0 hover:bg-white/50"
+              className="min-w-[106px] px-4 py-2 rounded-[10px] border-2 border-[#FF2D2D] text-[#FF2D2D] font-semibold bg-white/0 hover:bg-white/50"
               onClick={handleClose}
             >
               취소
@@ -64,12 +72,14 @@ const DeleteModals = ({
           <div className="flex justify-center">
             <CheckIcon checkColor="#ff0000" />
           </div>
-          <p className="mt-5 text-[18px] text-[#3C3C3C] font-medium">
+          <p className="mt-5 text-[28px] text-[#3C3C3C] font-medium">
             탈퇴 되었습니다.
           </p>
           <button
-            className="mt-6 min-w-[120px] px-5 py-2 rounded-[12px] bg-[#FF2D2D] text-white font-semibold hover:opacity-90"
-            onClick={handleClose}
+            className="mt-5 min-w-[106px] h-[50px] px-5 py-2 text-[20px] rounded-[10px] bg-[#FF0000] text-white font-semibold hover:opacity-90"
+            onClick={() => {
+              navigate('/login', { replace: true });
+            }}
           >
             확인
           </button>
