@@ -101,6 +101,8 @@ export const login = async (loginData: {
     '/api/v1/auth/login',
     loginData
   );
+  alert(response.data);
+
   return response.data;
 };
 
