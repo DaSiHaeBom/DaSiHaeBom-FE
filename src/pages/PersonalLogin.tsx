@@ -30,7 +30,7 @@ export default function PersonalLogin() {
       });
 
       if (result.isSuccess) {
-        //navigate('/personal/home');
+        navigate('/personal/home');
         console.log('로그인이 완료되었습니다!', result);
       } else {
         alert(result.message || '로그인에 실패했습니다. 다시 시도해주세요.');
