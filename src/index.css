@@ -1,9 +1,11 @@
+@import url('pretendard/dist/web/static/pretendard.css');
 @import 'tailwindcss/theme' layer(theme);
 @import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
 
 body {
   background-color: #fffefd; /* 배경색 */
+  font-family: 'Pretendard', sans-serif;
 }
 
 /* 애니메이션 */
