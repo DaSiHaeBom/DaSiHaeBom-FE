@@ -1,4 +1,3 @@
-import axios from 'axios';
 import baseAxiosInstance from './baseAxiosApi';
 import type {
   BusinessNumberValidationResponse,
@@ -10,17 +9,9 @@ import type {
 export const sendPhoneVerificationCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/sign-up`,
-    {
-      phoneNumber,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/validations/phone/code/sign-up`,
+    { phoneNumber }
   );
   console.log(response.data);
   return response.data;
@@ -30,17 +21,9 @@ export const sendPhoneVerificationCode = async (
 export const sendIdFindVerificationCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/find-id`,
-    {
-      phoneNumber,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/validations/phone/code/find-id`,
+    { phoneNumber }
   );
   console.log(response.data);
   return response.data;
@@ -51,18 +34,9 @@ export const verifyPhoneCode = async (
   phoneNumber: string,
   code: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/confirmation`,
-    {
-      phoneNumber,
-      code,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/validations/phone/code/confirmation`,
+    { phoneNumber, code }
   );
   console.log(response.data);
   return response.data;
@@ -78,15 +52,9 @@ export const personalSignup = async (signupData: {
   baseAddress: string;
   detailAddress: string;
 }): Promise<SignupResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/workers`,
-    signupData,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/users/workers`,
+    signupData
   );
   return response.data;
 };
@@ -120,17 +88,9 @@ export const businessLogin = async (loginData: {
 export const sendPasswordResetCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/reset-password`,
-    {
-      phoneNumber,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/validations/phone/code/reset-password`,
+    { phoneNumber }
   );
   console.log(response.data);
   return response.data;
@@ -140,18 +100,9 @@ export const sendPasswordResetCode = async (
 export const sendTempPassword = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/temp-password`,
-    {
-      phoneNumber,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
-  );
+  const response = await baseAxiosInstance.post(`/api/v1/auth/temp-password`, {
+    phoneNumber,
+  });
   console.log(response.data);
   return response.data;
 };
@@ -160,17 +111,9 @@ export const sendTempPassword = async (
 export const validateBusinessNumber = async (
   corpNumber: string
 ): Promise<BusinessNumberValidationResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/business-validation`,
-    {
-      corpNumber,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/users/corps/business-validation`,
+    { corpNumber }
   );
   console.log(response.data);
   return response.data;
@@ -187,15 +130,9 @@ export const businessSignup = async (signupData: {
   corpBaseAddress: string;
   corpDetailAddress: string;
 }): Promise<SignupResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps`,
-    signupData,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.post(
+    `/api/v1/users/corps`,
+    signupData
   );
   console.log(response.data);
   return response.data;
@@ -214,14 +151,8 @@ export const checkBusinessIdDuplicate = async (
   };
 }> => {
   // 프록시를 통해 호출 (로컬호스트로 요청하면 프록시가 실제 서버로 전달)
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/check-id?loginId=${loginId}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+  const response = await baseAxiosInstance.get(
+    `/api/v1/users/corps/check-id?loginId=${loginId}`
   );
   return response.data;
 };
@@ -237,16 +168,9 @@ export const findBusinessId = async (
     loginId: string;
   };
 }> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/find-id`,
-    { phoneNumber },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
-  );
+  const response = await baseAxiosInstance.post(`/api/v1/users/corps/find-id`, {
+    phoneNumber,
+  });
   return response.data;
 };
 
@@ -263,15 +187,9 @@ export const logout = async (): Promise<{
 
 // 기업 회원 전화번호 변경
 export const sendProfilePhoneVerificationCode = async (phoneNumber: string) => {
-  const response = await axios.post(
+  const response = await baseAxiosInstance.post(
     '/api/v1/validations/phone/code/profile',
-    { phoneNumber },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-      },
-    }
+    { phoneNumber }
   );
   return response.data;
 };
