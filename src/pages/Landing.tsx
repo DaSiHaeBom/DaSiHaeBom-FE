@@ -5,6 +5,7 @@ import landingImage from '../assets/LandingAssets/landingImage.svg';
 import imageOne from '../assets/LandingAssets/imageOne.svg';
 import imageTwo from '../assets/LandingAssets/imageTwo.svg';
 import imageThree from '../assets/LandingAssets/imageThree.svg';
+import logo from '/src/assets/logo.svg';
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Landing() {
   return (
     <div className="h-full flex flex-col items-center justify-center gap-30 p-30">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src={logo} alt="로고" className="w-20 h-20" />
       </div>
 
       <div className="flex flex-col items-center justify-center">

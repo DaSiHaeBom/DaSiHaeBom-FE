@@ -5,6 +5,9 @@ import { businessLogin } from '../api/authApi';
 import IdFindModal from '../components/signupPage/IdFindModal';
 import BusinessPasswordFindModal from '../components/signupPage/BusinessPasswordFindModal';
 
+//이미지
+import logo from '/src/assets/logo.svg';
+
 interface BusinessLoginForm {
   id: string;
   password: string;
@@ -66,7 +69,7 @@ export default function BusinessLogin() {
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src={logo} alt="로고" className="w-20 h-20" />
       </div>
 
       <div className="flex items-center justify-center">

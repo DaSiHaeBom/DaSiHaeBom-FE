@@ -10,6 +10,9 @@ import {
 } from '../api/authApi';
 import SuccessModal from '../components/SuccessModal';
 
+//이미지
+import logo from '/src/assets/logo.svg';
+
 interface BusinessSignupForm {
   loginId: string;
   password: string;
@@ -286,7 +289,7 @@ export default function BusinessSignup() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-white my-30">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src={logo} alt="로고" className="w-20 h-20" />
       </div>
       <div className="flex items-center justify-center">
         <div className="w-96 max-w-md">

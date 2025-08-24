@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import PersonalPasswordFindModal from '../components/signupPage/PersonalPasswordFindModal';
 import { login } from '../api/authApi';
 
+//이미지
+import logo from '/src/assets/logo.svg';
+
 interface PersonalLoginForm {
   loginId: string;
   password: string;
@@ -53,7 +56,7 @@ export default function PersonalLogin() {
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src={logo} alt="로고" className="w-20 h-20" />
       </div>
 
       <div className="flex items-center justify-center">

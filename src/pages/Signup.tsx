@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+
+//이미지
 import personalImage from '../assets/LoginAssets/personalImage.svg';
 import businessImage from '../assets/LoginAssets/businessImage.svg';
+import logo from '/src/assets/logo.svg';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ export default function Signup() {
   return (
     <div className="flex h-screen bg-white">
       <div className="fixed top-0 left-8 z-10">
-        <img src="/src/assets/logo.svg" alt="로고" className="w-20 h-20" />
+        <img src={logo} alt="로고" className="w-20 h-20" />
       </div>
 
       <div className="flex-1 flex items-center justify-center">
