@@ -248,7 +248,7 @@ export default function BusinessPasswordFindModal({
                 onClick={onOpenIdFind}
                 className="flex-1 bg-white border border-gray-300 text-[#FF9555] py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
-                아이디 찾기
+                비밀번호 찾기
               </button>
             </div>
           </form>
