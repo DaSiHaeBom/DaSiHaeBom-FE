@@ -8,13 +8,11 @@ import {
 interface BusinessPasswordFindModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpenIdFind: () => void;
 }
 
 export default function BusinessPasswordFindModal({
   isOpen,
   onClose,
-  onOpenIdFind,
 }: BusinessPasswordFindModalProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -235,22 +233,13 @@ export default function BusinessPasswordFindModal({
               </div>
             )}
 
-            <div className="flex flex-col gap-3">
-              <button
-                type="submit"
-                disabled={isSubmitting || !isVerificationCompleted}
-                className="flex-1 bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? '발송 중...' : '임시 비밀번호 발송'}
-              </button>
-              <button
-                type="button"
-                onClick={onOpenIdFind}
-                className="flex-1 bg-white border border-gray-300 text-[#FF9555] py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-              >
-                비밀번호 찾기
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isSubmitting || !isVerificationCompleted}
+              className="w-full bg-[#FF9555] text-white py-3 px-4 rounded-lg hover:bg-[#E67E22] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? '발송 중...' : '임시 비밀번호 발송'}
+            </button>
           </form>
         ) : (
           <div className="flex flex-col items-center gap-6">
