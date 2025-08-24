@@ -19,8 +19,30 @@ const baseAxiosInstance = axios.create({
 });
 
 // 요청 인터셉터
+import Cookies from 'js-cookie';
+
 baseAxiosInstance.interceptors.request.use(async config => {
-  // await new Promise(resolve => setTimeout(resolve, 1000)); // 로딩 상태 테스트를 위해 1000ms 지연
+  // GET이 아닌 요청에 대해 CSRF 토큰 처리
+  const method = config.method?.toUpperCase();
+  if (method && method !== 'GET') {
+    let xsrfToken = Cookies.get('XSRF-TOKEN');
+    // XSRF-TOKEN 쿠키가 없으면 먼저 발급
+    if (!xsrfToken) {
+      try {
+        await axios.get('/api/v1/security/csrf', {
+          baseURL,
+          withCredentials: true,
+        });
+        xsrfToken = Cookies.get('XSRF-TOKEN');
+      } catch (e) {
+        console.error('CSRF 토큰 발급 실패:', e);
+      }
+    }
+    // 토큰이 있으면 헤더에 추가
+    if (xsrfToken) {
+      config.headers['X-XSRF-TOKEN'] = xsrfToken;
+    }
+  }
   return config;
 });
 
