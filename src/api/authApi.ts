@@ -11,7 +11,7 @@ export const sendPhoneVerificationCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/validations/phone/code/sign-up',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/sign-up`,
     {
       phoneNumber,
     },
@@ -31,7 +31,7 @@ export const sendIdFindVerificationCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/validations/phone/code/find-id',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/find-id`,
     {
       phoneNumber,
     },
@@ -52,7 +52,7 @@ export const verifyPhoneCode = async (
   code: string
 ): Promise<PhoneVerificationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/validations/phone/code/confirmation',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/confirmation`,
     {
       phoneNumber,
       code,
@@ -79,7 +79,7 @@ export const personalSignup = async (signupData: {
   detailAddress: string;
 }): Promise<SignupResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/users/workers',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/workers`,
     signupData,
     {
       headers: {
@@ -120,7 +120,7 @@ export const sendPasswordResetCode = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/validations/phone/code/reset-password',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/validations/phone/code/reset-password`,
     {
       phoneNumber,
     },
@@ -140,7 +140,7 @@ export const sendTempPassword = async (
   phoneNumber: string
 ): Promise<PhoneVerificationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/auth/temp-password',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/temp-password`,
     {
       phoneNumber,
     },
@@ -160,7 +160,7 @@ export const validateBusinessNumber = async (
   corpNumber: string
 ): Promise<BusinessNumberValidationResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/users/corps/business-validation',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/business-validation`,
     {
       corpNumber,
     },
@@ -187,7 +187,7 @@ export const businessSignup = async (signupData: {
   corpDetailAddress: string;
 }): Promise<SignupResponse> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/users/corps',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps`,
     signupData,
     {
       headers: {
@@ -214,7 +214,7 @@ export const checkBusinessIdDuplicate = async (
 }> => {
   // 프록시를 통해 호출 (로컬호스트로 요청하면 프록시가 실제 서버로 전달)
   const response = await axios.get(
-    `https://www.dlrbdjs.store/api/v1/users/corps/check-id?loginId=${loginId}`,
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/check-id?loginId=${loginId}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ export const findBusinessId = async (
   };
 }> => {
   const response = await axios.post(
-    'https://www.dlrbdjs.store/api/v1/users/corps/find-id',
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/corps/find-id`,
     { phoneNumber },
     {
       headers: {
