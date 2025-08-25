@@ -72,6 +72,7 @@ const LicenseFormModal = ({
   const onChange =
     (key: keyof License) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setLicenseData(prev => ({ ...prev, [key]: e.target.value }));
+      if (key === 'name') setQuery(e.target.value);
     };
 
   // 검색 결과 렌더링
@@ -148,20 +149,26 @@ const LicenseFormModal = ({
             <input
               className="w-full h-[44px] border rounded-[8px] px-3 pr-10 focus:outline-none focus:ring-1 focus:ring-orange-300"
               placeholder="자격증명 입력"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
+              value={licenseData.name}
+              onChange={onChange('name')}
             />
-            {showDropdown && options.length > 0 && (
+            {showDropdown && (
               <ul className="absolute left-0 right-0 bg-white border rounded-[8px] max-h-48 overflow-y-auto shadow z-10 mt-1">
-                {options.map(opt => (
-                  <li
-                    key={opt.id}
-                    onClick={() => handleSelectOption(opt)}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-left"
-                  >
-                    {opt.name}
+                {options.length > 0 ? (
+                  options.map(opt => (
+                    <li
+                      key={opt.id}
+                      onClick={() => handleSelectOption(opt)}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-left"
+                    >
+                      {opt.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-3 py-2 text-gray-500 select-none">
+                    검색 결과 없음 — 직접 입력을 사용 중
                   </li>
-                ))}
+                )}
               </ul>
             )}
           </div>
