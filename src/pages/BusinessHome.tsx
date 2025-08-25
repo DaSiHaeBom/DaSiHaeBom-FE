@@ -60,19 +60,19 @@ export default function BusinessHome() {
             step="1단계"
             imageSrc={step1Image}
             altText="1단계 이미지"
-            text="말로 질문에 답해요"
+            text="지원자 이력서를 확인해요"
           />
           <HomeCard
             step="2단계"
             imageSrc={step2Image}
             altText="2단계 이미지"
-            text="이력서가 만들어져요"
+            text="조건에 맞는 인재를 찾아요"
           />
           <HomeCard
             step="3단계"
             imageSrc={step3Image}
             altText="3단계 이미지"
-            text="기업이 먼저 연락해요"
+            text="직접 연락해 채용을 시작해요"
           />
         </div>
       </div>
