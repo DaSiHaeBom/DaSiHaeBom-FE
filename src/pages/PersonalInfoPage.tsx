@@ -115,7 +115,7 @@ export default function PersonalInfoPage() {
     try {
       const res = await sendPhoneVerificationCode(data.phone);
       console.log('인증번호 전송 성공:', res);
-      alert('인증번호가 전송되었습니다.');
+      alert(res.result);
     } catch (err) {
       console.error('인증번호 전송 실패:', err);
       alert('인증번호 전송 중 오류가 발생했습니다.');
