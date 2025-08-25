@@ -33,7 +33,9 @@ export default function PersonalHome() {
           className="w-96 h-80 object-cover rounded-3xl"
         />
         <p className="text-neutral-700 text-lg font-medium leading-loose mb-10">
-          아직 이력서가 없어요. 먼저 이력서를 작성해 주세요.
+          {isResumeCreated
+            ? '이력서가 등록되어 있어요. 기업의 연락을 기다려보세요!'
+            : '아직 이력서가 없어요. 먼저 이력서를 작성해 주세요.'}
         </p>
         {isResumeCreated ? (
           <button

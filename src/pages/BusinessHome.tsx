@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { getResumeIsOrNot } from '../api/home';
 import { useNavigate } from 'react-router-dom';
 import HomeImage from '../assets/HomeAssets/homeImage.svg';
 import { HomeCard } from '../components/Home/HomeCard';
@@ -9,17 +7,6 @@ import step3Image from '../assets/HomeAssets/BusinessHomeAssets/step3Image.svg';
 
 export default function BusinessHome() {
   const navigate = useNavigate();
-  const [isResumeCreated, setIsResumeCreated] = useState(false);
-
-  useEffect(() => {
-    const checkResumeExistence = async () => {
-      const res = await getResumeIsOrNot();
-      if (res.isSuccess) {
-        setIsResumeCreated(res.result.exists);
-      }
-    };
-    checkResumeExistence();
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-30 mt-16">
@@ -33,23 +20,15 @@ export default function BusinessHome() {
           className="w-96 h-80 object-cover rounded-3xl"
         />
         <p className="text-neutral-700 text-lg font-medium leading-loose mb-10">
-          아직 이력서가 없어요. 먼저 이력서를 작성해 주세요.
+          필요한 인재가 기다리고 있어요. 지금 이력서를 확인해보세요.
         </p>
-        {isResumeCreated ? (
-          <button
-            className="w-40 h-14 rounded-lg bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => navigate('/business/resume/list')}
-          >
-            이력서 조회
-          </button>
-        ) : (
-          <button
-            className="w-40 h-14 rounded-xl bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
-            onClick={() => navigate('/personal/resume')}
-          >
-            이력서 작성
-          </button>
-        )}
+
+        <button
+          className="w-40 h-14 rounded-lg bg-[#FF6B01] text-white text-xl font-semibold px-4 py-2 leading-loose"
+          onClick={() => navigate('/business/resume/list')}
+        >
+          이력서 조회
+        </button>
       </div>
       <div className="flex flex-col justify-center items-center gap-10 mb-30">
         <p className="text-neutral-700 text-4xl font-bold leading-16">
