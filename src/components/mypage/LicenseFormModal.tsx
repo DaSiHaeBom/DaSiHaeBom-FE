@@ -35,6 +35,7 @@ const LicenseFormModal = ({
     { id: number; name: string; issuer: string }[]
   >([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const closeDropdown = () => setShowDropdown(false);
 
   // 모달 열릴 때 초기화 or 값 세팅
   useEffect(() => {
@@ -151,6 +152,7 @@ const LicenseFormModal = ({
               placeholder="자격증명 입력"
               value={licenseData.name}
               onChange={onChange('name')}
+              onBlur={() => setTimeout(closeDropdown, 100)}
             />
             {showDropdown && (
               <ul className="absolute left-0 right-0 bg-white border rounded-[8px] max-h-48 overflow-y-auto shadow z-10 mt-1">
@@ -165,8 +167,8 @@ const LicenseFormModal = ({
                     </li>
                   ))
                 ) : (
-                  <li className="px-3 py-2 text-gray-500 select-none">
-                    검색 결과 없음 — 직접 입력을 사용 중
+                  <li className="px-3 py-2 text-center text-gray-500 select-none">
+                    검색 결과 없음
                   </li>
                 )}
               </ul>
@@ -184,6 +186,7 @@ const LicenseFormModal = ({
             className="flex-1 h-[44px] border rounded-[8px] px-3 focus:outline-none focus:ring-1 focus:ring-orange-300"
             value={licenseData.issuedAt}
             onChange={onChange('issuedAt')}
+            onFocus={closeDropdown}
           />
         </div>
 
@@ -198,6 +201,7 @@ const LicenseFormModal = ({
             maxLength={15}
             value={licenseData.issuer}
             onChange={onChange('issuer')}
+            onFocus={closeDropdown}
           />
         </div>
       </div>
