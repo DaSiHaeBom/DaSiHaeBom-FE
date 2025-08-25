@@ -47,7 +47,8 @@ export default function IdFindModal({
       const result = await sendIdFindVerificationCode(phoneNumber);
       if (result.isSuccess) {
         setIsVerificationSent(true);
-        alert('인증번호가 발송되었습니다');
+        // alert('인증번호가 발송되었습니다');
+        alert(result.result);
       } else {
         alert(
           result.message || '인증번호 발송에 실패했습니다. 다시 시도해주세요.'
