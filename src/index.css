@@ -1,3 +1,31 @@
+@import url('pretendard/dist/web/static/pretendard.css');
 @import 'tailwindcss/theme' layer(theme);
 @import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
+
+body {
+  background-color: #fffefd; /* 배경색 */
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 애니메이션 */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+button {
+  transition: transform 150ms;
+}
+button:hover {
+  transform: scale(1.02);
+  cursor: pointer;
+}
+button:active {
+  transform: scale(0.95);
+}
