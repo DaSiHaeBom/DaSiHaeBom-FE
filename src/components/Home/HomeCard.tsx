@@ -15,10 +15,7 @@ export const HomeCard = ({
         {step}
       </p>
       <img src={imageSrc} alt={altText} />
-      <p
-        className="text-neutral-700 text-2xl font-semibold leading-9"
-        style={{ whiteSpace: 'pre-line' }}
-      >
+      <p className="text-neutral-700 text-2xl font-semibold leading-9 whitespace-pre-line">
         {text}
       </p>
     </div>
